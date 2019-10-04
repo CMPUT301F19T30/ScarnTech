@@ -1,1 +1,4 @@
 Steven Lagrange, 1451432, https://github.com/stevenlagrange
+Jarrod Los, 1482212, https://github.com/stevenlagrange
+Andrew Williams, , atwillia https://github.com/andrew-t-williams
+Zhentao Lei, 1546185, https://github.com/SKT-TI-Faker

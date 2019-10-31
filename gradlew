@@ -1,7 +1,4 @@
 #!/usr/bin/env sh
-
-set fileformat=unix
-
 ##############################################################################
 ##
 ##  Gradle start up script for UN*X

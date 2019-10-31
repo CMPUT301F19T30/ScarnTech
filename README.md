@@ -1,4 +1,5 @@
 # ScarnTech
+
 App: Moodi
 
-"Send Moods"
+Motto: "Send Moods"

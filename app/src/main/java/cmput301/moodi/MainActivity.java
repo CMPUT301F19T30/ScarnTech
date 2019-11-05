@@ -26,6 +26,7 @@ import java.util.HashMap;
 
 public class MainActivity extends AppCompatActivity {
 
+    // temp comment. delete this
 
     // Variables that are pointed to login activity to retrieve data
     Button LoginButton;

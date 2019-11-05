@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "723281776811",
+    "firebase_url": "https://moodi-app-1cf5d.firebaseio.com",
+    "project_id": "moodi-app-1cf5d",
+    "storage_bucket": "moodi-app-1cf5d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:723281776811:android:4d640dae259e4dce34a7ee",
+        "android_client_info": {
+          "package_name": "com.cmput301.moodi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "723281776811-ihgrfqbpvfatjkliioufc96jd9vrj54s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAZBhWGfeWeqYfIzJW7yfuKJcm2WOu_9Y4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "723281776811-ihgrfqbpvfatjkliioufc96jd9vrj54s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

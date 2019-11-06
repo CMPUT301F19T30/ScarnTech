@@ -76,8 +76,8 @@ public class PostMoodFragment extends DialogFragment {
 //                            Mood mood = new Mood(Mood, Reasoning);
 //                        else
 //                            Mood newMood = new Mood(Mood);
-                        EmotionalState emotionalState = new EmotionalState(emotionalStateText);
-                        Mood mood = new Mood(emotionalState, reasonText);
+//                        EmotionalState emotionalState = new EmotionalState(emotionalStateText);
+                        Mood mood = new Mood(emotionalStateText, reasonText);
                         listener.addNewPost(mood);
                     }
                 })

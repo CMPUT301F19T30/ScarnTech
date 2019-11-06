@@ -21,15 +21,16 @@ public class Mood implements Comparable<Mood>{
     // Temporary variables for testing posting
     private String dummyEmotionalState;
     
-    // Test purposes only to temporarly be able to post in MoodsActivity
+    public String getDummyEmotionalState() {
+        return dummyEmotionalState;
+    }
     Mood() {setDate();}
-    
-    // Test purposes only to temporarly be able to post in MoodsActivity
     public Mood(String dummyEmotionalState, String reason) {
         this.dummyEmotionalState = dummyEmotionalState;
         this.reason = reason;
         setDate();
     }
+    // End of test methods that need to be updated on completion of EmotionalState
 
     // Note once emotional state is done, the color and mood must be pulled from it! (Not an input)
     // Ex. this.reasonImage = emotionalState.getReasonImage() 

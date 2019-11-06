@@ -47,7 +47,7 @@ public class CustomList extends ArrayAdapter<Mood> {
         TextView currentDate = view.findViewById(R.id.Date_text);
 
         // Update this to account for a drop down of pre-made moods!
-        currentEmotionalState.setText(mood.getdummyEmotionalState());
+        currentEmotionalState.setText(mood.getEmotionalState().toString());
         currentDate.setText(mood.getDate());
 
         return view;

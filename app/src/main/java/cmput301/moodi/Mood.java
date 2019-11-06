@@ -18,6 +18,11 @@ public class Mood implements Comparable<Mood>{
     private Location location;
     private String moodID;
 
+    public Mood(EmotionalState emotionalState, String reason) {
+        this.emotionalState = emotionalState;
+        this.reason = reason;
+    }
+
     public Mood(EmotionalState emotionalState, String reason, Image reasonImage) {
         this.emotionalState = emotionalState;
         this.reason = reason;

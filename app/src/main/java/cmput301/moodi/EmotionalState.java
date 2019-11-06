@@ -5,6 +5,10 @@ public class EmotionalState  {
     private String color;
     private Image image;
 
+    public EmotionalState(String name) {
+        this.name = name;
+    }
+
     public String getEmotionalName() {
         return name;
     }

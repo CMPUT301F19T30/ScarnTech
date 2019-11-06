@@ -23,13 +23,14 @@ public class CustomList extends ArrayAdapter<Mood> {
     private ArrayList<Mood> moods;
     private Context context;
 
+    // Bridge between the list and the displayed list
     public CustomList(Context context, ArrayList<Mood> moods){
         super(context,0, moods);
         this.moods = moods;
         this.context = context;
     }
 
-
+    // Actual population of the list by sending entry to our content
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -41,7 +42,7 @@ public class CustomList extends ArrayAdapter<Mood> {
 
         Mood mood = moods.get(position);
 
-
+        // Point at placeholders in list
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
 

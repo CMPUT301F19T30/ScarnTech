@@ -11,6 +11,7 @@ public class Mood implements Comparable<Mood>{
     private Date createdDate = new Date();
     private String createdTime;
     private EmotionalState emotionalState;
+
     private String reason;
     private Image reasonImage;
     private String socialSituation;
@@ -29,13 +30,14 @@ public class Mood implements Comparable<Mood>{
         this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
     }
-
+  
     public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation, Location location ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
         this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         this.location = location;
+
     }
 
 

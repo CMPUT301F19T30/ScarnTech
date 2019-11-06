@@ -72,8 +72,8 @@ public class Mood implements Comparable<Mood>{
      * This instantaneously captures the date and time at runtime and converts to string
      */
     public void setDate() {
-        instantananeousDate = new Date()
-        date = instantananeousDate.toString;
+        instantananeousDate = new Date();
+        date = instantananeousDate.toString();
     }
 
     /*

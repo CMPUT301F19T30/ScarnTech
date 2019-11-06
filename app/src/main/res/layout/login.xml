@@ -8,28 +8,28 @@
         android:layout_height="wrap_content"
         android:ems="8"
         android:paddingLeft="130dp"
-        android:paddingTop="160dp"
         android:text="Moodi"
         android:textColor="#B91E1E"
         android:textSize="40sp" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="30dp"
         android:ems="8"
-        android:text='"Send Mudes"'
+        android:paddingLeft="120dp"
+        android:text='"Send Moods"'
         android:textSize="20sp" />
     <EditText
         android:id="@+id/UserID_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
         android:ems="8"
         android:maxLength="20"
-        android:hint="User ID"/>
+        android:hint="Username"/>
     <EditText
         android:id="@+id/Password_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="50dp"
         android:ems="7"
         android:maxLength="20"
         android:inputType="textPassword"

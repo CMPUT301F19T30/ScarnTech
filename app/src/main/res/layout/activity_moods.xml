@@ -5,28 +5,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".MainActivity">
+    tools:context=".MoodsActivity">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
-        <EditText
-            android:id="@+id/Entered_EmotionalState_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="8"
-            android:hint ="Emotional State"/>
-        <EditText
-            android:id="@+id/Entered_Reason_Text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:ems="7"
-            android:maxLength="150"
-            android:inputType="text|textAutoComplete|textAutoCorrect"
-            android:hint ="Reason (Optional)"/>
+
         <Button
             android:id="@+id/post_mood_button"
-            android:text="Post!"
+            android:text="Make A Post!"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
 
@@ -34,7 +21,7 @@
 
 
     <ListView
-        android:id="@+id/city_list"
+        android:id="@+id/mood_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
     </ListView>

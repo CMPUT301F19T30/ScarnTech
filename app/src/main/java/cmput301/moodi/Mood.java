@@ -15,7 +15,7 @@ public class Mood implements Comparable<Mood>{
 
     private String reason; // (OPTIONAL INPUT)
     private String socialSituiation; // (OPTIONAL INPUT) to be implemented later
-    private Date theDate = new Date();
+    private Date theDate = new Date(); // NOT SURE IF CORRECTLY IMPLEMENTED
     private String date;
 
     public String getdummyEmotionalState() {
@@ -28,7 +28,10 @@ public class Mood implements Comparable<Mood>{
 
     // Returns a string with wrong time zone I believe!
     public String getDate() {
-        return theDate.toString();
+        return this.date; // Returns date and time of when setDate was called
+    }
+    public void setDate() {
+        date = theDate.toString(); // Gets date at time of call
     }
 
     public String getReason() {
@@ -53,6 +56,23 @@ public class Mood implements Comparable<Mood>{
 
     public void setSocialSituiation(String socialSituiation) {
         this.socialSituiation = socialSituiation;
+    }
+
+    // Constructor that creates a Mood! (Temporary, needs to be improved once emotional state is created)
+    Mood(String EmotionalState, String Reason) {
+        this.dummyEmotionalState = EmotionalState;
+        this.reason = Reason;
+        setDate();
+    }
+
+    // Creates a Mood! (Temporary, needs to be improved once emotional state is created)
+    // For the case where no reason is entered
+    Mood(String EmotionalState) {
+        this.dummyEmotionalState = EmotionalState;
+        setDate();
+    }
+    Mood() {
+        setDate();
     }
 
     @Override

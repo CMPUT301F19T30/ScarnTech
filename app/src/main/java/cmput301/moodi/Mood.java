@@ -8,8 +8,8 @@ package cmput301.moodi;
 import java.util.Date;
 
 public class Mood implements Comparable<Mood>{
-    private Date createdDate = new Date();
-    private String createdTime;
+    private Date instantananeousDate;
+    private String date;
     private EmotionalState emotionalState;
 
     private String reason;
@@ -17,16 +17,28 @@ public class Mood implements Comparable<Mood>{
     private String socialSituation;
     private Location location;
     private String moodID;
-
-    public Mood(EmotionalState emotionalState, String reason) {
-        this.emotionalState = emotionalState;
+    
+    // Temporary variables for testing posting
+    private String dummyEmotionalState;
+    
+    // Test purposes only to temporarly be able to post in MoodsActivity
+    Mood() {setDate();}
+    
+    // Test purposes only to temporarly be able to post in MoodsActivity
+    public Mood(String dummyEmotionalState, String reason) {
+        this.dummyEmotionalState = dummyEmotionalState;
         this.reason = reason;
+        setDate();
     }
 
+    // Note once emotional state is done, the color and mood must be pulled from it! (Not an input)
+    // Ex. this.reasonImage = emotionalState.getReasonImage() 
+    // Where getReasonImage() is defined to return the image associated to the preset emotional state
     public Mood(EmotionalState emotionalState, String reason, Image reasonImage) {
         this.emotionalState = emotionalState;
         this.reason = reason;
         this.reasonImage = reasonImage;
+        setDate();
     }
 
     public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation ) {
@@ -34,6 +46,7 @@ public class Mood implements Comparable<Mood>{
         this.reason = reason;
         this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
+        setDate();
     }
   
     public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation, Location location ) {
@@ -42,7 +55,7 @@ public class Mood implements Comparable<Mood>{
         this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         this.location = location;
-
+        setDate();
     }
 
 
@@ -52,16 +65,15 @@ public class Mood implements Comparable<Mood>{
      * @return Return the reason
      */
     public String getDate() {
-        return this.createdDate.toString();
+        return this.date;
     }
 
     /*
-     * This returns the time the mood was created.
-     *
-     * @return Return the reason
+     * This instantaneously captures the date and time at runtime and converts to string
      */
-    public String getTime() {
-        return this.createdTime;
+    public void setDate() {
+        instantananeousDate = new Date()
+        date = instantananeousDate.toString;
     }
 
     /*
@@ -70,7 +82,7 @@ public class Mood implements Comparable<Mood>{
      * @return Return the emotionalState
      */
     public EmotionalState getEmotionalState() {
-        return this.emotionalState;
+        return this.emotionalState; // Convert to string?
     }
 
     /*

@@ -1,23 +1,31 @@
 package cmput301.moodi;
 
-public class EmotionalState extends Mood {
-    private String EmotionalName;
-    private String Color;
-    // Add image variable as well as getter/setter
+public class EmotionalState  {
+    private String name;
+    private String color;
+    private Image image;
+
+    public EmotionalState() {
+
+    }
+
+    public EmotionalState(String name) {
+        this.name = name;
+    }
 
     public String getEmotionalName() {
-        return EmotionalName;
+        return name;
     }
 
     public void setEmotionalName(String emotionalName) {
-        EmotionalName = emotionalName;
+        this.name = emotionalName;
     }
 
     public String getColor() {
-        return Color;
+        return color;
     }
 
     public void setColor(String color) {
-        Color = color;
+        this.color = color;
     }
 }

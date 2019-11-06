@@ -10,25 +10,22 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.EditText;
 
 //import com.cmput301.moodi.R;
 
 public class PostMoodFragment extends DialogFragment {
 
     // Variables used to pull input from user into fragment
-    private EditText EmotionalState; // Change this to the selection from drop down list
-    private EditText Reason;
+    private EditText EmotionalStateView; // Change this to the selection from drop down list
+    private EditText ReasonView;
 
     // Need to add location option, social situation as well as a picture
 
@@ -58,8 +55,8 @@ public class PostMoodFragment extends DialogFragment {
         View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_post_mood, null);
 
         // Point Variables to text on fragment
-        EmotionalState = view.findViewById(R.id.input_EmotionalState);
-        Reason = view.findViewById(R.id.input_Reasoning);
+        EmotionalStateView = view.findViewById(R.id.input_EmotionalState);
+        ReasonView = view.findViewById(R.id.input_Reasoning);
         //Build the fragment and set the buttons to call the delete or edit method in main
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
@@ -71,15 +68,16 @@ public class PostMoodFragment extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // Pull the fresh entry from the fragment
-                        String Mood = EmotionalState.getText().toString();
-                        String Reasoning = Reason.getText().toString();
+                        String emotionalStateText = EmotionalStateView.getText().toString();
+                        String reasonText = ReasonView.getText().toString();
 
                         // Create a new Mood (Post) and send to MoodsActivity to be added to the list!
 //                        if (Reasoning != null && !Reasoning.isEmpty())
 //                            Mood mood = new Mood(Mood, Reasoning);
 //                        else
 //                            Mood newMood = new Mood(Mood);
-                        Mood mood = new Mood(Mood, Reasoning);
+                        EmotionalState emotionalState = new EmotionalState(emotionalStateText);
+                        Mood mood = new Mood(emotionalState, reasonText);
                         listener.addNewPost(mood);
                     }
                 })

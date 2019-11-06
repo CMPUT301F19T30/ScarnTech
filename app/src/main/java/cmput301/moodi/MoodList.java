@@ -2,7 +2,7 @@ package cmput301.moodi;
 /*
  * Class: MoodList
  * Version 1: Creating and maintaining a list of user posts (Moods)
- * that will be used to fill said users database
+ * that will be used to fill said users database (NOT AN ACTIVITY)
  * 11/04/2019
  */
 
@@ -10,10 +10,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-/**
- * This is a class that keeps track of a list of city objects
- */
-public class MoodList{
+public class MoodList {
+
     private List<Mood> moods = new ArrayList<>();
 
     /**
@@ -27,14 +25,23 @@ public class MoodList{
     }
 
     /**
+     * Create method to delete an existing mood or send exception if mood not in list
+     * @param mood Mood needed to be removed if existing in list already
+     */
+    public void delete(Mood mood) {
+        if (!moods.contains(mood))
+            throw new IllegalThreadStateException();
+        moods.remove(mood);
+    }
+
+    /**
      * This method returns a list of moods
-     * @return
+     * @return list
      */
     public List<Mood> moods() {
         List<Mood> list = moods;
         Collections.sort(list);
         return list;
     }
-
 }
 

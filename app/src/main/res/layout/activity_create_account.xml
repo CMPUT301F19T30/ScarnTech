@@ -4,22 +4,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="cmput301.moodi.CreateAccount">
+    tools:context="cmput301.moodi.CreateAccountActivity">
 
     <TextView
         android:id="@+id/textView10"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="119dp"
+        android:layout_height="48dp"
         android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:ems="8"
-        android:paddingLeft="130dp"
-        android:text="Moodi"
+        android:text="@string/moodi"
         android:textColor="#B91E1E"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -29,8 +26,7 @@
         android:layout_height="30dp"
         android:layout_marginTop="8dp"
         android:ems="8"
-        android:paddingLeft="90dp"
-        android:text='Create a new account!'
+        android:text="@string/create_a_new_account"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.508"
@@ -43,7 +39,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="90dp"
         android:ems="10"
-        android:hint="Enter your email address"
+        android:hint="@string/enter_your_email_address"
         android:inputType="textEmailAddress"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -54,7 +50,7 @@
         android:layout_width="350dp"
         android:layout_height="50dp"
         android:ems="7"
-        android:hint="Enter a password"
+        android:hint="@string/enter_a_password"
         android:inputType="textPassword"
         android:maxLength="20"
         app:layout_constraintEnd_toEndOf="parent"
@@ -66,7 +62,7 @@
         android:id="@+id/signup_button"
         android:layout_width="150dp"
         android:layout_height="50dp"
-        android:text="Create Account"
+        android:text="@string/create_account"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/signup_password" />
@@ -76,7 +72,7 @@
         android:layout_width="150dp"
         android:layout_height="50dp"
         android:layout_marginBottom="44dp"
-        android:text="Log In"
+        android:text="@string/log_in"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -86,7 +82,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
-        android:text="Already registered? Log in here."
+        android:text="@string/already_registered_log_in_here"
         app:layout_constraintBottom_toTopOf="@+id/goto_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

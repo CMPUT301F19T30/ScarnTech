@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-public class MainActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity {
 
     // log in page objects
     Button button_login, button_goto_signup;
@@ -43,11 +43,9 @@ public class MainActivity extends AppCompatActivity {
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
                 if (mFirebaseUser != null) {
-                    Toast.makeText(MainActivity.this, "Log in Successful.", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                    Toast.makeText(LoginActivity.this, "Log in Successful.", Toast.LENGTH_SHORT).show();
+                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                     startActivity(i);
-                } else if (mFirebaseUser == null){
-                    //Toast.makeText(MainActivity.this, "Unable to log in.", Toast.LENGTH_SHORT).show();
                 }
             }
         };
@@ -70,23 +68,20 @@ public class MainActivity extends AppCompatActivity {
                     password.setError("Please enter a password.");
                     password.requestFocus();
 
-                } else if (!email.isEmpty() && !pass.isEmpty()) {
+                } else {
                     // both values are given, try to create the account
-                    mFirebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(MainActivity.this, new OnCompleteListener<AuthResult>() {
+                    mFirebaseAuth.signInWithEmailAndPassword(email, pass).addOnCompleteListener(LoginActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
-                                Toast.makeText(MainActivity.this, "Could not find account, try again or create a new account.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(LoginActivity.this, "Could not find account, try again or create a new account.", Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent i = new Intent(MainActivity.this, HomeActivity.class);
+                                Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                                 startActivity(i);
                             }
                         }
                     });
 
-                } else {
-                    // This should never happen logically. If it does the world might be imploding
-                    Toast.makeText(MainActivity.this, "Unknown error.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -95,7 +90,7 @@ public class MainActivity extends AppCompatActivity {
         button_goto_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(MainActivity.this, CreateAccount.class);
+                Intent i = new Intent(LoginActivity.this, CreateAccountActivity.class);
                 startActivity(i);
             }
         });

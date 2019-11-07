@@ -74,7 +74,7 @@ public class HomeActivity extends AppCompatActivity implements PostMoodFragment.
             @Override
             public void onClick(View v) {
                 FirebaseAuth.getInstance().signOut();
-                Intent i = new Intent(HomeActivity.this, MainActivity.class);
+                Intent i = new Intent(HomeActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });

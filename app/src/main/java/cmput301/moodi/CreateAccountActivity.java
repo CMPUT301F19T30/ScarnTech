@@ -15,7 +15,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
-public class CreateAccount extends AppCompatActivity {
+public class CreateAccountActivity extends AppCompatActivity {
 
     // create account page objects
     Button button_signup, button_goto_login;
@@ -57,27 +57,23 @@ public class CreateAccount extends AppCompatActivity {
                     password.setError("Please enter a password.");
                     password.requestFocus();
 
-                } else if (!email.isEmpty() && !pass.isEmpty()) {
+                } else {
                     // both values are given, try to create the account
-                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccount.this, new OnCompleteListener<AuthResult>() {
+                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
                                 // account was not able to be created
-                                Toast.makeText(CreateAccount.this, "Account creation was not successful, try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateAccountActivity.this, "Account creation was not successful, try again.", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 // account was created, user is taken to the home screen
-                                Toast.makeText(CreateAccount.this, "Account creation was successful! Welcome to Moodi!", Toast.LENGTH_SHORT).show();
-                                Intent i = new Intent(CreateAccount.this, HomeActivity.class);
+                                Toast.makeText(CreateAccountActivity.this, "Account creation was successful! Welcome to Moodi!", Toast.LENGTH_SHORT).show();
+                                Intent i = new Intent(CreateAccountActivity.this, HomeActivity.class);
                                 startActivity(i);
                             }
                         }
                     });
-
-                } else {
-                    // This should never happen logically. If it does the world might be imploding
-                    Toast.makeText(CreateAccount.this, "Unknown error.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -86,7 +82,7 @@ public class CreateAccount extends AppCompatActivity {
         button_goto_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateAccount.this, MainActivity.class);
+                Intent i = new Intent(CreateAccountActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });

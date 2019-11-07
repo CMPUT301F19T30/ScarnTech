@@ -21,6 +21,10 @@ public class User {
     //FirebaseFirestore db;
     //final CollectionReference collectionReference = db.collection("users");
 
+    public User() {
+
+    }
+
     public User(String username, String firstName, String lastName) {
         this.username = username;
         this.firstName = firstName;

@@ -9,7 +9,6 @@ package cmput301.moodi;
 
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -33,12 +32,19 @@ public class MoodiStorage {
         this.userCollection = this.db.collection(USER_PATH);
     }
 
+    /*
+     * Returns the users UID associated with Firestore.
+     */
+    public String getUserUID() {
+        return this.userID;
+    }
+
 
     /*
      * Returns all of the users own posts.
      */
     public void getUserPosts() {
-
+        //Todo: return users 'moodhistory'.
 
     }
 

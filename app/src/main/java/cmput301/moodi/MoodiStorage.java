@@ -27,7 +27,7 @@ public class MoodiStorage {
     public MoodiStorage() {
         this.db = FirebaseFirestore.getInstance();
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        this.userID = mFirebaseAuth.getCurrentUser().toString();
+        this.userID = mFirebaseAuth.getCurrentUser().getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
     }

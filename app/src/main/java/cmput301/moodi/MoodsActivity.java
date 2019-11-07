@@ -4,15 +4,15 @@ package cmput301.moodi;
  * Version 1: Shows a list of user moods (posts) and calls "Post" fragment to make a post
  * 11/04/2019
  */
-import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -29,6 +29,7 @@ public class MoodsActivity extends AppCompatActivity implements PostMoodFragment
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
     String TAG = "Sample";
+    MoodiStorage moodiStorage;
 
     // Variable used to detect a request to post!
     Button PostMood;
@@ -48,9 +49,12 @@ public class MoodsActivity extends AppCompatActivity implements PostMoodFragment
 
         // Access a Cloud Firestore instance from your Activity
         db = FirebaseFirestore.getInstance();
+        this.moodiStorage = new MoodiStorage();
+
 
         // Get a top-level reference to the collection.
         final CollectionReference collectionReference = db.collection("users");
+
 
         // Setting OnClickListeners and responses for buttons
         configurePostMoodButton();
@@ -83,6 +87,8 @@ public class MoodsActivity extends AppCompatActivity implements PostMoodFragment
     // From fragment, receives user input and posts mood
     @Override
     public void addNewPost(Mood mood) {
+        this.moodiStorage.addMoodPost(mood);
         moodAdapter.add(mood);
     }
+
 }

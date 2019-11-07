@@ -3,4 +3,11 @@
     <color name="colorPrimary">#008577</color>
     <color name="colorPrimaryDark">#00574B</color>
     <color name="colorAccent">#D81B60</color>
+
+    <color name="moodiDarkBlue">#0A1128</color>
+    <color name="moodiMediumBlue">#001F54</color>
+    <color name="moodiLightBlue">#034078</color>
+    <color name="moodiTeal">#1282A2</color>
+    <color name="moodiWhite">#FEFCFB</color>
+    <color name="moodiBlack">#000000</color>
 </resources>

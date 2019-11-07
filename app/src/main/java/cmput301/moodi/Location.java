@@ -6,10 +6,10 @@ package cmput301.moodi;
  */
 
 public class Location {
-    private String latitude;
-    private String longitude;
+    private double latitude;
+    private double longitude;
 
-    public Location(String latitude, String longitude) {
+    public Location(double latitude, double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -19,7 +19,7 @@ public class Location {
      *
      * @return Return the latitude
      */
-    public String getLatitude() {
+    public double getLatitude() {
         return this.latitude;
     }
 
@@ -28,21 +28,36 @@ public class Location {
      *
      * @return Return the longitude
      */
-    public String getLongitude() {
+    public double getLongitude() {
         return this.longitude;
     }
 
     /*
      * This sets the latitude of the location.
      */
-    public void setLatitude(String latitude) {
+    public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
     /*
      * This sets the longitude of the location.
      */
-    public void setLongitude(String longitude) {
+    public void setLongitude(double longitude) {
         this.longitude = longitude;
+    }
+
+    /*
+     * Returns an array of location [longitude, latitude].
+     */
+    public double[] toArray(){
+        double[] location = {this.latitude, this.longitude};
+        return location;
+    }
+
+    /*
+     * Serializes location object to string.
+     */
+    public String serializeLocation() {
+        return "[" + latitude + ", " + longitude + "]";
     }
 }

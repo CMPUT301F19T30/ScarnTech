@@ -61,7 +61,7 @@ public class PostMoodFragment extends DialogFragment {
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
         return builder
                 .setView(view)
-                .setTitle("New Trip")
+                .setTitle("Create Mood")
                 .setNegativeButton("Cancel", null)
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
@@ -78,6 +78,8 @@ public class PostMoodFragment extends DialogFragment {
 //                            Mood newMood = new Mood(Mood);
 //                        EmotionalState emotionalState = new EmotionalState(emotionalStateText);
                         Mood mood = new Mood(emotionalStateText, reasonText);
+                        Location location = new Location(53.123, 113.234);
+                        mood.setLocation(location);
                         listener.addNewPost(mood);
                     }
                 })

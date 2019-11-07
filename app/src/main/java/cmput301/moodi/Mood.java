@@ -6,17 +6,18 @@ package cmput301.moodi;
  */
 
 import java.util.Date;
+import java.util.HashMap;
 
 public class Mood implements Comparable<Mood>{
     private Date instantananeousDate;
     private String date;
     private EmotionalState emotionalState;
 
-    private String reason;
+    private String reason = "";
     private Image reasonImage;
-    private String socialSituation;
+    private String socialSituation = "";
     private Location location;
-    private String moodID;
+    private String moodID = "";
     
     // Temporary variables for testing posting
     private String dummyEmotionalState;
@@ -150,6 +151,14 @@ public class Mood implements Comparable<Mood>{
         return this.location;
     }
 
+    /*
+     * This method sets the location of the mood.
+     *
+     * @return Return the location
+     */
+    public void setLocation(Location location) {
+        this.location = location;
+    }
 
     /*
      * This returns the id of the mood.
@@ -158,6 +167,18 @@ public class Mood implements Comparable<Mood>{
         return this.moodID;
     }
 
+    /*
+     *
+     */
+    public HashMap<String, Object> serializeMood() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("Emotional State", this.getDummyEmotionalState());
+        data.put("Reason", this.getReason());
+        data.put("Social Situation", this.getSocialSituation());
+        data.put("Latitude", this.getLocation().getLatitude());
+        data.put("Longitude", this.getLocation().getLongitude());
+        return data;
+    }
 
     @Override
     public int compareTo(Mood mood) {

@@ -7,6 +7,7 @@ package cmput301.moodi;
  */
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class User {
 
@@ -74,11 +75,19 @@ public class User {
         this.lastName = name;
     }
 
+    public HashMap<String, Object> serializeUser() {
+        HashMap<String, Object> data = new HashMap<>();
+        data.put("username", this.username);
+        data.put("first_name", this.firstName);
+        data.put("last_name", this.lastName);
+        return data;
+    }
+
     /*
      * Add follower permissions for a user with userID.
      */
     public void addPermission(String userID) {
-        // TO-DO
+        // Todo: add follower permissions.
     }
 
 
@@ -86,20 +95,20 @@ public class User {
      * Remove follower permissions for a user with userID.
      */
     public void removePermission(String userID) {
-        // TO-DO
+        // Todo: remove follower permissions.
     }
 
     /*
      * Add a mood to the users moodlist.
      */
     public void addMood(Mood mood) {
-        // TO-DO
+        // Todo: add a mood to the users moodlist.
     }
 
     /*
      * Remove a mood from the users moodlist.
      */
     public void removeMood(Mood mood) {
-        // TO-DO
+        // Todo: remove mood from users moodlist.
     }
 }

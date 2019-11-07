@@ -11,7 +11,7 @@ class MoodTest {
         EmotionalState mockEmotion = mockEmotionalState();
         String mockReason = mockReason();
         String mockSocialSituation = "Out for drinks with friends!";
-        Location mockLocation = new Location("53.123", "73,123");
+        Location mockLocation = new Location(53.123, 73.123);
 
         Mood mockMood = new Mood(mockEmotion, mockReason, mockImage, mockSocialSituation, mockLocation);
 

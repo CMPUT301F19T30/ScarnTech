@@ -1,10 +1,8 @@
 package cmput301.moodi;
-/*
- * Class: MoodsActivity
- * Version 1: Shows a list of user moods (posts) and calls "Post" fragment to make a post
- * 11/04/2019
- */
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,14 +10,13 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-public class MoodsActivity extends AppCompatActivity implements PostMoodFragment.OnFragmentInteractionListener{
+public class HomeActivity extends AppCompatActivity implements PostMoodFragment.OnFragmentInteractionListener{
 
     // Variables that are used to build the list of moods (User Posts)
     ListView moodList;
@@ -32,19 +29,23 @@ public class MoodsActivity extends AppCompatActivity implements PostMoodFragment
     MoodiStorage moodiStorage;
 
     // Variable used to detect a request to post!
-    Button PostMood;
+    Button PostMood, logout;
+    FirebaseAuth mFirebaseAuth;
+    private FirebaseAuth.AuthStateListener mAuthStateLitener;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_moods);
+        setContentView(R.layout.activity_home);
+
+        logout = findViewById(R.id.logout);
 
         // Get a reference to the ListView and create an object for the mood list.
         moodList = findViewById(R.id.mood_list);
         moodDataList = new ArrayList<>();
 
         // Set the adapter for the listView to the CustomAdapter that we created in Lab 3.
-        moodAdapter = new CustomList(MoodsActivity.this, moodDataList);
+        moodAdapter = new CustomList(HomeActivity.this, moodDataList);
         moodList.setAdapter(moodAdapter);
 
         // Access a Cloud Firestore instance from your Activity
@@ -66,6 +67,15 @@ public class MoodsActivity extends AppCompatActivity implements PostMoodFragment
                 Mood clickedMood = moodDataList.get(i);
                 moodAdapter.remove(clickedMood);
                 return false;
+            }
+        });
+
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FirebaseAuth.getInstance().signOut();
+                Intent i = new Intent(HomeActivity.this, MainActivity.class);
+                startActivity(i);
             }
         });
     }

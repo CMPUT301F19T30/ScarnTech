@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_margin="16dp"
     tools:context="cmput301.moodi.CreateAccount">
 
     <TextView
-        android:id="@+id/textView10"
+        android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
@@ -23,63 +24,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="350dp"
-        android:layout_height="30dp"
-        android:layout_marginTop="8dp"
-        android:ems="8"
-        android:paddingLeft="90dp"
-        android:text='Create a new account!'
-        android:textSize="20sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView10" />
-
-    <EditText
-        android:id="@+id/signup_email"
-        android:layout_width="350dp"
+    <include
+        android:id="@+id/register_form"
+        layout="@layout/register_form"
         android:layout_height="wrap_content"
-        android:layout_marginTop="90dp"
-        android:ems="10"
-        android:hint="Enter your email address"
-        android:inputType="textEmailAddress"
+        android:layout_width="match_parent"
+        android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.843"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
-    <EditText
-        android:id="@+id/signup_password"
-        android:layout_width="350dp"
-        android:layout_height="50dp"
-        android:ems="7"
-        android:hint="Enter a password"
-        android:inputType="textPassword"
-        android:maxLength="20"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.508"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_email" />
-
-    <Button
-        android:id="@+id/signup_button"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:text="Create Account"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/signup_password" />
-
-    <Button
-        android:id="@+id/goto_login"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginBottom="44dp"
-        android:text="Log In"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/textView5"
@@ -90,4 +45,18 @@
         app:layout_constraintBottom_toTopOf="@+id/goto_login"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/goto_login"
+        android:layout_width="150dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="86dp"
+        android:layout_marginBottom="44dp"
+        android:background="@color/common_google_signin_btn_text_dark_disabled"
+        android:textColor="@color/moodiDarkBlue"
+        android:text="Log In"
+        app:layout_constraintTop_toBottomOf="@+id/register_form"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/register_form" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

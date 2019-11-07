@@ -5,7 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/moodiMediumBlue</item>
         <item name="colorPrimaryDark">@color/moodiDarkBlue</item>
-        <item name="colorAccent">@color/moodiTeal</item>
+        <item name="colorAccent">@color/moodiRed</item>
     </style>
 
 </resources>

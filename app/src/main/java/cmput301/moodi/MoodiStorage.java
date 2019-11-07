@@ -8,6 +8,8 @@ package cmput301.moodi;
  */
 
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -21,12 +23,12 @@ public class MoodiStorage {
     private CollectionReference postCollection;
     private static String USER_PATH = "users";
     private CollectionReference userCollection;
-    private int userID;
+    private String userID;
 
     public MoodiStorage() {
-        //Todo: set user id based off of login information.
-        this.userID = 12356123;
         this.db = FirebaseFirestore.getInstance();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        this.userID = mFirebaseAuth.getCurrentUser().toString();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
     }

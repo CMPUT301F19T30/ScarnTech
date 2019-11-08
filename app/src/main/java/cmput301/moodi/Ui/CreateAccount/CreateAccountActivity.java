@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
+
+import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
 import cmput301.moodi.Ui.Login.LoginActivity;
 import cmput301.moodi.R;
@@ -24,7 +26,7 @@ import cmput301.moodi.R;
  * Handles account creation.
  */
 //Todo: ensure username is unique when creating account
-public class CreateAccount extends AppCompatActivity {
+public class CreateAccountActivity extends AppCompatActivity {
     private static final String TAG = "CreateAccountActivity";
 
     // create account page objects
@@ -64,9 +66,9 @@ public class CreateAccount extends AppCompatActivity {
                 String pass = passwordField.getText().toString();
 
                 if (!isValidFirstName() || !isValidLastName() || !isValidUsername()) {
-                    Toast.makeText(CreateAccount.this, "Please fix errors to create account.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateAccountActivity.this, "Please fix errors to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!isValidPassword() || !isValidEmail()) {
-                    Toast.makeText(CreateAccount.this, "Please fix password or email to create account.", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(CreateAccountActivity.this, "Please fix password or email to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!email.isEmpty() && !pass.isEmpty()) {
                     // both values are given, try to create the account
                     mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
@@ -78,14 +80,14 @@ public class CreateAccount extends AppCompatActivity {
 
                             } else {
                                 // account was created, user is taken to the home screen
-                                Toast.makeText(CreateAccount.this, "Account creation was successful! Welcome to Moodi!", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateAccountActivity.this, "Account creation was successful! Welcome to Moodi!", Toast.LENGTH_SHORT).show();
 
                                 // Retrieve preferences and save in Firestore.
                                 moodiStorage = new MoodiStorage();
                                 moodiStorage.createNewUserProfile(getUserPreferences());
 
                                 // Start new activity.
-                                Intent i = new Intent(CreateAccount.this, HomeActivity.class);
+                                Intent i = new Intent(CreateAccountActivity.this, HomeActivity.class);
                                 startActivity(i);
                             }
                         }

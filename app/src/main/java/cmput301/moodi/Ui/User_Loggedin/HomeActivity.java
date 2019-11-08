@@ -16,7 +16,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
 
-import cmput301.moodi.Objects.CustomList;
+import cmput301.moodi.Objects.MoodListAdapter;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
@@ -51,7 +51,7 @@ public class HomeActivity extends AppCompatActivity implements PostMoodFragment.
         moodDataList = new ArrayList<>();
 
         // Set the adapter for the listView to the CustomAdapter that we created in Lab 3.
-        moodAdapter = new CustomList(HomeActivity.this, moodDataList);
+        moodAdapter = new MoodListAdapter(HomeActivity.this, moodDataList);
         moodList.setAdapter(moodAdapter);
 
         // Access a Cloud Firestore instance from your Activity

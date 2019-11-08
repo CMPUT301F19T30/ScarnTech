@@ -12,6 +12,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 
 import cmput301.moodi.Objects.MoodiStorage;
+import cmput301.moodi.Objects.User;
 
 /*
  * Display profile information and details.

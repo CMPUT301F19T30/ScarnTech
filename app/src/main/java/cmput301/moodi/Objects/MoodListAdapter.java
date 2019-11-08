@@ -20,13 +20,13 @@ import cmput301.moodi.R;
  * groups of data such as users or moods
  * 11/04/2019
  */
-public class CustomList extends ArrayAdapter<Mood> {
+public class MoodListAdapter extends ArrayAdapter<Mood> {
 
     private ArrayList<Mood> moods;
     private Context context;
 
     // Bridge between the list and the displayed list
-    public CustomList(Context context, ArrayList<Mood> moods){
+    public MoodListAdapter(Context context, ArrayList<Mood> moods){
         super(context,0, moods);
         this.moods = moods;
         this.context = context;

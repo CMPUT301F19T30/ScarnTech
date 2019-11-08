@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Objects;
 
 public class EmotionalState  {
     private String name;

@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Ui.User_Loggedin;
 /*
  * Class: PostMoodFragment
  * Version 1: Fragment used to construct a post given user input!
@@ -18,6 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
+
+import cmput301.moodi.Objects.Location;
+import cmput301.moodi.Objects.Mood;
+import cmput301.moodi.R;
 
 //import com.cmput301.moodi.R;
 

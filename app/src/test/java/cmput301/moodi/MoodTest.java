@@ -1,6 +1,12 @@
 package cmput301.moodi;
 
 import org.junit.jupiter.api.Test;
+
+import cmput301.moodi.Objects.EmotionalState;
+import cmput301.moodi.Objects.Image;
+import cmput301.moodi.Objects.Location;
+import cmput301.moodi.Objects.Mood;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 

@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Ui.User_Loggedin;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -15,6 +15,12 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.ArrayList;
+
+import cmput301.moodi.Objects.CustomList;
+import cmput301.moodi.Objects.Mood;
+import cmput301.moodi.Objects.MoodiStorage;
+import cmput301.moodi.R;
+import cmput301.moodi.Ui.Login.LoginActivity;
 
 public class HomeActivity extends AppCompatActivity implements PostMoodFragment.OnFragmentInteractionListener{
 

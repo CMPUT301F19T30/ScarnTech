@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Ui.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -15,6 +15,11 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
+import cmput301.moodi.R;
+import cmput301.moodi.Ui.CreateAccount.CreateAccountActivity;
+
 public class LoginActivity extends AppCompatActivity {
 
     // log in page objects

@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Objects;
 /*
  * Class: MoodList
  * Version 1: Creating and maintaining a list of user posts (Moods)

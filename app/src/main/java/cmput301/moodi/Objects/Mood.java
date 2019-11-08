@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Objects;
 /*
  * Class: Mood
  * Version 1: Create a mood object along with its properties and getters & setters

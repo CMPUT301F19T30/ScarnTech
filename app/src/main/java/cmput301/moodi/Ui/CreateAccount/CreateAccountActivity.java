@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Ui.CreateAccount;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,10 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+
+import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
+import cmput301.moodi.Ui.Login.LoginActivity;
+import cmput301.moodi.R;
 
 public class CreateAccountActivity extends AppCompatActivity {
 

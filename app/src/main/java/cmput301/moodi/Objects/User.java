@@ -18,8 +18,10 @@ public class User {
     private ArrayList<User> permissionList;
     private ArrayList<Mood> moodHistory;
 
-    //FirebaseFirestore db;
-    //final CollectionReference collectionReference = db.collection("users");
+
+    public User() {
+
+    }
 
     public User(String username, String firstName, String lastName) {
         this.username = username;

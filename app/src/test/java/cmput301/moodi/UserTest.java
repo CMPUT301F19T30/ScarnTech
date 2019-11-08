@@ -1,6 +1,9 @@
 package cmput301.moodi;
 
 import org.junit.jupiter.api.Test;
+
+import cmput301.moodi.Objects.User;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class UserTest {

@@ -9,4 +9,18 @@
     <string name="title_home">Home</string>
     <string name="title_dashboard">Dashboard</string>
     <string name="title_notifications">Notifications</string>
+    <string name="moodi">Moodi</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="not_yet_registered_sign_up_here">Not yet registered? Sign up here.</string>
+    <string name="send_moods">Send Moods</string>
+    <string name="create_a_new_account">Create a new account!</string>
+    <string name="enter_a_password">Enter a password</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_registered_log_in_here">Already registered? Log in here.</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="make_a_post">Make A Post!</string>
+    <string name="log_out">Log Out</string>
 </resources>

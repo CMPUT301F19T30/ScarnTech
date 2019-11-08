@@ -5,22 +5,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    tools:context="cmput301.moodi.CreateAccount">
+    tools:context=".Ui.CreateAccount.CreateAccountActivity">
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="16dp"
         android:layout_marginTop="32dp"
         android:ems="8"
-        android:paddingLeft="130dp"
-        android:text="Moodi"
+        android:text="@string/moodi"
         android:textColor="#B91E1E"
         android:textSize="40sp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

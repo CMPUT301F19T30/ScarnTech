@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Ui.User_Loggedin;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
+
+import cmput301.moodi.Objects.MoodiStorage;
 
 /*
  * Display profile information and details.

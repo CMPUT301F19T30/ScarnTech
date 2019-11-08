@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Ui.CreateAccount;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -17,7 +17,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
-
+import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
+import cmput301.moodi.Ui.Login.LoginActivity;
+import cmput301.moodi.R;
 /*
  * Handles account creation.
  */
@@ -67,12 +69,12 @@ public class CreateAccount extends AppCompatActivity {
                     Toast.makeText(CreateAccount.this, "Please fix password or email to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!email.isEmpty() && !pass.isEmpty()) {
                     // both values are given, try to create the account
-                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccount.this, new OnCompleteListener<AuthResult>() {
+                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
                             if (!task.isSuccessful()) {
                                 // account was not able to be created
-                                Toast.makeText(CreateAccount.this, "Account creation was not successful, try again.", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(CreateAccountActivity.this, "Account creation was not successful, try again.", Toast.LENGTH_SHORT).show();
 
                             } else {
                                 // account was created, user is taken to the home screen
@@ -88,10 +90,6 @@ public class CreateAccount extends AppCompatActivity {
                             }
                         }
                     });
-
-                } else {
-                    // This should never happen logically. If it does the world might be imploding
-                    Toast.makeText(CreateAccount.this, "Unknown error.", Toast.LENGTH_SHORT).show();
                 }
             }
         });
@@ -100,7 +98,7 @@ public class CreateAccount extends AppCompatActivity {
         button_goto_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateAccount.this, MainActivity.class);
+                Intent i = new Intent(CreateAccountActivity.this, LoginActivity.class);
                 startActivity(i);
             }
         });

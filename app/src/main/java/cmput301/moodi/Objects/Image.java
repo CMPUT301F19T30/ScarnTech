@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Objects;
 /*
  * Class: Image
  * Stores image data and path.

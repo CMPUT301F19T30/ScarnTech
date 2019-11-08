@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Objects;
 /*
  * Class: Location
  * Stores location data for use with Google Maps API.

@@ -14,7 +14,6 @@ public class Mood implements Comparable<Mood>{
     private EmotionalState emotionalState;
 
     private String reason = "";
-    private Image reasonImage;
     private String socialSituation = "";
     private Location location;
     private String moodID = "";
@@ -36,25 +35,22 @@ public class Mood implements Comparable<Mood>{
     // Note once emotional state is done, the color and mood must be pulled from it! (Not an input)
     // Ex. this.reasonImage = emotionalState.getReasonImage() 
     // Where getReasonImage() is defined to return the image associated to the preset emotional state
-    public Mood(EmotionalState emotionalState, String reason, Image reasonImage) {
+    public Mood(EmotionalState emotionalState, String reason) {
         this.emotionalState = emotionalState;
         this.reason = reason;
-        this.reasonImage = reasonImage;
         setDate();
     }
 
-    public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation ) {
+    public Mood(EmotionalState emotionalState, String reason, String socialSituation ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
-        this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         setDate();
     }
   
-    public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation, Location location ) {
+    public Mood(EmotionalState emotionalState, String reason, String socialSituation, Location location ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
-        this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         this.location = location;
         setDate();
@@ -114,15 +110,6 @@ public class Mood implements Comparable<Mood>{
             return true;
         }
         return false;
-    }
-
-    /*
-     * This returns the Moods reason.
-     *
-     * @return Return the reason
-     */
-    public Image getReasonImage() {
-        return this.reasonImage;
     }
 
     /*

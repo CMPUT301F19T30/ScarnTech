@@ -3,7 +3,6 @@ package cmput301.moodi.Objects;
 public class EmotionalState  {
     private String name;
     private String color;
-    private Image image;
 
     public EmotionalState() {
 

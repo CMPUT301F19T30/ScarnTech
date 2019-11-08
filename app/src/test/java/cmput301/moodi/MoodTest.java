@@ -3,7 +3,6 @@ package cmput301.moodi;
 import org.junit.jupiter.api.Test;
 
 import cmput301.moodi.Objects.EmotionalState;
-import cmput301.moodi.Objects.Image;
 import cmput301.moodi.Objects.Location;
 import cmput301.moodi.Objects.Mood;
 
@@ -13,13 +12,12 @@ import static org.junit.jupiter.api.Assertions.*;
 class MoodTest {
 
     private Mood mockMood() {
-        Image mockImage = new Image();
         EmotionalState mockEmotion = mockEmotionalState();
         String mockReason = mockReason();
         String mockSocialSituation = "Out for drinks with friends!";
         Location mockLocation = new Location(53.123, 73.123);
 
-        Mood mockMood = new Mood(mockEmotion, mockReason, mockImage, mockSocialSituation, mockLocation);
+        Mood mockMood = new Mood(mockEmotion, mockReason, mockSocialSituation, mockLocation);
 
         return mockMood;
     }
@@ -44,12 +42,6 @@ class MoodTest {
         assertEquals(mockReason(), mockMood.getReason());
     }
 
-    @Test
-    void testGetImageReason() {
-        Mood mockMood = mockMood();
-        Image mockImage = new Image();
-        //assertEquals(mockImage, mockMood.getReasonImage());
-    }
 
     @Test
     void testGetSocialSituation() {

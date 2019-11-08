@@ -2,6 +2,7 @@
     <string name="app_name">Moodi</string>
     <string name="motto">Send Moods</string>
 
+    <!-- Custom -->
     <string name="users_collection_path">users</string>
     <string name="posts_collection_path">posts</string>
     <string name="title_activity_navigation">NavigationActivity</string>

@@ -22,14 +22,28 @@ public class MoodiStorage {
     private CollectionReference postCollection;
     private static String USER_PATH = "users";
     private CollectionReference userCollection;
-    private String userID;
+    private String UID;
 
     public MoodiStorage() {
         this.db = FirebaseFirestore.getInstance();
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        this.userID = mFirebaseAuth.getCurrentUser().getUid();
+        this.UID = mFirebaseAuth.getCurrentUser().getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
+    }
+
+    /*
+     * Returns the users UID associated with Firestore.
+     */
+    public String getUserUID() {
+        return this.UID;
+    }
+
+    /*
+     * Creates a new user profile in Firestore.
+     */
+    public Task createNewUserProfile(HashMap<String, Object> preferences) {
+        return this.userCollection.document(this.UID).set(preferences);
     }
 
 
@@ -37,7 +51,7 @@ public class MoodiStorage {
      * Returns all of the users own posts.
      */
     public void getUserPosts() {
-
+        //Todo: return users 'moodhistory'.
 
     }
 
@@ -48,7 +62,7 @@ public class MoodiStorage {
      */
     public Task addMoodPost(Mood mood) {
         HashMap<String, Object> postData = mood.serializeMood();
-        postData.put("userID", this.userID);
+        postData.put("UID", this.UID);
         return this.postCollection.add(postData);
     }
 
@@ -65,7 +79,6 @@ public class MoodiStorage {
      * Returns user profile data. Need to complete onCompleteListeners to retrieve data.
      */
     public DocumentReference getUserProfile() {
-        //Todo: get user profile based off of login information. Maybe used saved preferences file.
-        return this.userCollection.document("steven-lagrange");
+        return this.userCollection.document(this.UID);
     }
 }

@@ -21,6 +21,7 @@ import cmput301.moodi.Objects.MoodiStorage;
 public class ProfileAcitivty extends AppCompatActivity {
     MoodiStorage moodiStorage;
     private static final String TAG = "ProfileActivity";
+    User userProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class ProfileAcitivty extends AppCompatActivity {
         moodiStorage = new MoodiStorage();
 
         //Todo: get user profile data and display it on page.
-        DocumentReference userProfile = moodiStorage.getUserProfile();
+        final DocumentReference userProfile = moodiStorage.getUserProfile();
         userProfile.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -39,6 +40,8 @@ public class ProfileAcitivty extends AppCompatActivity {
                     if (document.exists()) {
                         Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         //Todo: parse data to display on profile page.
+                        //userProfile = new User();
+                        //userProfile.setupProfile(document.getData());
                     } else {
                         Log.d(TAG, "No such document");
                     }
@@ -50,4 +53,6 @@ public class ProfileAcitivty extends AppCompatActivity {
 
         //Todo: get mood history of profile.
     }
+
+
 }

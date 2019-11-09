@@ -37,7 +37,6 @@ public class CreateAccount extends AppCompatActivity {
     // firebase auth link
     FirebaseAuth mFirebaseAuth;
     MoodiStorage moodiStorage;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

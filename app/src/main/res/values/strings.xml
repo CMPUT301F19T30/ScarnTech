@@ -23,4 +23,14 @@
     <string name="welcome_to">Welcome to</string>
     <string name="make_a_post">Make A Post!</string>
     <string name="log_out">Log Out</string>
+
+    <string name="Emo_propmt">Choose a Emotion</string>
+    <string-array name="EmotionalStates">
+        <item>happy</item>
+        <item>sad</item>
+        <item>mad</item>
+        <item>tired</item>
+        <item>love</item>
+        <item>heartbreak</item>
+    </string-array>
 </resources>

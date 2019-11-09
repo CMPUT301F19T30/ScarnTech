@@ -4,6 +4,7 @@ package cmput301.moodi.Objects;
  * Version 1: Create a mood object along with its properties and getters & setters
  * 11/04/2019
  */
+import android.media.Image;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -14,13 +15,14 @@ public class Mood implements Comparable<Mood>{
     private EmotionalState emotionalState;
 
     private String reason = "";
+    private Image reasonImage;
     private String socialSituation = "";
     private Location location;
     private String moodID = "";
-    
+
     // Temporary variables for testing posting
     private String dummyEmotionalState;
-    
+
     public String getDummyEmotionalState() {
         return dummyEmotionalState;
     }
@@ -33,24 +35,27 @@ public class Mood implements Comparable<Mood>{
     // End of test methods that need to be updated on completion of EmotionalState
 
     // Note once emotional state is done, the color and mood must be pulled from it! (Not an input)
-    // Ex. this.reasonImage = emotionalState.getReasonImage() 
+    // Ex. this.reasonImage = emotionalState.getReasonImage()
     // Where getReasonImage() is defined to return the image associated to the preset emotional state
-    public Mood(EmotionalState emotionalState, String reason) {
+    public Mood(EmotionalState emotionalState, String reason, Image reasonImage) {
         this.emotionalState = emotionalState;
         this.reason = reason;
+        this.reasonImage = reasonImage;
         setDate();
     }
 
-    public Mood(EmotionalState emotionalState, String reason, String socialSituation ) {
+    public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
+        this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         setDate();
     }
-  
-    public Mood(EmotionalState emotionalState, String reason, String socialSituation, Location location ) {
+
+    public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation, Location location ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
+        this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         this.location = location;
         setDate();
@@ -110,6 +115,15 @@ public class Mood implements Comparable<Mood>{
             return true;
         }
         return false;
+    }
+
+    /*
+     * This returns the Moods reason.
+     *
+     * @return Return the reason
+     */
+    public Image getReasonImage() {
+        return this.reasonImage;
     }
 
     /*

@@ -17,6 +17,8 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.HashMap;
+
+import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
 import cmput301.moodi.Ui.Login.LoginActivity;
 import cmput301.moodi.R;

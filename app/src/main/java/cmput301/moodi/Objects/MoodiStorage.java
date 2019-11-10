@@ -15,12 +15,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+import static cmput301.moodi.util.Constants.POST_PATH;
+import static cmput301.moodi.util.Constants.USER_PATH;
+
 public class MoodiStorage {
     private FirebaseFirestore db;
     private static final String TAG = "moodiStorage";
-    private static String POST_PATH = "posts";
     private CollectionReference postCollection;
-    private static String USER_PATH = "users";
     private CollectionReference userCollection;
     private String UID;
 

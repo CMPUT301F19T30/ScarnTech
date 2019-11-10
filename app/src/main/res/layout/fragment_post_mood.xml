@@ -6,15 +6,6 @@
     tools:context="cmput301.moodi.ui.LoggedIn.post.PostMoodFragment">
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="8"
-        android:paddingLeft="130dp"
-        android:textColor="#B91E1E"
-        android:textSize="40sp"
-        android:text="Moodi"/>
-
-    <TextView
         android:id="@+id/textView1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -53,7 +44,8 @@
         android:layout_height="wrap_content"
         android:text="Sometimes I'll start a sentence and I don't even know where it's going. I just hope I find it along the way."
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_marginTop="40dp"/>
 
     <TextView
         android:id="@+id/textView4"
@@ -61,6 +53,7 @@
         android:layout_height="wrap_content"
         android:text="- Michael Scott"
         android:textColor="#000000"
-        android:textSize="20sp" />
+        android:textSize="20sp"
+        android:layout_marginTop="10dp"/>
 
 </LinearLayout>

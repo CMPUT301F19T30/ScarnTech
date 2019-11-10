@@ -2,9 +2,8 @@ package cmput301.moodi.Objects;
 
 /*
  * Class: MoodiStorage
- *
  * Implements methods for interacting with Firebase Firestore.
- *
+ * 11/04/2019
  */
 
 import com.google.android.gms.tasks.Task;
@@ -15,12 +14,13 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.util.HashMap;
 
+import static cmput301.moodi.util.Constants.POST_PATH;
+import static cmput301.moodi.util.Constants.USER_PATH;
+
 public class MoodiStorage {
     private FirebaseFirestore db;
     private static final String TAG = "moodiStorage";
-    private static String POST_PATH = "posts";
     private CollectionReference postCollection;
-    private static String USER_PATH = "users";
     private CollectionReference userCollection;
     private String UID;
 
@@ -73,6 +73,13 @@ public class MoodiStorage {
      */
     public void deletePost(String postID) {
         //Todo: implement post deletion from firebase.
+    }
+
+    /*
+     * Real time addition and removal of a post with the database
+     */
+    public void updateFeed(String postID) {
+
     }
 
     /*

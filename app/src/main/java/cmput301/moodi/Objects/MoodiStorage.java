@@ -2,9 +2,8 @@ package cmput301.moodi.Objects;
 
 /*
  * Class: MoodiStorage
- *
  * Implements methods for interacting with Firebase Firestore.
- *
+ * 11/04/2019
  */
 
 import com.google.android.gms.tasks.Task;
@@ -74,6 +73,13 @@ public class MoodiStorage {
      */
     public void deletePost(String postID) {
         //Todo: implement post deletion from firebase.
+    }
+
+    /*
+     * Real time addition and removal of a post with the database
+     */
+    public void updateFeed(String postID) {
+
     }
 
     /*

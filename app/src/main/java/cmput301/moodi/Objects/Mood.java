@@ -17,7 +17,10 @@ public class Mood implements Comparable<Mood>{
     private String socialSituation = "";
     private Location location;
     private String moodID = "";
-    
+
+    // Unique ID of a post assigned by FireBase
+    private String keyID;
+
     // Temporary variables for testing posting
     private String dummyEmotionalState;
     
@@ -41,6 +44,13 @@ public class Mood implements Comparable<Mood>{
         setDate();
     }
 
+    // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
+    public Mood(String emotionalState, String reason, String date, String keyID ) {
+        this.dummyEmotionalState = emotionalState;
+        this.reason = reason;
+        this.date = date;
+        this.keyID = keyID;
+    }
     public Mood(EmotionalState emotionalState, String reason, String socialSituation ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
@@ -164,6 +174,7 @@ public class Mood implements Comparable<Mood>{
         data.put("Social Situation", this.getSocialSituation());
         data.put("Latitude", this.getLocation().getLatitude());
         data.put("Longitude", this.getLocation().getLongitude());
+        data.put("Date", this.getDate());
         return data;
     }
 
@@ -172,5 +183,8 @@ public class Mood implements Comparable<Mood>{
         return this.moodID.compareTo(mood.getID());
     }
 
+    public String getKeyID() {
+        return keyID;
+    }
 }
 

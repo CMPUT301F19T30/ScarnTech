@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import cmput301.moodi.R;
+import cmput301.moodi.ui.LoggedIn.home.HomeFragment;
 
 /*
  * Class: CustomList
@@ -42,6 +43,7 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
 
+        // TODO: Add implemetation of new EmotionalState updates and firebase
         Mood mood = moods.get(position);
 
         // Point at placeholders in list

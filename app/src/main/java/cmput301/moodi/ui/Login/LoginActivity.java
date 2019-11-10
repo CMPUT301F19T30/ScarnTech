@@ -20,6 +20,12 @@ import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
 import cmput301.moodi.R;
 import cmput301.moodi.ui.CreateAccount.CreateAccountActivity;
 
+/*
+ * Class: LoginActivity
+ * Takes a user input and authenticates on app as well as firebase side to verify
+ * 11/07/2019
+ */
+
 public class LoginActivity extends AppCompatActivity {
 
     // log in page objects

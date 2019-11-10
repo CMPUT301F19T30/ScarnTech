@@ -11,7 +11,12 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import cmput301.moodi.R;
-
+/*
+ * Class: BottomNavigationActivity
+ * Creates bottom navigation activity as well as controls app flow through the 5 fragments
+ * associated with the bar.
+ * 11/09/2019
+ */
 public class BottomNavigationActivity extends AppCompatActivity {
 
     @Override

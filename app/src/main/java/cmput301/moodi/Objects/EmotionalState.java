@@ -4,8 +4,15 @@ public class EmotionalState  {
     private String name;
     private String color;
 
-    public EmotionalState() {
+    // Initializing our preset emotional states
+    EmotionalState Happy;
+    EmotionalState Heartbreak;
+    EmotionalState Love;
+    EmotionalState Mad;
+    EmotionalState Sad;
+    EmotionalState Tired;
 
+    public EmotionalState() {
     }
 
     public EmotionalState(String name) {

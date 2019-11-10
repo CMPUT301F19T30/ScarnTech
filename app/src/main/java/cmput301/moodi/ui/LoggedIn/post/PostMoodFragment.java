@@ -1,4 +1,4 @@
-package cmput301.moodi.Ui.User_Loggedin;
+package cmput301.moodi.ui.LoggedIn.post;
 /*
  * Class: PostMoodFragment
  * Version 1: Fragment used to construct a post given user input!
@@ -35,7 +35,7 @@ public class PostMoodFragment extends DialogFragment {
 
     // Used to pass data to main activity
     private OnFragmentInteractionListener listener;
-
+//
     // Used to make any call to this fragment requires a post of a Mood
     interface OnFragmentInteractionListener{
         void addNewPost(Mood mood);

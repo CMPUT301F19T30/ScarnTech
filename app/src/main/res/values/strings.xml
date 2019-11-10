@@ -23,4 +23,8 @@
     <string name="welcome_to">Welcome to</string>
     <string name="make_a_post">Make A Post!</string>
     <string name="log_out">Log Out</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_maps">Maps</string>
+    <string name="title_post">Post</string>
+    <string name="title_profile">Profile</string>
 </resources>

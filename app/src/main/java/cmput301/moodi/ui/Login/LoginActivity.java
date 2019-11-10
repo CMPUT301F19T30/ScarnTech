@@ -1,4 +1,4 @@
-package cmput301.moodi.Ui.Login;
+package cmput301.moodi.ui.Login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
+import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
 import cmput301.moodi.R;
-import cmput301.moodi.Ui.CreateAccount.CreateAccountActivity;
+import cmput301.moodi.ui.CreateAccount.CreateAccountActivity;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -49,7 +49,7 @@ public class LoginActivity extends AppCompatActivity {
                 FirebaseUser mFirebaseUser = mFirebaseAuth.getCurrentUser();
                 if (mFirebaseUser != null) {
                     Toast.makeText(LoginActivity.this, "Log in Successful.", Toast.LENGTH_SHORT).show();
-                    Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                    Intent i = new Intent(LoginActivity.this, BottomNavigationActivity.class);
                     startActivity(i);
                 }
             }
@@ -81,8 +81,13 @@ public class LoginActivity extends AppCompatActivity {
                             if (!task.isSuccessful()) {
                                 Toast.makeText(LoginActivity.this, "Could not find account, try again or create a new account.", Toast.LENGTH_SHORT).show();
                             } else {
-                                Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                                Intent i = new Intent(LoginActivity.this, BottomNavigationActivity.class);
+                                i.putExtra("finish", true); // if you are checking for this in your other Activities
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                        Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i);
+                                finish();
                             }
                         }
                     });

@@ -10,9 +10,12 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Ui.User_Loggedin.HomeActivity"/>
-        <activity android:name=".Ui.CreateAccount.CreateAccountActivity" />
-        <activity android:name=".Ui.Login.LoginActivity">
+        <activity
+            android:name=".ui.LoggedIn.BottomNavigationActivity"
+            android:label="@string/title_activity_bottom_navigation"></activity>
+<!--        <activity android:name=".Ui.LoggedIn.home.HomeActivity" />-->
+        <activity android:name=".ui.CreateAccount.CreateAccountActivity" />
+        <activity android:name=".ui.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

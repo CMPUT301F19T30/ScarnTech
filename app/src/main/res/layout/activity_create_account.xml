@@ -5,55 +5,66 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
-    tools:context=".Ui.CreateAccount.CreateAccountActivity">
+    tools:context=".ui.CreateAccount.CreateAccountActivity">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="32dp"
-        android:ems="8"
-        android:text="@string/moodi"
-        android:textColor="#B91E1E"
-        android:textSize="40sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <include
-        android:id="@+id/register_form"
-        layout="@layout/register_form"
-        android:layout_height="wrap_content"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_marginTop="24dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.843"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title" />
+        android:layout_height="match_parent">
 
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/textView5"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
-        android:text="Already registered? Log in here."
-        app:layout_constraintBottom_toTopOf="@+id/goto_login"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <Button
-        android:id="@+id/goto_login"
-        android:layout_width="150dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="86dp"
-        android:layout_marginBottom="44dp"
-        android:background="@color/common_google_signin_btn_text_dark_disabled"
-        android:textColor="@color/moodiDarkBlue"
-        android:text="Log In"
-        app:layout_constraintTop_toBottomOf="@+id/register_form"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="@id/register_form" />
+                <TextView
+                    android:id="@+id/title"
+                    android:layout_width="116dp"
+                    android:layout_height="50dp"
+                    android:layout_centerVertical="true"
+                    android:ems="8"
+                    android:text="@string/moodi"
+                    android:textColor="#B91E1E"
+                    android:textSize="40sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:text="Already registered? Log in here."
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/register_form" />
+
+                <include
+                    android:id="@+id/register_form"
+                    layout="@layout/register_form"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="24dp"
+                    app:layout_constraintTop_toBottomOf="@+id/title" />
+
+                <Button
+                    android:id="@+id/goto_login"
+                    android:layout_width="150dp"
+                    android:layout_height="50dp"
+                    android:layout_marginTop="8dp"
+                    android:background="@color/common_google_signin_btn_text_dark_disabled"
+                    android:text="Log In"
+                    android:textColor="@color/moodiDarkBlue"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView5" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
+    </ScrollView>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

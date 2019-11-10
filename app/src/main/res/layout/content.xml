@@ -28,8 +28,7 @@
         android:id="@+id/emoji"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        app:srcCompat="@drawable/happy" />
+        android:layout_weight="1"/>
 </LinearLayout>
 
 

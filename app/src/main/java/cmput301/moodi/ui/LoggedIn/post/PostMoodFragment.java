@@ -1,4 +1,5 @@
 package cmput301.moodi.ui.LoggedIn.post;
+
 /*
  * Class: PostMoodFragment
  * Version 1: Fragment used to construct a post given user input!
@@ -13,6 +14,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,14 +30,14 @@ import cmput301.moodi.R;
 public class PostMoodFragment extends DialogFragment {
 
     // Variables used to pull input from user into fragment
-    private EditText EmotionalStateView; // Change this to the selection from drop down list
+    private Spinner EmotionalStateView; // Change this to the selection from drop down list
     private EditText ReasonView;
 
     // Need to add location option, social situation as well as a picture
 
     // Used to pass data to main activity
     private OnFragmentInteractionListener listener;
-//
+
     // Used to make any call to this fragment requires a post of a Mood
     interface OnFragmentInteractionListener{
         void addNewPost(Mood mood);
@@ -72,7 +74,7 @@ public class PostMoodFragment extends DialogFragment {
                     public void onClick(DialogInterface dialogInterface, int i) {
 
                         // Pull the fresh entry from the fragment
-                        String emotionalStateText = EmotionalStateView.getText().toString();
+                        String emotionalStateText = EmotionalStateView.getSelectedItem().toString();
                         String reasonText = ReasonView.getText().toString();
 
                         // Create a new Mood (Post) and send to MoodsActivity to be added to the list!

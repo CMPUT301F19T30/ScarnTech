@@ -14,11 +14,14 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 
 import cmput301.moodi.Objects.Location;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
+import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
+
 /*
  * Class: PostFragment
  * Posting page where a user enters a "post" and on button press, sends it to the database
@@ -33,18 +36,18 @@ public class PostFragment extends Fragment {
 
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
-    String TAG = "Sample";
+    String TAG = "PostFragment";
     MoodiStorage moodiStorage;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-        View root = inflater.inflate(R.layout.fragment_post, container, false);
+        View view = inflater.inflate(R.layout.fragment_post, container, false);
 
         // Pointing variables for detection of user input
-        EmotionalStateView = root.findViewById(R.id.input_EmotionalState);
-        ReasonView = root.findViewById(R.id.input_Reasoning);
-        PostMood = root.findViewById(R.id.post_mood_button);
+        EmotionalStateView = view.findViewById(R.id.input_EmotionalState);
+        ReasonView = view.findViewById(R.id.input_Reasoning);
+        PostMood = view.findViewById(R.id.post_mood_button);
 
         // Access a Cloud Firestore instance from your Activity
         moodiStorage = new MoodiStorage();
@@ -60,8 +63,10 @@ public class PostFragment extends Fragment {
 
                 // Create a mood object which can than be posted
                 Mood mood = new Mood(emotionalStateText, reasonText);
-                Location location = new Location(53.123, 113.234);
-                mood.setLocation(location);
+
+                // Get user location, else request user location.
+                GeoPoint lastLocation = ((BottomNavigationActivity)getActivity()).getLastLocation();
+                mood.setLocation(lastLocation);
 
                 // TODO: Add implementation of: EmotionalState Spinner, Date, Image & Location
 
@@ -74,6 +79,6 @@ public class PostFragment extends Fragment {
             }
         });
 
-        return root;
+        return view;
     }
 }

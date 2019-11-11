@@ -64,8 +64,11 @@ public class PostFragment extends Fragment {
                 // Create a mood object which can than be posted
                 Mood mood = new Mood(emotionalStateText, reasonText);
 
-                // Get user location, else request user location.
+                // get most recent user position data
+                ((BottomNavigationActivity)getActivity()).updateUserLocation();
                 GeoPoint lastLocation = ((BottomNavigationActivity)getActivity()).getLastLocation();
+
+                // set mood location to the retrieved position data
                 mood.setLocation(lastLocation);
 
                 // TODO: Add implementation of: EmotionalState Spinner, Date, Image & Location

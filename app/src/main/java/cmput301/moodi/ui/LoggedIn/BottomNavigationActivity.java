@@ -11,14 +11,20 @@ import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.firestore.GeoPoint;
@@ -51,6 +57,8 @@ public class BottomNavigationActivity extends AppCompatActivity {
     // maps and location stuffity stuffs
     private boolean mLocationPermissionGranted = false;
     private FusedLocationProviderClient mFusedLocationClient;
+    private GeoPoint lastLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,38 +75,39 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 R.id.navigation_home,
                 R.id.navigation_maps,
                 R.id.navigation_post,
-                R.id.navigation_notifications,
+                R.id.navigation_social,
                 R.id.navigation_profile).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
     }
 
-    // get a GeoPoint for the user
-    private void getLastKnownLocation() {
-        Log.d(TAG, "getLastKnownLocations: called");
+    // get the users location
+    public void updateUserLocation() {
+        Log.d(TAG, "getUserLocation: called");
 
         // ensure location permissions were granted
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            Toast.makeText(this, "Location permission is turned off.", Toast.LENGTH_SHORT).show();
             return;
-        } else {
-            // get location
-            mFusedLocationClient.getLastLocation().addOnCompleteListener(new OnCompleteListener<Location>() {
-                @Override
-                public void onComplete(@NonNull Task<Location> task) {
-                    if (task.isSuccessful()) {
-                        Location location = task.getResult();
-                        if (location == null) {
-                            Toast.makeText(BottomNavigationActivity.this, "Last known location could not be found.", Toast.LENGTH_SHORT).show();
-                        } else {
-                            GeoPoint geoPoint = new GeoPoint(location.getLatitude(), location.getLongitude());
-                            Log.d(TAG, "onComplete: latitude: " + geoPoint.getLatitude());
-                            Log.d(TAG, "onComplete: longitude: " + geoPoint.getLongitude());
-                        }
-                    }
-                }
-            });
         }
+
+        // get location
+        mFusedLocationClient.getLastLocation().addOnSuccessListener(this, new OnSuccessListener<Location>() {
+            @Override
+            public void onSuccess(Location location) {
+                // Got last known location. In some rare situations this can be null.
+                if (location != null) {
+                    // Logic to handle location object
+                    lastLocation = new GeoPoint(location.getLatitude(), location.getLongitude());
+                }
+            }
+        });
+    }
+
+    public GeoPoint getLastLocation() {
+        updateUserLocation();
+        return lastLocation;
     }
 
     // return true if google services and maps are enabled on the users phone
@@ -146,7 +155,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 == PackageManager.PERMISSION_GRANTED) {
             mLocationPermissionGranted = true;
             // location permissions granted
-            getLastKnownLocation();
+//            getLastKnownLocation();
         } else {
             ActivityCompat.requestPermissions(this,
                     new String[]{android.Manifest.permission.ACCESS_FINE_LOCATION},
@@ -201,7 +210,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
             case PERMISSIONS_REQUEST_ENABLE_GPS: {
                 if (mLocationPermissionGranted){
                     // location permissions granted
-                    getLastKnownLocation();
+//                    getLastKnownLocation();
                 } else{
                     getLocationPermission();
                 }
@@ -213,12 +222,14 @@ public class BottomNavigationActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
+        // add to settings page?
+        boolean requestingLocationUpdates = true;
+
         // ensure that every time the user resumes the application the location is available
         if (checkMapServices()) {
             if (mLocationPermissionGranted) {
-                getLastKnownLocation();
+                // this is where on resume processes will go now
 
-                // If another onResume action is needed put it here!
 
             } else {
                 getLocationPermission();

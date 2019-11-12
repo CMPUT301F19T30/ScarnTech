@@ -6,6 +6,8 @@ package cmput301.moodi.Objects;
  *
  */
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -14,6 +16,7 @@ public class User {
     private String username;
     private String firstName;
     private String lastName;
+    private GeoPoint lastLocation;
 
     private ArrayList<User> permissionList;
     private ArrayList<Mood> moodHistory;
@@ -77,11 +80,20 @@ public class User {
         this.lastName = name;
     }
 
+    public GeoPoint getLastLocation() {
+        return lastLocation;
+    }
+
+    public void setLastLocation(GeoPoint lastLocation) {
+        this.lastLocation = lastLocation;
+    }
+
     public HashMap<String, Object> serializeUser() {
         HashMap<String, Object> data = new HashMap<>();
         data.put("username", this.username);
         data.put("first_name", this.firstName);
         data.put("last_name", this.lastName);
+        data.put("last_location", this.lastLocation);
         return data;
     }
 

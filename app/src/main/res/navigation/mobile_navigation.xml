@@ -24,10 +24,10 @@
         tools:layout="@layout/fragment_post" />
 
     <fragment
-        android:id="@+id/navigation_notifications"
-        android:name="cmput301.moodi.ui.LoggedIn.notifications.NotificationsFragment"
-        android:label="@string/title_notifications"
-        tools:layout="@layout/fragment_notifications" />
+        android:id="@+id/navigation_social"
+        android:name="cmput301.moodi.ui.LoggedIn.social.SocialFragment"
+        android:label="@string/title_social"
+        tools:layout="@layout/fragment_social" />
 
     <fragment
         android:id="@+id/navigation_profile"

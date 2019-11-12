@@ -14,11 +14,13 @@ public class Mood implements Comparable<Mood>{
     private EmotionalState emotionalState;
 
     private String reason = "";
-    private Image reasonImage;
     private String socialSituation = "";
     private Location location;
     private String moodID = "";
-    
+
+    // Unique ID of a post assigned by FireBase
+    private String keyID;
+
     // Temporary variables for testing posting
     private String dummyEmotionalState;
     
@@ -36,25 +38,29 @@ public class Mood implements Comparable<Mood>{
     // Note once emotional state is done, the color and mood must be pulled from it! (Not an input)
     // Ex. this.reasonImage = emotionalState.getReasonImage() 
     // Where getReasonImage() is defined to return the image associated to the preset emotional state
-    public Mood(EmotionalState emotionalState, String reason, Image reasonImage) {
+    public Mood(EmotionalState emotionalState, String reason) {
         this.emotionalState = emotionalState;
         this.reason = reason;
-        this.reasonImage = reasonImage;
         setDate();
     }
 
-    public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation ) {
+    // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
+    public Mood(String emotionalState, String reason, String date, String keyID ) {
+        this.dummyEmotionalState = emotionalState;
+        this.reason = reason;
+        this.date = date;
+        this.keyID = keyID;
+    }
+    public Mood(EmotionalState emotionalState, String reason, String socialSituation ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
-        this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         setDate();
     }
   
-    public Mood(EmotionalState emotionalState, String reason, Image reasonImage, String socialSituation, Location location ) {
+    public Mood(EmotionalState emotionalState, String reason, String socialSituation, Location location ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
-        this.reasonImage = reasonImage;
         this.socialSituation = socialSituation;
         this.location = location;
         setDate();
@@ -117,15 +123,6 @@ public class Mood implements Comparable<Mood>{
     }
 
     /*
-     * This returns the Moods reason.
-     *
-     * @return Return the reason
-     */
-    public Image getReasonImage() {
-        return this.reasonImage;
-    }
-
-    /*
      * This returns the Moods social situation.
      *
      * @return Return the socialSituation
@@ -177,6 +174,7 @@ public class Mood implements Comparable<Mood>{
         data.put("Social Situation", this.getSocialSituation());
         data.put("Latitude", this.getLocation().getLatitude());
         data.put("Longitude", this.getLocation().getLongitude());
+        data.put("Date", this.getDate());
         return data;
     }
 
@@ -185,5 +183,8 @@ public class Mood implements Comparable<Mood>{
         return this.moodID.compareTo(mood.getID());
     }
 
+    public String getKeyID() {
+        return keyID;
+    }
 }
 

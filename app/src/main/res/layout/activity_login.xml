@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Ui.CreateAccount.CreateAccountActivity">
+    tools:context=".ui.CreateAccount.CreateAccountActivity">
 
     <TextView
         android:id="@+id/textView7"

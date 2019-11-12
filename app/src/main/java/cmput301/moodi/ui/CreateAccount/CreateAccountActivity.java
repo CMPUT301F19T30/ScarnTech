@@ -1,5 +1,3 @@
-package cmput301.moodi.Ui.CreateAccount;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -20,8 +18,8 @@ import java.util.HashMap;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.Ui.Login.LoginActivity;
-import cmput301.moodi.Ui.User_Loggedin.HomeActivity;
+import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
+import cmput301.moodi.ui.Login.LoginActivity;
 /*
  * Handles account creation.
  */
@@ -87,8 +85,13 @@ public class CreateAccountActivity extends AppCompatActivity {
                                 moodiStorage.createNewUserProfile(getUserPreferences());
 
                                 // Start new activity.
-                                Intent i = new Intent(CreateAccountActivity.this, HomeActivity.class);
+                                Intent i = new Intent(CreateAccountActivity.this, BottomNavigationActivity.class);
+                                i.putExtra("finish", true); // if you are checking for this in your other Activities
+                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                                        Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i);
+                                finish();
                             }
                         }
                     });

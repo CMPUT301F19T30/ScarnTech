@@ -40,15 +40,15 @@ public class HomeFragment extends Fragment {
 
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
-    String TAG = "Sample";
+    String TAG = "HomeFragment";
     MoodiStorage moodiStorage;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_home, container, false);
+        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Get a reference to the ListView and create an object for the mood list.
-        moodList = root.findViewById(R.id.mood_list);
+        moodList = view.findViewById(R.id.mood_list);
         moodDataList = new ArrayList<>();
 
         // Set the adapter for the listView to the CustomAdapter that we created in Lab 3.
@@ -105,6 +105,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        return root;
+        return view;
     }
 }

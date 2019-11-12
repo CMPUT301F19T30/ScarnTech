@@ -21,6 +21,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.firebase.firestore.GeoPoint;
+
 import cmput301.moodi.Objects.Location;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.R;
@@ -84,7 +86,7 @@ public class PostMoodFragment extends DialogFragment {
 //                            Mood newMood = new Mood(Mood);
 //                        EmotionalState emotionalState = new EmotionalState(emotionalStateText);
                         Mood mood = new Mood(emotionalStateText, reasonText);
-                        Location location = new Location(53.123, 113.234);
+                        GeoPoint location = new GeoPoint(53.123, 113.234);
                         mood.setLocation(location);
                         listener.addNewPost(mood);
                     }

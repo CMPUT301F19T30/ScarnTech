@@ -48,7 +48,6 @@ public class MoodiStorage {
         return this.userCollection.document(this.UID).set(preferences);
     }
 
-
     /*
      * Returns all of the users own posts.
      */

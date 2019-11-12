@@ -15,6 +15,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.GeoPoint;
 
 import java.util.HashMap;
 
@@ -33,6 +34,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     Button button_signup, button_goto_login;
     EditText emailField, passwordField;
     EditText usernameField, firstNameField, lastNameField;
+    GeoPoint lastLocation;
 
     // firebase auth link
     FirebaseAuth mFirebaseAuth;
@@ -56,6 +58,8 @@ public class CreateAccountActivity extends AppCompatActivity {
         firstNameField = findViewById(R.id.signup_firstName);
         lastNameField = findViewById(R.id.signup_lastName);
         usernameField = findViewById(R.id.signup_username);
+
+        lastLocation = null;
 
         // when a user clicks create account, the following logic checks if account creation works
         // with the given inputs
@@ -116,9 +120,10 @@ public class CreateAccountActivity extends AppCompatActivity {
      */
     private HashMap<String, Object> getUserPreferences() {
         HashMap<String, Object> preferences = new HashMap<>();
-        preferences.put("first_name", this.firstNameField.getText().toString());
-        preferences.put("last_name", this.lastNameField.getText().toString());
-        preferences.put("username", this.usernameField.getText().toString());
+        preferences.put("first_name",   this.firstNameField.getText().toString());
+        preferences.put("last_name",    this.lastNameField.getText().toString());
+        preferences.put("username",     this.usernameField.getText().toString());
+        preferences.put("lastLocation", this.lastLocation);
         return preferences;
     }
 

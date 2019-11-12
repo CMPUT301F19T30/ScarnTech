@@ -5,6 +5,8 @@ package cmput301.moodi.Objects;
  * 11/04/2019
  */
 
+import com.google.firebase.firestore.GeoPoint;
+
 import java.util.Date;
 import java.util.HashMap;
 
@@ -15,7 +17,7 @@ public class Mood implements Comparable<Mood>{
 
     private String reason = "";
     private String socialSituation = "";
-    private Location location;
+    private GeoPoint location;
     private String moodID = "";
 
     // Unique ID of a post assigned by FireBase
@@ -58,7 +60,7 @@ public class Mood implements Comparable<Mood>{
         setDate();
     }
   
-    public Mood(EmotionalState emotionalState, String reason, String socialSituation, Location location ) {
+    public Mood(EmotionalState emotionalState, String reason, String socialSituation, GeoPoint location ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
         this.socialSituation = socialSituation;
@@ -144,7 +146,7 @@ public class Mood implements Comparable<Mood>{
      *
      * @return Return the location
      */
-    public Location getLocation() {
+    public GeoPoint getLocation() {
         return this.location;
     }
 
@@ -153,7 +155,7 @@ public class Mood implements Comparable<Mood>{
      *
      * @return Return the location
      */
-    public void setLocation(Location location) {
+    public void setLocation(GeoPoint location) {
         this.location = location;
     }
 
@@ -172,8 +174,7 @@ public class Mood implements Comparable<Mood>{
         data.put("Emotional State", this.getDummyEmotionalState());
         data.put("Reason", this.getReason());
         data.put("Social Situation", this.getSocialSituation());
-        data.put("Latitude", this.getLocation().getLatitude());
-        data.put("Longitude", this.getLocation().getLongitude());
+        data.put("Location", this.getLocation());
         data.put("Date", this.getDate());
         return data;
     }

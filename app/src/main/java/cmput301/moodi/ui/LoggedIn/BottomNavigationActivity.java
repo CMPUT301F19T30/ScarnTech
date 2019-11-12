@@ -75,7 +75,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
                 R.id.navigation_home,
                 R.id.navigation_maps,
                 R.id.navigation_post,
-                R.id.navigation_notifications,
+                R.id.navigation_social,
                 R.id.navigation_profile).build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);

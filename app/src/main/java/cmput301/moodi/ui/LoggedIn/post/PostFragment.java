@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.post;
+package cmput301.moodi.Ui.LoggedIn.post;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,10 +8,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 

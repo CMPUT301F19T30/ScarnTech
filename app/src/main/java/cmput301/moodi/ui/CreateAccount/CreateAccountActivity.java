@@ -1,3 +1,5 @@
+package cmput301.moodi.Ui.CreateAccount;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -162,6 +164,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     /*
      * Validate user input for username field.
      * Requirements are:
+     * - Unique username in DB
      * - Max Length: <=20
      * - Min Length: >=5
      */

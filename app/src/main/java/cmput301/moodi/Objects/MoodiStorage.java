@@ -39,6 +39,8 @@ public class MoodiStorage {
         return this.UID;
     }
 
+
+
     /*
      * Creates a new user profile in Firestore.
      */

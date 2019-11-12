@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.home;
+package cmput301.moodi.Ui.LoggedIn.home;
 
 import android.os.Bundle;
 import android.util.Log;

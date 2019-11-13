@@ -35,6 +35,7 @@ public class PostMoodFragment extends DialogFragment {
     private Spinner EmotionalStateView; // Change this to the selection from drop down list
     private EditText ReasonView;
 
+
     // Need to add location option, social situation as well as a picture
 
     // Used to pass data to main activity
@@ -78,6 +79,7 @@ public class PostMoodFragment extends DialogFragment {
                         // Pull the fresh entry from the fragment
                         String emotionalStateText = EmotionalStateView.getSelectedItem().toString();
                         String reasonText = ReasonView.getText().toString();
+
 
                         // Create a new Mood (Post) and send to MoodsActivity to be added to the list!
 //                        if (Reasoning != null && !Reasoning.isEmpty())

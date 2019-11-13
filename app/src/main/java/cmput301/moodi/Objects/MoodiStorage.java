@@ -51,8 +51,8 @@ public class MoodiStorage {
     /*
      * Returns all of the users own posts.
      */
-    public void getUserPosts() {
-        //Todo: return users 'moodhistory'.
+    public Task getUMoodHistory() {
+        return this.postCollection.whereEqualTo("UID", this.UID).get();
 
     }
 

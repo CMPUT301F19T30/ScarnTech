@@ -12,6 +12,7 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,16 +30,14 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
+import cmput301.moodi.ui.Login.LoginActivity;
 
 import static cmput301.moodi.util.Constants.ERROR_DIALOG_REQUEST;
 import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
@@ -73,21 +72,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         final TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        moodiStorage = new MoodiStorage();
-
-        final DocumentReference profile = moodiStorage.getUserProfile();
-        profile.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                if (task.isSuccessful()) {
-                    DocumentSnapshot document = task.getResult();
-                    if (document.exists()) {
-                        mTitle.setText(document.getString("username"));
-                    }
-                }
-            }
-        });
-
+        mTitle.setText("Moodi");
 
         // maps stuff
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -103,6 +88,25 @@ public class BottomNavigationActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
         NavigationUI.setupWithNavController(navView, navController);
+    }
+
+    @Override
+    /*
+     * Handle actionbar item selection.
+     */
+    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+        case R.id.action_logout:
+            FirebaseAuth.getInstance().signOut();
+            Intent i = new Intent(this, LoginActivity.class);
+            i.putExtra("finish", true); // if you are checking for this in your other Activities
+            i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                    Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                    Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i);
+            this.finish();
+            return true;
+    }
+        return(super.onOptionsItemSelected(item));
     }
 
     // Menu icons are inflated just as they were with actionbar

@@ -1,5 +1,6 @@
 package cmput301.moodi.ui.LoggedIn.home;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -83,6 +84,9 @@ public class HomeFragment extends Fragment {
                     String emotionalStateText = (String) doc.getData().get("Emotional State");
                     String reasonText = (String) doc.getData().get("Reason");
                     String date = (String) doc.getData().get("Date");
+
+
+
 
                     // TODO: Change it to receive the FULL mood + move firebase code to MoodiStorage
                     // Mood mood = new Mood();

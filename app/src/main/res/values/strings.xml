@@ -38,4 +38,13 @@
         <item>Love</item>
         <item>Heartbreak</item>
     </string-array>
+
+    <string-array name="SocialSituation">
+        <item>Alone</item>
+        <item>With one friend</item>
+        <item>With two friend</item>
+        <item>With a group</item>
+        <item>Secret</item>
+    </string-array>
+
 </resources>

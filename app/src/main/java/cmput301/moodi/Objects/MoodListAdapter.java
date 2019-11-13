@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -49,11 +50,35 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
         // Point at placeholders in list
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
+        ImageView img = view.findViewById(R.id.emoji);
+
 
         // Update this to account for a drop down of pre-made moods!
         // currentEmotionalState.setText(mood.getEmotionalState().toString());
         currentEmotionalState.setText(mood.getDummyEmotionalState());
         currentDate.setText(mood.getDate());
+
+
+        if(currentEmotionalState.getText().equals("Happy") ){
+            img.setImageResource(R.drawable.happy);
+        }
+        else if (currentEmotionalState.getText().equals("Mad")){
+            img.setImageResource(R.drawable.mad);
+        }
+        else if (currentEmotionalState.getText().equals("Sad")){
+            img.setImageResource(R.drawable.sad);
+        }
+        else if (currentEmotionalState.getText().equals("Love")){
+            img.setImageResource(R.drawable.love);
+        }
+        else if (currentEmotionalState.getText().equals("Tired")){
+            img.setImageResource(R.drawable.tired);
+        }
+        else{
+            img.setImageResource(R.drawable.heartbreak);
+        }
+
+
 
         return view;
 

@@ -46,6 +46,7 @@ public class Mood implements Comparable<Mood>{
         setDate();
     }
 
+
     // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
     public Mood(String emotionalState, String reason, String date, String keyID ) {
         this.dummyEmotionalState = emotionalState;
@@ -165,6 +166,8 @@ public class Mood implements Comparable<Mood>{
     public String getID() {
         return this.moodID;
     }
+
+
 
     /*
      *

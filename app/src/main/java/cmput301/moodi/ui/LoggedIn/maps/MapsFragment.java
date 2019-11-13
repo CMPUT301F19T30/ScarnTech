@@ -1,4 +1,4 @@
-package cmput301.moodi.Ui.LoggedIn.maps;
+package cmput301.moodi.ui.LoggedIn.maps;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;

@@ -1,11 +1,11 @@
-package cmput301.moodi.Ui.LoggedIn.profile;
+package cmput301.moodi.ui.LoggedIn.profile;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageButton;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,7 +18,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.User;
 import cmput301.moodi.R;
-import cmput301.moodi.Ui.Login.LoginActivity;
+import cmput301.moodi.ui.Login.LoginActivity;
 
 /*
  * Class: ProfileFragment
@@ -32,7 +32,7 @@ public class ProfileFragment extends Fragment {
     private MoodiStorage moodiStorage;
     private static final String TAG = "ProfileActivity";
     private User userProfile;
-    private Button logout;
+    private ImageButton logout;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {

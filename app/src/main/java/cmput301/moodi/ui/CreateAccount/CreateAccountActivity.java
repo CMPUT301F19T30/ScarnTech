@@ -1,4 +1,4 @@
-package cmput301.moodi.Ui.CreateAccount;
+package cmput301.moodi.ui.CreateAccount;
 
 import android.content.Intent;
 import android.os.Bundle;

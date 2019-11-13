@@ -17,8 +17,8 @@
         tools:ignore="GoogleAppIndexingWarning">
 
 
-        <activity android:name=".Ui.CreateAccount.CreateAccountActivity" />
-        <activity android:name=".Ui.Login.LoginActivity">
+        <activity android:name=".ui.CreateAccount.CreateAccountActivity" />
+        <activity android:name=".ui.Login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

@@ -1,4 +1,4 @@
-package cmput301.moodi.Ui.LoggedIn.post;
+package cmput301.moodi.ui.LoggedIn.post;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,7 +13,6 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-import cmput301.moodi.Objects.Location;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;

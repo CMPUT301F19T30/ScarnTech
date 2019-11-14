@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.post;
+package cmput301.moodi.ui.loggedIn.post;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -14,24 +14,18 @@ import android.widget.ImageButton;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.TimeZone;
-import java.lang.reflect.Array;
 
-import cmput301.moodi.Objects.Location;
+import java.util.Calendar;
+
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
+import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
 
 /*
  * Class: PostFragment

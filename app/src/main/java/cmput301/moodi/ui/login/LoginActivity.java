@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.Login;
+package cmput301.moodi.ui.login;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,9 +16,9 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
-import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
+import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.CreateAccount.CreateAccountActivity;
+import cmput301.moodi.ui.createAccount.CreateAccountActivity;
 
 /*
  * Class: LoginActivity

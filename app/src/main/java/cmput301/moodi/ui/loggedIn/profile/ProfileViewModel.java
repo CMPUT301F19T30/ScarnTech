@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.profile;
+package cmput301.moodi.ui.loggedIn.profile;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;

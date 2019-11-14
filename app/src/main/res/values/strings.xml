@@ -27,6 +27,7 @@
     <string name="title_maps">Maps</string>
     <string name="title_post">Post</string>
     <string name="title_profile">Profile</string>
+    <string name="action_logout">Logout</string>
 
     <string name="time_24_hour">Time (24 Hour):</string>
     <string name="hr">hr</string>

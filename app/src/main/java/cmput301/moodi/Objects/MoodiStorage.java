@@ -16,12 +16,18 @@ import java.util.HashMap;
 
 import static cmput301.moodi.util.Constants.POST_PATH;
 import static cmput301.moodi.util.Constants.USER_PATH;
+import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
+import static cmput301.moodi.util.Constants.FOLLOWING_PATH;
+
 
 public class MoodiStorage {
     private FirebaseFirestore db;
     private static final String TAG = "moodiStorage";
     private CollectionReference postCollection;
     private CollectionReference userCollection;
+    private CollectionReference followingCollection;
+    private CollectionReference followerCollection;
+
     private String UID;
 
     public MoodiStorage() {
@@ -30,6 +36,8 @@ public class MoodiStorage {
         this.UID = mFirebaseAuth.getCurrentUser().getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
+        this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
+        this.followingCollection = this.userCollection.document(this.UID).collection(FOLLOWING_PATH);
     }
 
     /*
@@ -40,6 +48,20 @@ public class MoodiStorage {
     }
 
     /*
+     * Returns the followers documents for the user.
+     */
+    public Task getFollowers() {
+        return this.followerCollection.get();
+    }
+
+    /*
+     * Returns the followers documents for the user.
+     */
+    public Task getFollowing() {
+        return this.followingCollection.get();
+    }
+
+    /*
      * Creates a new user profile in Firestore.
      */
     public Task createNewUserProfile(HashMap<String, Object> preferences) {
@@ -47,11 +69,18 @@ public class MoodiStorage {
     }
 
     /*
+     * Returns all users of the application.
+     */
+    public Task getApplicationUsers() {
+        return this.userCollection.get();
+    }
+
+
+    /*
      * Returns all of the users own posts.
      */
-    public void getUserPosts() {
-        //Todo: return users 'moodhistory'.
-
+    public Task getUMoodHistory() {
+        return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
 
 
@@ -74,12 +103,6 @@ public class MoodiStorage {
         //Todo: implement post deletion from firebase.
     }
 
-    /*
-     * Real time addition and removal of a post with the database
-     */
-    public void updateFeed(String postID) {
-
-    }
 
     /*
      * Returns user profile data. Need to complete onCompleteListeners to retrieve data.

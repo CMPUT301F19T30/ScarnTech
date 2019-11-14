@@ -39,8 +39,6 @@ import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
 
 import cmput301.moodi.R;
-import cmput301.moodi.ui.LoggedIn.post.DateFragment;
-import cmput301.moodi.ui.LoggedIn.post.PostFragment;
 
 import static cmput301.moodi.util.Constants.ERROR_DIALOG_REQUEST;
 import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;

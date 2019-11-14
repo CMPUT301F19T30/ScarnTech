@@ -10,8 +10,6 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.Date;
 import java.util.HashMap;
 
-import cmput301.moodi.ui.LoggedIn.post.DateFragment;
-
 public class Mood implements Comparable<Mood> {
 
     private String date;

@@ -136,14 +136,6 @@ public class PostFragment extends Fragment {
                 inputMinuteSpinner.setSelection(minutes);
             }
         });
-
-        getCustomDateButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new DateFragment().show(getActivity().getSupportFragmentManager(), "Custom_Date");
-            }
-        });
-
         return view;
     }
 

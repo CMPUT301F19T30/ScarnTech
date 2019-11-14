@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -65,6 +66,28 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
         currentDate.setText(mood.getDate());
         currentEmoji.setImageResource(mood.getEmotionalState().getEmoji());
         view.setBackgroundColor(ContextCompat.getColor(context, color));
+
+
+        if(currentEmotionalState.getText().equals("Happy") ){
+            img.setImageResource(R.drawable.happy);
+        }
+        else if (currentEmotionalState.getText().equals("Mad")){
+            img.setImageResource(R.drawable.mad);
+        }
+        else if (currentEmotionalState.getText().equals("Sad")){
+            img.setImageResource(R.drawable.sad);
+        }
+        else if (currentEmotionalState.getText().equals("Love")){
+            img.setImageResource(R.drawable.love);
+        }
+        else if (currentEmotionalState.getText().equals("Tired")){
+            img.setImageResource(R.drawable.tired);
+        }
+        else{
+            img.setImageResource(R.drawable.heartbreak);
+        }
+
+
 
         return view;
     }

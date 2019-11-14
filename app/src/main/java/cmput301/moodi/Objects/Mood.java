@@ -47,6 +47,7 @@ public class Mood implements Comparable<Mood> {
         this.date = date;
     }
 
+
     // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
     /*
     * Constructor for receiving a post from the FireBase and constructing a new mood
@@ -168,6 +169,8 @@ public class Mood implements Comparable<Mood> {
     public String getID() {
         return this.moodID;
     }
+
+
 
     /*
      *

@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_width="match_parent"
     android:orientation="horizontal">
 
     <TextView
@@ -15,9 +14,16 @@
         android:text="Emotional State"
         android:textSize="30sp"></TextView>
 
+    <ImageView
+        android:id="@+id/emoji"
+        android:layout_width="52dp"
+        android:layout_height="48dp"
+        android:layout_weight="1"
+        app:srcCompat="@drawable/happy" />
+
     <TextView
         android:id="@+id/Date_text"
-        android:layout_width="105dp"
+        android:layout_width="191dp"
         android:layout_height="match_parent"
         android:layout_marginLeft="20dp"
         android:text="dow mon dd hh::ss zzz yyyy"

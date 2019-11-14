@@ -1,5 +1,6 @@
 package cmput301.moodi.ui.LoggedIn.home;
 
+import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -91,6 +92,9 @@ public class HomeFragment extends Fragment {
                         moodDataList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
                         Log.d(TAG, socialSituation);
                     }
+
+
+
 
 
                     // TODO: Change it to receive the FULL mood + move firebase code to MoodiStorage

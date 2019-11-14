@@ -5,7 +5,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import android.widget.CalendarView;
+import android.widget.ArrayAdapter;
+
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
@@ -22,6 +25,7 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
+import java.lang.reflect.Array;
 
 import cmput301.moodi.Objects.Location;
 import cmput301.moodi.Objects.Mood;
@@ -64,7 +68,7 @@ public class PostFragment extends Fragment {
         // TODO: Add implementation of: EmotionalState Spinner, Date, Image & Location
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
-        // Pointing variables for detection of user input
+        // Pointing variables for detection of user input (Text, buttons, than spinners and calendar)
         ReasonView = view.findViewById(R.id.input_Reasoning);
 
         PostMood = view.findViewById(R.id.post_mood_button);

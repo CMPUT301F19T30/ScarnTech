@@ -41,5 +41,17 @@ public class UserList {
         Collections.sort(list);
         return list;
     }
+
+    public User get(int i) {
+        return this.users.get(i);
+    }
+
+    public int size() {
+        return this.users.size();
+    }
+
+    public void clear() {
+        this.users.clear();
+    }
 }
 

@@ -1,11 +1,13 @@
 package cmput301.moodi.ui.LoggedIn.social;
 
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import androidx.annotation.NonNull;
@@ -16,10 +18,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
-import java.util.ArrayList;
-
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.User;
+import cmput301.moodi.Objects.UserList;
 import cmput301.moodi.Objects.UserListAdapter;
 import cmput301.moodi.R;
 
@@ -37,8 +38,9 @@ public class SocialFragment extends Fragment {
 
     // Variables that are used to build the list of moods (User Posts)
     ListView userList;
-    ArrayAdapter<User> userAdapter;
-    ArrayList<User> userDataList;
+    UserListAdapter userAdapter;
+    UserList userDataList;
+    EditText inputSearch;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -48,11 +50,27 @@ public class SocialFragment extends Fragment {
         moodiStorage = new MoodiStorage();
 
         userList = root.findViewById(R.id.social_list);
-        userDataList = new ArrayList<>();
+        userDataList = new UserList();
         userAdapter = new UserListAdapter(container.getContext(), userDataList);
         userList.setAdapter(userAdapter);
 
         loadSocialList();
+
+        inputSearch = (EditText) root.findViewById(R.id.search_bar);
+        inputSearch.addTextChangedListener(new TextWatcher() {
+
+            @Override
+            public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
+                Log.d(TAG, "Constraint: " + cs);
+                userAdapter.getFilter().filter(cs);
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence arg0, int arg1, int arg2, int arg3) {}
+
+            @Override
+            public void afterTextChanged(Editable arg0) {}
+        });
 
         return root;
     }

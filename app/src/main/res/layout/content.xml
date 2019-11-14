@@ -29,4 +29,9 @@
         android:text="dow mon dd hh::ss zzz yyyy"
         android:textSize="20sp"></TextView>
 
+    <ImageView
+        android:id="@+id/emoji"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"/>
 </LinearLayout>

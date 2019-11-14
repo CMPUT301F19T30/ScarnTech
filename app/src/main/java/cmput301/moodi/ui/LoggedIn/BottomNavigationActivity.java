@@ -236,4 +236,10 @@ public class BottomNavigationActivity extends AppCompatActivity {
             }
         }
     }
+
+//    // DO nothing with, its to implement fragment listener for PostFragment
+//    @Override
+//    public void customDate(String time, String date) {
+//        Log.d("getter","test1");
+//    }
 }

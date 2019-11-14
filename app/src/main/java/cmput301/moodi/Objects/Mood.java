@@ -10,57 +10,59 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.Date;
 import java.util.HashMap;
 
-public class Mood implements Comparable<Mood>{
-    private Date instantananeousDate;
+public class Mood implements Comparable<Mood> {
+
     private String date;
-    private EmotionalState emotionalState;
+    private EmotionalState emotionalState = new EmotionalState();
 
     private String reason = "";
     private String socialSituation = "";
     private GeoPoint location;
     private String moodID = "";
+    private Number emotionalIndex = 0;
 
     // Unique ID of a post assigned by FireBase
     private String keyID;
 
-    // Temporary variables for testing posting
-    private String dummyEmotionalState;
-    
-    public String getDummyEmotionalState() {
-        return dummyEmotionalState;
-    }
-    Mood() {setDate();}
-    public Mood(String dummyEmotionalState, String reason) {
-        this.dummyEmotionalState = dummyEmotionalState;
-        this.reason = reason;
-        setDate();
-    }
-    // End of test methods that need to be updated on completion of EmotionalState
 
-    // Note once emotional state is done, the color and mood must be pulled from it! (Not an input)
-    // Ex. this.reasonImage = emotionalState.getReasonImage() 
-    // Where getReasonImage() is defined to return the image associated to the preset emotional state
-    public Mood(EmotionalState emotionalState, String reason) {
-        this.emotionalState = emotionalState;
+    /*
+    * Constructor for creation of a mood from a post which is sent to FireBase
+    * (Used in case of no custom date entry)
+     */
+    public Mood(int index, String reason, String SocialSituation) {
+        this.emotionalState.setEmotionalState(index);
         this.reason = reason;
+        this.socialSituation = SocialSituation;
         setDate();
+    }
+
+    /*
+     * Constructor for creation of a mood from a post which is sent to FireBase
+     * (Used in case of a custom date entry)
+     */
+    public Mood(int index, String reason, String SocialSituation, String date) {
+        this.emotionalState.setEmotionalState(index);
+        this.reason = reason;
+        this.socialSituation = SocialSituation;
+        this.date = date;
     }
 
 
     // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
-    public Mood(String emotionalState, String reason, String date, String keyID ) {
-        this.dummyEmotionalState = emotionalState;
+    /*
+    * Constructor for receiving a post from the FireBase and constructing a new mood
+     */
+    public Mood(String emotionalState, String reason, String date, String socialSituation, String keyID, int index) {
+        this.emotionalState.setEmotionalState(index);
+        this.emotionalState.setName(emotionalState);
         this.reason = reason;
         this.date = date;
-        this.keyID = keyID;
-    }
-    public Mood(EmotionalState emotionalState, String reason, String socialSituation ) {
-        this.emotionalState = emotionalState;
-        this.reason = reason;
         this.socialSituation = socialSituation;
-        setDate();
+        this.keyID = keyID;
+        this.getEmotionalState().setIndex((index));
     }
-  
+
+    // Used in testing
     public Mood(EmotionalState emotionalState, String reason, String socialSituation, GeoPoint location ) {
         this.emotionalState = emotionalState;
         this.reason = reason;
@@ -83,6 +85,7 @@ public class Mood implements Comparable<Mood>{
      * This instantaneously captures the date and time at runtime and converts to string
      */
     public void setDate() {
+        Date instantananeousDate;
         instantananeousDate = new Date();
         date = instantananeousDate.toString();
     }
@@ -173,8 +176,10 @@ public class Mood implements Comparable<Mood>{
      *
      */
     public HashMap<String, Object> serializeMood() {
+        this.emotionalIndex = this.getEmotionalState().getIndex();
         HashMap<String, Object> data = new HashMap<>();
-        data.put("Emotional State", this.getDummyEmotionalState());
+        data.put("Emotional State", this.getEmotionalState().getName());
+        data.put("Index", this.getEmotionalState().getIndex());
         data.put("Reason", this.getReason());
         data.put("Social Situation", this.getSocialSituation());
         data.put("Location", this.getLocation());
@@ -190,5 +195,6 @@ public class Mood implements Comparable<Mood>{
     public String getKeyID() {
         return keyID;
     }
+
 }
 

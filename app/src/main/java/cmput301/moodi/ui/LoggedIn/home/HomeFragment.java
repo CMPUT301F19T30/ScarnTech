@@ -84,13 +84,22 @@ public class HomeFragment extends Fragment {
                     String emotionalStateText = (String) doc.getData().get("Emotional State");
                     String reasonText = (String) doc.getData().get("Reason");
                     String date = (String) doc.getData().get("Date");
+                    String socialSituation = (String) doc.getData().get("Social Situation");
+                    Number index = (Number) doc.getData().get("Index");
+//                    int i = index.intValue();
+                    if (index != null) {
+                        int i = index.intValue();
+                        moodDataList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
+                        Log.d(TAG, socialSituation);
+                    }
+
 
 
 
 
                     // TODO: Change it to receive the FULL mood + move firebase code to MoodiStorage
                     // Mood mood = new Mood();
-                    moodDataList.add(new Mood(emotionalStateText, reasonText, date, postID)); // Adding the cities and provinces from FireStore.
+//                    moodDataList.add(new Mood(emotionalStateText, reasonText, date, postID, i)); // Adding the posts from firestore
                 }
                 moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
             }
@@ -108,7 +117,6 @@ public class HomeFragment extends Fragment {
                 return false;
             }
         });
-
         return view;
     }
 }

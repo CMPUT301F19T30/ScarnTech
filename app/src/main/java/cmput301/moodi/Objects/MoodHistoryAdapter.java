@@ -54,7 +54,7 @@ public class MoodHistoryAdapter extends ArrayAdapter<Mood> {
 
         // Update this to account for a drop down of pre-made moods!
         // currentEmotionalState.setText(mood.getEmotionalState().toString());
-        currentEmotionalState.setText(mood.getDummyEmotionalState());
+        //currentEmotionalState.setText(mood.getDummyEmotionalState());
         currentDate.setText(mood.getDate());
 
 

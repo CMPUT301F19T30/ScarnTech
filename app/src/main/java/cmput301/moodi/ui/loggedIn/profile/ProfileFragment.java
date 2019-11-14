@@ -118,13 +118,20 @@ public class ProfileFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     moodDataList.clear();
-                    for (QueryDocumentSnapshot document : task.getResult()) {
-                        String postID = document.getId();
-                        String emotionalStateText = (String) document.getData().get("Emotional State");
-                        String reasonText = (String) document.getData().get("Reason");
-                        String date = (String) document.getData().get("Date");
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        // Easy enough to pull more information from database!
+                        String postID = doc.getId();
+                        String emotionalStateText = (String) doc.getData().get("Emotional State");
+                        String reasonText = (String) doc.getData().get("Reason");
+                        String date = (String) doc.getData().get("Date");
+                        String socialSituation = (String) doc.getData().get("Social Situation");
+                        Number index = (Number) doc.getData().get("Index");
 
-                        moodDataList.add(new Mood(emotionalStateText, reasonText, date, postID));
+                        if (index != null) {
+                            int i = index.intValue();
+                            moodDataList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
+                            Log.d(TAG, socialSituation);
+                        }
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());

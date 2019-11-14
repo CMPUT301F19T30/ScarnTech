@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.CreateAccount;
+package cmput301.moodi.ui.createAccount;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -21,8 +21,8 @@ import java.util.HashMap;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
-import cmput301.moodi.ui.Login.LoginActivity;
+import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
+import cmput301.moodi.ui.login.LoginActivity;
 /*
  * Handles account creation.
  */

@@ -14,7 +14,6 @@ import androidx.annotation.Nullable;
 import java.util.ArrayList;
 
 import cmput301.moodi.R;
-import cmput301.moodi.ui.LoggedIn.home.HomeFragment;
 
 /*
  * Class: CustomList

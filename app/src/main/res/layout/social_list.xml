@@ -3,11 +3,43 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+
     <EditText
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:textSize="24sp"
+        android:padding="@dimen/activity_vertical_margin"
         android:hint="Search..."/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="@dimen/activity_vertical_margin">
+
+        <RadioButton
+            android:id="@+id/radio_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:checked="true"
+            android:text="All"
+            android:padding="@dimen/activity_vertical_margin"/>
+
+        <RadioButton
+            android:id="@+id/radio_following"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Following"
+            android:padding="@dimen/activity_vertical_margin"/>
+
+        <RadioButton
+            android:id="@+id/radio_followers"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="Followers"
+            android:padding="@dimen/activity_vertical_margin"/>
+    </RadioGroup>
 
     <ListView
         android:id="@+id/social_list"

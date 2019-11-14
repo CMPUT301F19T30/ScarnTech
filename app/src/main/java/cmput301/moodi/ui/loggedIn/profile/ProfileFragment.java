@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.profile;
+package cmput301.moodi.ui.loggedIn.profile;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -39,7 +39,7 @@ import cmput301.moodi.R;
 
 public class ProfileFragment extends Fragment {
 
-    private cmput301.moodi.ui.LoggedIn.profile.ProfileViewModel profileViewModel;
+    private cmput301.moodi.ui.loggedIn.profile.ProfileViewModel profileViewModel;
     private MoodiStorage moodiStorage;
     private static final String TAG = "ProfileActivity";
     private User userProfile;
@@ -55,7 +55,7 @@ public class ProfileFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
 
-        profileViewModel = ViewModelProviders.of(this).get(cmput301.moodi.ui.LoggedIn.profile.ProfileViewModel.class);
+        profileViewModel = ViewModelProviders.of(this).get(cmput301.moodi.ui.loggedIn.profile.ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
         moodiStorage = new MoodiStorage();

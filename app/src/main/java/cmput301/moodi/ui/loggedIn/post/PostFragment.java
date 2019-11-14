@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.post;
+package cmput301.moodi.ui.loggedIn.post;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -18,7 +18,7 @@ import com.google.firebase.firestore.GeoPoint;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.LoggedIn.BottomNavigationActivity;
+import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
 
 /*
  * Class: PostFragment

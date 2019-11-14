@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn;
+package cmput301.moodi.ui.loggedIn;
 
 import android.Manifest;
 import android.app.AlertDialog;
@@ -37,7 +37,7 @@ import com.google.firebase.firestore.GeoPoint;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.Login.LoginActivity;
+import cmput301.moodi.ui.login.LoginActivity;
 
 import static cmput301.moodi.util.Constants.ERROR_DIALOG_REQUEST;
 import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;

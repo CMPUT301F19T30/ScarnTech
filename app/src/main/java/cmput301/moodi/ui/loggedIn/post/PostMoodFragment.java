@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.post;
+package cmput301.moodi.ui.loggedIn.post;
 
 /*
  * Class: PostMoodFragment
@@ -23,7 +23,6 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.firestore.GeoPoint;
 
-import cmput301.moodi.Objects.Location;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.R;
 

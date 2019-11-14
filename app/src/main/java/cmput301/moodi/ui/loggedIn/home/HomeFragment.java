@@ -1,6 +1,5 @@
-package cmput301.moodi.ui.LoggedIn.home;
+package cmput301.moodi.ui.loggedIn.home;
 
-import android.media.Image;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;

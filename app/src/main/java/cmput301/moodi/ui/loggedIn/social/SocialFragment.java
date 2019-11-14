@@ -1,4 +1,4 @@
-package cmput301.moodi.ui.LoggedIn.social;
+package cmput301.moodi.ui.loggedIn.social;
 
 import android.os.Bundle;
 import android.text.Editable;
@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -37,9 +38,9 @@ public class SocialFragment extends Fragment {
     MoodiStorage moodiStorage;
 
     // Variables that are used to build the list of moods (User Posts)
-    ListView userList;
+    ListView userListView;
     UserListAdapter userAdapter;
-    UserList userDataList;
+    UserList userList, followersList, followingList;
     EditText inputSearch;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -49,10 +50,13 @@ public class SocialFragment extends Fragment {
 
         moodiStorage = new MoodiStorage();
 
-        userList = root.findViewById(R.id.social_list);
-        userDataList = new UserList();
-        userAdapter = new UserListAdapter(container.getContext(), userDataList);
-        userList.setAdapter(userAdapter);
+        userListView = root.findViewById(R.id.social_list);
+        userList = new UserList();
+        followersList = new UserList();
+        followingList = new UserList();
+
+        userAdapter = new UserListAdapter(container.getContext(), userList);
+        userListView.setAdapter(userAdapter);
 
         loadSocialList();
 
@@ -61,7 +65,6 @@ public class SocialFragment extends Fragment {
 
             @Override
             public void onTextChanged(CharSequence cs, int arg1, int arg2, int arg3) {
-                Log.d(TAG, "Constraint: " + cs);
                 userAdapter.getFilter().filter(cs);
             }
 
@@ -80,7 +83,7 @@ public class SocialFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    userDataList.clear();
+                    userList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
                         Log.d(TAG, "document ->" + document.getData());
 
@@ -89,7 +92,7 @@ public class SocialFragment extends Fragment {
                         user.setFirstName(document.getString("first_name"));
                         user.setLastName(document.getString("last_name"));
 
-                        userDataList.add(user);
+                        userList.add(user);
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -98,5 +101,26 @@ public class SocialFragment extends Fragment {
                 userAdapter.notifyDataSetChanged();
             }
         });
+    }
+
+    public void onRadioSelect(View view) {
+        boolean checked = ((RadioButton) view).isChecked();
+
+        switch(view.getId()) {
+            case R.id.radio_all:
+                if (checked)
+                    Log.d(TAG, "show all");
+                break;
+
+            case R.id.radio_followers:
+                if (checked)
+                    Log.d(TAG, "show followers");
+                    break;
+
+            case R.id.radio_following:
+                if (checked)
+                    Log.d(TAG, "show following");
+                    break;
+        }
     }
 }

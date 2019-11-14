@@ -11,11 +11,12 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-public class User {
+public class User implements Comparable<User>{
 
     private String username;
     private String firstName;
     private String lastName;
+    private String UID;
     private GeoPoint lastLocation;
 
     private ArrayList<User> permissionList;
@@ -124,5 +125,18 @@ public class User {
      */
     public void removeMood(Mood mood) {
         // Todo: remove mood from users moodlist.
+    }
+
+    public String getUID() {
+        return this.UID;
+    }
+
+    public void setUID(String UID) {
+        this.UID = UID;
+    }
+
+    @Override
+    public int compareTo(User user) {
+        return this.lastName.compareTo(user.getLastName());
     }
 }

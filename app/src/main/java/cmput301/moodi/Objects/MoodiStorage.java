@@ -49,6 +49,14 @@ public class MoodiStorage {
     }
 
     /*
+     * Returns all users of the application.
+     */
+    public Task getApplicationUsers() {
+        return this.userCollection.get();
+    }
+
+
+    /*
      * Returns all of the users own posts.
      */
     public Task getUMoodHistory() {

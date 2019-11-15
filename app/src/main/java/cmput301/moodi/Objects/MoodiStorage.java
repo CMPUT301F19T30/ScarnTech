@@ -11,6 +11,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 
@@ -32,9 +33,26 @@ public class MoodiStorage {
     private String UID;
 
     public MoodiStorage() {
-        this.db = FirebaseFirestore.getInstance();
-        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        this.UID = mFirebaseAuth.getCurrentUser().getUid();
+            this.db = FirebaseFirestore.getInstance();
+            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+            this.UID = mFirebaseAuth.getCurrentUser().getUid();
+
+//        userCollection.whereEqualTo("UID", UID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//            @Override
+//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                if (task.isSuccessful()) {
+//                    // user found
+//                    for (QueryDocumentSnapshot document : task.getResult()) {
+//                        name = (String) document.getData().get("Username");
+//
+//                    }
+//                } else {
+//                    Log.d(TAG, "Error getting username: ", task.getException());
+//                }
+//            }
+//        });
+//
+//        this.username = name;
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
         this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
@@ -115,5 +133,20 @@ public class MoodiStorage {
      */
     public DocumentReference getUserProfile() {
         return this.userCollection.document(this.UID);
+    }
+
+    /*
+     * Returns all moods posted by the user
+     */
+    public Task getUserMoods() {
+        return this.postCollection.whereEqualTo("UID", UID).get();
+    }
+
+    /*
+     * Returns all moods of those users followed
+     */
+    public Query getFollowingMoods() {
+        // TODO later... fuc dat
+        return null;
     }
 }

@@ -27,7 +27,9 @@ import java.util.ArrayList;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodListAdapter;
+import cmput301.moodi.Objects.MoodiNotificationsAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
+import cmput301.moodi.Objects.NotificationList;
 import cmput301.moodi.Objects.User;
 import cmput301.moodi.R;
 
@@ -46,10 +48,15 @@ public class ProfileFragment extends Fragment {
     private ImageButton logout;
     private TextView username, nameDisplay;
 
-    // Variables that are used to build the list of moods (User Posts)
-    ListView moodList;
-    ArrayAdapter<Mood> moodAdapter;
-    ArrayList<Mood> moodDataList;
+    // Moods
+    private ListView moodListView;
+    private ArrayAdapter<Mood> moodAdapter;
+    private ArrayList<Mood> moodList;
+
+    // Notifications
+    private ListView notificationListView;
+    private MoodiNotificationsAdapter notificationAdapter;
+    private NotificationList notificationList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -60,16 +67,28 @@ public class ProfileFragment extends Fragment {
 
         moodiStorage = new MoodiStorage();
         userProfile = new User();
+
+        // Views from layout
         username = root.findViewById(R.id.username);
         nameDisplay = root.findViewById(R.id.full_name);
+        notificationListView = root.findViewById(R.id.notification_list);
+        moodListView = root.findViewById(R.id.mood_history);
 
-        moodList = root.findViewById(R.id.mood_history);
-        moodDataList = new ArrayList<>();
-        moodAdapter = new MoodListAdapter(container.getContext(), moodDataList);
-        moodList.setAdapter(moodAdapter);
+        // Load lists for moods.
+        moodList = new ArrayList<Mood>();
+        moodAdapter = new MoodListAdapter(container.getContext(), moodList);
+        moodListView.setAdapter(moodAdapter);
 
+        // Load lists for notifications.
+        notificationList = new NotificationList();
+        notificationAdapter = new MoodiNotificationsAdapter(container.getContext(), notificationList);
+        notificationListView.setAdapter(notificationAdapter);
+
+
+        // Load views for profile.
         this.loadUserPreferences();
         this.loadMoodHistory();
+        this.loadNotifications();
 
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -77,7 +96,6 @@ public class ProfileFragment extends Fragment {
 
             }
         });
-
 
         return root;
     }
@@ -107,17 +125,15 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-
-
     /*
-     * Query for users mood history
+     * Query for users mood history.
      */
     private void loadMoodHistory() {
         moodiStorage.getUMoodHistory().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    moodDataList.clear();
+                    moodList.clear();
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         // Easy enough to pull more information from database!
                         String postID = doc.getId();
@@ -129,9 +145,40 @@ public class ProfileFragment extends Fragment {
 
                         if (index != null) {
                             int i = index.intValue();
-                            moodDataList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
+                            moodList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
                             Log.d(TAG, socialSituation);
                         }
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+                moodList.sort();
+                moodAdapter.notifyDataSetChanged();
+            }
+        });
+
+    }
+
+
+    /*
+     * Load the notification view.
+     */
+    private void loadNotifications() {
+        moodiStorage.getNotifications().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    notificationList.clear();
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        //Todo: serialize notification.
+                        /*
+                        if (index != null) {
+                            int i = index.intValue();
+                            moodList.add(new Mood(emotionalStateText, reasonText, date, socialSituation, postID, i));
+                            Log.d(TAG, socialSituation);
+                        }
+
+                         */
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -140,6 +187,5 @@ public class ProfileFragment extends Fragment {
                 moodAdapter.notifyDataSetChanged();
             }
         });
-
     }
 }

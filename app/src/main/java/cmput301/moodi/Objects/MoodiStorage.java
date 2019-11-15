@@ -18,7 +18,7 @@ import static cmput301.moodi.util.Constants.POST_PATH;
 import static cmput301.moodi.util.Constants.USER_PATH;
 import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
 import static cmput301.moodi.util.Constants.FOLLOWING_PATH;
-
+import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
 
 public class MoodiStorage {
     private FirebaseFirestore db;
@@ -27,6 +27,7 @@ public class MoodiStorage {
     private CollectionReference userCollection;
     private CollectionReference followingCollection;
     private CollectionReference followerCollection;
+    private CollectionReference notificationsCollection;
 
     private String UID;
 
@@ -38,6 +39,7 @@ public class MoodiStorage {
         this.userCollection = this.db.collection(USER_PATH);
         this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
         this.followingCollection = this.userCollection.document(this.UID).collection(FOLLOWING_PATH);
+        this.notificationsCollection = this.userCollection.document(this.UID).collection(NOTIFICATIONS_PATH);
     }
 
     /*
@@ -59,6 +61,10 @@ public class MoodiStorage {
      */
     public Task getFollowing() {
         return this.followingCollection.get();
+    }
+
+    public Task getNotifications() {
+        return this.notificationsCollection.get();
     }
 
     /*

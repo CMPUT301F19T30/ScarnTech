@@ -24,9 +24,10 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import cmput301.moodi.Objects.Mood;
-import cmput301.moodi.Objects.MoodListAdapter;
+import cmput301.moodi.Objects.MoodHistoryAdapter;
 import cmput301.moodi.Objects.MoodiNotificationsAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.NotificationList;
@@ -52,6 +53,8 @@ public class ProfileFragment extends Fragment {
     private ListView moodListView;
     private ArrayAdapter<Mood> moodAdapter;
     private ArrayList<Mood> moodList;
+    //private MoodList moodList; //Todo: use MoodList type in the future.
+
 
     // Notifications
     private ListView notificationListView;
@@ -76,19 +79,19 @@ public class ProfileFragment extends Fragment {
 
         // Load lists for moods.
         moodList = new ArrayList<Mood>();
-        moodAdapter = new MoodListAdapter(container.getContext(), moodList);
+        moodAdapter = new MoodHistoryAdapter(container.getContext(), moodList);
         moodListView.setAdapter(moodAdapter);
 
-        // Load lists for notifications.
+        /* Load lists for notifications.
         notificationList = new NotificationList();
         notificationAdapter = new MoodiNotificationsAdapter(container.getContext(), notificationList);
         notificationListView.setAdapter(notificationAdapter);
-
+        */
 
         // Load views for profile.
         this.loadUserPreferences();
         this.loadMoodHistory();
-        this.loadNotifications();
+        //this.loadNotifications();
 
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -152,7 +155,8 @@ public class ProfileFragment extends Fragment {
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
-                moodList.sort();
+                //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
+                Collections.sort(moodList);
                 moodAdapter.notifyDataSetChanged();
             }
         });

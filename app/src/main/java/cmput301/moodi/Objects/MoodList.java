@@ -43,5 +43,20 @@ public class MoodList {
         Collections.sort(list);
         return list;
     }
+
+    /*
+     * Clear list.
+     */
+    public void clear(){
+        this.moods.clear();
+    }
+
+    /*
+     * Sort mood objectss by reverse chronological order.
+     */
+    public List<Mood> sortReverseChronological(){
+        Collections.sort(this.moods);
+        return this.moods;
+    }
 }
 

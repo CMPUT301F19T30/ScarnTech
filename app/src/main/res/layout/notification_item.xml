@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/notification_item"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/moodiWhite"
+    android:padding="@dimen/activity_vertical_margin">
+
+    <TextView
+        android:id="@+id/type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Type"/>
+
+    <TextView
+        android:id="@+id/type_explanation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:text="Type explanation"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_gravity="end"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/moodiDarkBlue"
+            android:textColor="@color/moodiWhite"
+            android:text="Accept"/>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/moodiWhite"
+            android:textColor="@color/moodiDarkBlue"
+            android:text="Decline"/>
+    </LinearLayout>
+
+
+</LinearLayout>

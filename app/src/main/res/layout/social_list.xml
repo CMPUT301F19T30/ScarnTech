@@ -3,20 +3,22 @@
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
     <EditText
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="24sp"
         android:padding="@dimen/activity_vertical_margin"
+        android:background="@color/moodiWhite"
         android:hint="Search..."/>
 
     <RadioGroup
+        android:id="@+id/filter_status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_margin="@dimen/activity_vertical_margin">
+        android:background="@color/moodiWhite"
+        android:padding="@dimen/activity_vertical_margin">
 
         <RadioButton
             android:id="@+id/radio_all"

@@ -9,8 +9,8 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 
-import androidx.annotation.Nullable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.firestore.CollectionReference;
@@ -21,6 +21,7 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodListAdapter;
@@ -34,14 +35,14 @@ import cmput301.moodi.R;
 public class HomeFragment extends Fragment {
 
     // Variables that are used to build the list of moods (User Posts)
-    ListView moodList;
-    ArrayAdapter<Mood> moodAdapter;
-    ArrayList<Mood> moodDataList;
+    private ListView moodList;
+    private ArrayAdapter<Mood> moodAdapter;
+    private ArrayList<Mood> moodDataList;
 
     // Variables that are used to connect and reference Firebase
-    FirebaseFirestore db;
-    String TAG = "HomeFragment";
-    MoodiStorage moodiStorage;
+    private FirebaseFirestore db;
+    private String TAG = "HomeFragment";
+    private MoodiStorage moodiStorage;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -100,6 +101,7 @@ public class HomeFragment extends Fragment {
                     // Mood mood = new Mood();
 //                    moodDataList.add(new Mood(emotionalStateText, reasonText, date, postID, i)); // Adding the posts from firestore
                 }
+                Collections.sort(moodDataList);
                 moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
             }
         });

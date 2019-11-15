@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
 
@@ -43,43 +44,23 @@ public class MoodHistoryAdapter extends ArrayAdapter<Mood> {
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
 
-        // TODO: Add implemetation of new EmotionalState updates and firebase
         Mood mood = moods.get(position);
 
-        // Point at placeholders in list
+        // Point at placeholders of the context in a post
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
-        ImageView img = view.findViewById(R.id.emoji);
+        ImageView currentEmoji = view.findViewById(R.id.emoji);
 
+        // Pull information from the post!
+        int color = mood.getEmotionalState().getColor();
+        String name = mood.getEmotionalState().getName();
 
-        // Update this to account for a drop down of pre-made moods!
-        // currentEmotionalState.setText(mood.getEmotionalState().toString());
-        //currentEmotionalState.setText(mood.getDummyEmotionalState());
+        // Push information pulled from user input into a new post
+        currentEmotionalState.setText(name);
         currentDate.setText(mood.getDate());
-
-
-        if(currentEmotionalState.getText().equals("Happy") ){
-            img.setImageResource(R.drawable.happy);
-        }
-        else if (currentEmotionalState.getText().equals("Mad")){
-            img.setImageResource(R.drawable.mad);
-        }
-        else if (currentEmotionalState.getText().equals("Sad")){
-            img.setImageResource(R.drawable.sad);
-        }
-        else if (currentEmotionalState.getText().equals("Love")){
-            img.setImageResource(R.drawable.love);
-        }
-        else if (currentEmotionalState.getText().equals("Tired")){
-            img.setImageResource(R.drawable.tired);
-        }
-        else{
-            img.setImageResource(R.drawable.heartbreak);
-        }
-
-
+        currentEmoji.setImageResource(mood.getEmotionalState().getEmoji());
+        view.setBackgroundColor(ContextCompat.getColor(context, color));
 
         return view;
-
     }
 }

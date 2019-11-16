@@ -43,7 +43,7 @@ public class AddLocationActivity extends FragmentActivity implements OnMapReadyC
 
         // get last location data from bundle
         Bundle extras = getIntent().getExtras();
-        if (extras != null) {
+        if (extras != null && !extras.getString("Latitude").isEmpty() && !extras.getString("Longitude").isEmpty()) {
             latitude = Double.valueOf(extras.getString("Latitude"));
             longitude = Double.valueOf(extras.getString("Longitude"));
         } else {

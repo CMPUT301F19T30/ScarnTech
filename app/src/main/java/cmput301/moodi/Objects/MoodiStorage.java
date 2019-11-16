@@ -127,12 +127,12 @@ public class MoodiStorage {
     public Task addLastLocation(GeoPoint location) {
         Map<String, Object> user_location = new HashMap<>();
         user_location.put("Location", location);
-        return db.collection( "users" ).document(this.UID).collection( "LastLocation" ).document(this.UID).set(user_location);
+        return db.collection( "users" ).document(this.UID).collection( "LiveData" ).document("Location").set(user_location);
     }
 
     // retrieve last given location of the user
     public DocumentReference getLastLocation() {
-        return db.collection( "users" ).document(this.UID).collection( "LastLocation" ).document(this.UID);
+        return db.collection( "users" ).document(this.UID).collection( "LiveData" ).document("Location");
     }
 
 }

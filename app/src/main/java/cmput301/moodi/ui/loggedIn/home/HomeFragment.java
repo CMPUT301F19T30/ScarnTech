@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);
-                new ViewFragment().show(getChildFragmentManager(), "View_Moods");
+                new ViewFragment();
                ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(), "View_Moods");
                 return false;
             }

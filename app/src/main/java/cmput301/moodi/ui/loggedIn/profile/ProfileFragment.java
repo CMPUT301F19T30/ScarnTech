@@ -112,7 +112,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);
-                new cmput301.moodi.ui.loggedIn.profile.EditFragment().show(getChildFragmentManager(), "Edit_Moods");
+                new cmput301.moodi.ui.loggedIn.profile.EditFragment();
                 cmput301.moodi.ui.loggedIn.profile.EditFragment.editSelection(moodSelected).show(getChildFragmentManager(), "Edit_Moods");
                 return false;
             }

@@ -50,9 +50,9 @@ public class ProfileFragment extends Fragment {
     private TextView username, nameDisplay;
 
     // Moods
-    private ListView moodListView;
+    private ListView moodList;
     private ArrayAdapter<Mood> moodAdapter;
-    private ArrayList<Mood> moodList;
+    private ArrayList<Mood> moodDataList;
     //private MoodList moodList; //Todo: use MoodList type in the future.
 
 
@@ -75,12 +75,12 @@ public class ProfileFragment extends Fragment {
         username = root.findViewById(R.id.username);
         nameDisplay = root.findViewById(R.id.full_name);
         notificationListView = root.findViewById(R.id.notification_list);
-        moodListView = root.findViewById(R.id.mood_history);
+        moodList = root.findViewById(R.id.mood_history);
 
         // Load lists for moods.
-        moodList = new ArrayList<Mood>();
-        moodAdapter = new MoodHistoryAdapter(container.getContext(), moodList);
-        moodListView.setAdapter(moodAdapter);
+        moodDataList = new ArrayList<Mood>();
+        moodAdapter = new MoodHistoryAdapter(container.getContext(), moodDataList);
+        moodList.setAdapter(moodAdapter);
 
         /* Load lists for notifications.
         notificationList = new NotificationList();
@@ -99,6 +99,20 @@ public class ProfileFragment extends Fragment {
 
             }
         });
+
+        // Adding an onItemLongClickListener to view more information, edit or delete
+        moodList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+            @Override
+            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Mood moodSelected = moodDataList.get(i);
+                new cmput301.moodi.ui.loggedIn.profile.EditFragment().show(getChildFragmentManager(), "Edit_Moods");
+                cmput301.moodi.ui.loggedIn.profile.EditFragment.editSelection(moodSelected).show(getChildFragmentManager(), "Edit_Moods");
+                return false;
+            }
+        });
+
+        // TODO: close fragment (Taking two clicks bug)
+        checkForUpdates();
 
         return root;
     }
@@ -136,7 +150,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    moodList.clear();
+                    moodDataList.clear();
                     for (QueryDocumentSnapshot doc : task.getResult()) {
                         // Easy enough to pull more information from database!
                         String postID = doc.getId();
@@ -156,13 +170,56 @@ public class ProfileFragment extends Fragment {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
                 //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
-                Collections.sort(moodList);
+                Collections.sort(moodDataList);
                 moodAdapter.notifyDataSetChanged();
             }
         });
 
     }
 
+    /*
+     * Query for updates users mood history
+     */
+    private void checkForUpdates() {
+
+        // Variable used to reference database
+        FirebaseFirestore db;
+
+        // Access a Cloud Firestore instance from your Activity
+        db = FirebaseFirestore.getInstance();
+
+        // Get a top-level reference to the collection.
+        final CollectionReference collectionReference = db.collection("posts");
+
+        collectionReference.whereEqualTo("UID", moodiStorage.getUserUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+
+                // clear the old list
+                moodDataList.clear();
+
+                // Point at database, receive any changes and append them to our list of posts
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
+
+                    // Log for debugging and reference
+                    Log.d(TAG, String.valueOf(doc.getData().get("Emotional State")));
+
+                    String postID = doc.getId();
+                    String reasonText = (String) doc.getData().get("Reason");
+                    String date = (String) doc.getData().get("Date");
+                    String socialSituation = (String) doc.getData().get("Social Situation");
+                    Number index = (Number) doc.getData().get("Index");
+
+                    if (index != null) {
+                        int i = index.intValue();
+                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i));
+                        Log.d(TAG, socialSituation);
+                    }
+                }
+                moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
+                }
+            });
+    }
 
     /*
      * Load the notification view.

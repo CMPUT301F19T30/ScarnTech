@@ -2,37 +2,6 @@
     <string name="app_name">Moodi</string>
     <string name="motto">Send Moods</string>
 
-    <!-- Custom -->
-    <string name="users_collection_path">users</string>
-    <string name="posts_collection_path">posts</string>
-    <string name="title_activity_navigation">NavigationActivity</string>
-    <string name="title_home">Home</string>
-    <string name="title_dashboard">Dashboard</string>
-    <string name="title_social">Social</string>
-    <string name="moodi">Moodi</string>
-    <string name="enter_your_email_address">Enter your email address</string>
-    <string name="enter_your_password">Enter your password</string>
-    <string name="log_in">Log In</string>
-    <string name="sign_up">Sign Up</string>
-    <string name="not_yet_registered_sign_up_here">Not yet registered? Sign up here.</string>
-    <string name="send_moods">Send Moods</string>
-    <string name="create_a_new_account">Create a new account!</string>
-    <string name="enter_a_password">Enter a password</string>
-    <string name="create_account">Create Account</string>
-    <string name="already_registered_log_in_here">Already registered? Log in here.</string>
-    <string name="welcome_to">Welcome to</string>
-    <string name="make_a_post">Make A Post!</string>
-    <string name="log_out">Log Out</string>
-    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
-    <string name="title_maps">Maps</string>
-    <string name="title_post">Post</string>
-    <string name="title_profile">Profile</string>
-    <string name="action_logout">Logout</string>
-
-    <string name="time_24_hour">Time (24 Hour):</string>
-    <string name="hr">hr</string>
-    <string name="min">min</string>
-
     <!-- List of Emotional States for spinner in post creation -->
     <string name="Emo_propmt">Choose a Emotion</string>
     <string-array name="EmotionalStates">
@@ -148,5 +117,51 @@
         <item>With a group</item>
         <item>Secret</item>
     </string-array>
+
+    <!-- String Resources-->
+    <string name="users_collection_path">users</string>
+    <string name="posts_collection_path">posts</string>
+    <string name="title_activity_navigation">NavigationActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_social">Social</string>
+    <string name="moodi">Moodi</string>
+    <string name="enter_your_email_address">Enter your email address</string>
+    <string name="enter_your_password">Enter your password</string>
+    <string name="log_in">Log In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="not_yet_registered_sign_up_here">Not yet registered? Sign up here.</string>
+    <string name="send_moods">Send Moods</string>
+    <string name="create_a_new_account">Create a new account!</string>
+    <string name="enter_a_password">Enter a password</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_registered_log_in_here">Already registered? Log in here.</string>
+    <string name="welcome_to">Welcome to</string>
+    <string name="make_a_post">Make A Post!</string>
+    <string name="log_out">Log Out</string>
+    <string name="title_activity_bottom_navigation">BottomNavigationActivity</string>
+    <string name="title_maps">Maps</string>
+    <string name="title_post">Post</string>
+    <string name="title_profile">Profile</string>
+    <string name="action_logout">Logout</string>
+    <string name="time_24_hour">Time (24 Hour):</string>
+    <string name="hr">hr</string>
+    <string name="min">min</string>
+    <string name="title_activity_add_location">Map</string>
+    <string name="set_to_this_location">Set to this location</string>
+    <string name="emotional_state">Emotional State:</string>
+    <string name="reasoning">Reasoning:</string>
+    <string name="oh_whys_that">Oh, whys that?</string>
+    <string name="social_situation">Social Situation:</string>
+    <string name="currently_tagged_location">Currently Tagged Location:</string>
+    <string name="none">none</string>
+    <string name="date">Date</string>
+    <string name="image">Image</string>
+    <string name="add_location_button">add location button</string>
+    <string name="add_camera_photo_button">add camera photo button</string>
+    <string name="post_mood_button">post mood button</string>
+    <string name="add_gallery_photo_button">add gallery photo button</string>
+    <string name="comma_space">, </string>
+    <string name="users_uploaded_photo">Users uploaded photo</string>
 
 </resources>

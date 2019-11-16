@@ -35,6 +35,8 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.GeoPoint;
 
+import java.util.Objects;
+
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 import cmput301.moodi.ui.login.LoginActivity;
@@ -68,11 +70,11 @@ public class BottomNavigationActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
         // Actionbar setup with username
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
-        final TextView mTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
-        mTitle.setText("Moodi");
+        Objects.requireNonNull(getSupportActionBar()).setDisplayShowTitleEnabled(false);
+        final TextView mTitle = toolbar.findViewById(R.id.toolbar_title);
+        mTitle.setText(R.string.app_name);
 
         // maps stuff
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -94,7 +96,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
     /*
      * Handle actionbar item selection.
      */
-    public boolean onOptionsItemSelected(MenuItem item) { switch(item.getItemId()) {
+    public boolean onOptionsItemSelected(MenuItem item) {switch(item.getItemId()) {
         case R.id.action_logout:
             FirebaseAuth.getInstance().signOut();
             Intent i = new Intent(this, LoginActivity.class);
@@ -147,12 +149,11 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
     // return true if google services and maps are enabled on the users phone
     private boolean checkMapServices(){
-        if (isServicesOK()){
-            if (isMapsEnabled()){
-                return true;
-            }
+        if (isServicesOK() && isMapsEnabled()){
+            return true;
+        } else {
+            return false;
         }
-        return false;
     }
 
     // ask user to enable gps
@@ -174,7 +175,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
     public boolean isMapsEnabled(){
         final LocationManager manager = (LocationManager) getSystemService( Context.LOCATION_SERVICE );
 
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
+        if (manager != null && !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
             buildAlertMessageNoGps();
             return false;
         }
@@ -221,9 +222,7 @@ public class BottomNavigationActivity extends AppCompatActivity {
 
     // change a boolean that tracks the permission status of location
     @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           @NonNull String permissions[],
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         mLocationPermissionGranted = false;
         switch (requestCode) {
             case PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION: {
@@ -271,10 +270,4 @@ public class BottomNavigationActivity extends AppCompatActivity {
             }
         }
     }
-
-//    // DO nothing with, its to implement fragment listener for PostFragment
-//    @Override
-//    public void customDate(String time, String date) {
-//        Log.d("getter","test1");
-//    }
 }

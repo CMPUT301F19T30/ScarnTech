@@ -11,9 +11,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
+import java.util.Map;
+import java.util.Objects;
 
 import static cmput301.moodi.util.Constants.POST_PATH;
 import static cmput301.moodi.util.Constants.USER_PATH;
@@ -33,26 +36,9 @@ public class MoodiStorage {
     private String UID;
 
     public MoodiStorage() {
-            this.db = FirebaseFirestore.getInstance();
-            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-            this.UID = mFirebaseAuth.getCurrentUser().getUid();
-
-//        userCollection.whereEqualTo("UID", UID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    // user found
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        name = (String) document.getData().get("Username");
-//
-//                    }
-//                } else {
-//                    Log.d(TAG, "Error getting username: ", task.getException());
-//                }
-//            }
-//        });
-//
-//        this.username = name;
+        this.db = FirebaseFirestore.getInstance();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        this.UID = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
         this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
@@ -99,7 +85,6 @@ public class MoodiStorage {
         return this.userCollection.get();
     }
 
-
     /*
      * Returns all of the users own posts.
      */
@@ -118,7 +103,6 @@ public class MoodiStorage {
         return this.postCollection.add(postData);
     }
 
-
     /*
      * Deletes a post from Firebase.
      *
@@ -126,7 +110,6 @@ public class MoodiStorage {
     public void deletePost(String postID) {
         //Todo: implement post deletion from firebase.
     }
-
 
     /*
      * Returns user profile data. Need to complete onCompleteListeners to retrieve data.
@@ -149,4 +132,17 @@ public class MoodiStorage {
         // TODO later... fuc dat
         return null;
     }
+
+    // add the last given location to firebase
+    public Task addLastLocation(GeoPoint location) {
+        Map<String, Object> user_location = new HashMap<>();
+        user_location.put("Location", location);
+        return db.collection( "users" ).document(this.UID).collection( "LiveData" ).document("Location").set(user_location);
+    }
+
+    // retrieve last given location of the user
+    public DocumentReference getLastLocation() {
+        return db.collection( "users" ).document(this.UID).collection( "LiveData" ).document("Location");
+    }
+
 }

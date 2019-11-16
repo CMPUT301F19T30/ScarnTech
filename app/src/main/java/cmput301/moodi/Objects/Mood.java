@@ -53,9 +53,8 @@ public class Mood implements Comparable<Mood> {
     /*
     * Constructor for receiving a post from the FireBase and constructing a new mood
      */
-    public Mood(String emotionalState, String reason, String date, String socialSituation, String keyID, int index) {
+    public Mood(String reason, String date, String socialSituation, String keyID, int index) {
         this.emotionalState.setEmotionalState(index);
-        this.emotionalState.setName(emotionalState);
         this.reason = reason;
         this.date = date;
         this.socialSituation = socialSituation;
@@ -180,7 +179,7 @@ public class Mood implements Comparable<Mood> {
         this.emotionalIndex = this.getEmotionalState().getIndex();
         HashMap<String, Object> data = new HashMap<>();
         data.put("Emotional State", this.getEmotionalState().getName());
-        data.put("Index", this.getEmotionalState().getIndex());
+        data.put("Index", emotionalIndex);
         data.put("Reason", this.getReason());
         data.put("Social Situation", this.getSocialSituation());
         data.put("Location", this.getLocation());

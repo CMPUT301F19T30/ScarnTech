@@ -16,6 +16,7 @@ import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 import static cmput301.moodi.util.Constants.POST_PATH;
 import static cmput301.moodi.util.Constants.USER_PATH;
@@ -37,7 +38,7 @@ public class MoodiStorage {
     public MoodiStorage() {
         this.db = FirebaseFirestore.getInstance();
         FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-        this.UID = mFirebaseAuth.getCurrentUser().getUid();
+        this.UID = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
         this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
@@ -90,6 +91,7 @@ public class MoodiStorage {
     public Task getUMoodHistory() {
         return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
+
 
     /*
      * Creates a post object and adds it to Firebase post collection.

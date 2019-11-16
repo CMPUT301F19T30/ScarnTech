@@ -4,13 +4,6 @@
     package="cmput301.moodi">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.CAMERA" />
-
-    <uses-feature android:name="android.hardware.camera" android:required="false"></uses-feature>
-    <uses-feature android:name="android.hardware.camera.autofocus"></uses-feature>
-
 
     <uses-feature
         android:glEsVersion="0x00020000"
@@ -28,7 +21,7 @@
 
         <activity
             android:name=".ui.loggedIn.post.AddLocationActivity"
-            android:label="@string/title_activity_add_location"></activity>
+            android:label="@string/title_activity_add_location" />
         <activity android:name=".ui.createAccount.CreateAccountActivity" />
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>

@@ -1,8 +1,5 @@
 package cmput301.moodi.ui.loggedIn.maps;
 
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -16,14 +13,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
-import com.google.android.gms.maps.model.BitmapDescriptor;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,6 +31,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Stream;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
@@ -58,6 +56,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     // managing the map markers
     private List<Marker> userMarkers;
     private List<Marker> followingMarkers;
+    private List<Marker> allMarkers;
 
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -74,7 +73,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         numUmoods.setText("0");
         numFMoods.setText("0");
 
-        // create the map object and
+        // create the map object
         initGoogleMap(savedInstanceState);
 
         // firebase access functions
@@ -93,6 +92,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         }
 
         userMarkers = new ArrayList<Marker>();
+        followingMarkers = new ArrayList<Marker>();
+        allMarkers = new ArrayList<Marker>();
+
         mMapView.onCreate(mapViewBundle);
         mMapView.getMapAsync(this);
     }
@@ -135,8 +137,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapUiSettings.setZoomControlsEnabled(true);
         mapUiSettings.setAllGesturesEnabled(true);
         mapUiSettings.setCompassEnabled(true);
-        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(53.5461, -113.4938), (float) 9.0));
 
+        // initial zoom settings
+        map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(53.5461, -113.4938), (float) 9.0));
 
         // toggle for user to choose whether their moods show on the map
         userMoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -152,32 +155,29 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 int count = 0;
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     GeoPoint gp = (GeoPoint) document.getData().get("Location");
-//                                    Number emotionalstate = (Number) document.getData().get("Index");
-
-////                                    int icon;
-//                                    float color;
-//                                    if(emotionalstate.intValue() == 0){
-////                                        icon = R.drawable.happy;
-//                                        float HUE_YELLOW;
-//                                    } else if (emotionalstate.intValue() == 1){
-////                                        icon = R.drawable.mad;
-//                                    } else if (emotionalstate.intValue() == 2){
-////                                        icon = R.drawable.sad;
-//                                    } else if (emotionalstate.intValue() == 3){
-////                                        icon = R.drawable.love;
-//                                    } else { // (emotionalstate == 4) {
-////                                        icon = R.drawable.tired;
-//                                    }
-
-                                    userMarkers.add(map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude()))));
+                                    Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
+                                    userMarkers.add(newMarker);
+                                    allMarkers.add(newMarker);
                                     count = count + 1;
-//                                            .title("Big mood")));
-//                                            .icon(BitmapDescriptorFactory
-//                                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
-//                                            .icon(BitmapDescriptorFactory.fromResource(icon))));
                                 }
 
                                 numUmoods.setText(String.valueOf(count));
+
+                                // if markers were placed we can adjust the zoom settings
+                                if (count == 1) {
+                                    // zoom to marker
+
+                                } else if (count > 1) {
+                                    // zoom to group
+                                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                    for (Marker marker : allMarkers) {
+                                        builder.include(marker.getPosition());
+                                    }
+                                    LatLngBounds bounds = builder.build();
+                                    int padding = 50; // offset from edges of the map in pixels
+                                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                                    map.animateCamera(cu);
+                                }
                             } else {
                                 Log.d(TAG, "Error getting user moods: ", task.getException());
                             }
@@ -213,8 +213,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
-        // add markers for all posts that the user selects
-        // map.addMarker(new MarkerOptions().position(new LatLng(0, 0)).title("Marker"));
     }
 
     @Override

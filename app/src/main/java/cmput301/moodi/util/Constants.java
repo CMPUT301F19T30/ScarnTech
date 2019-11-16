@@ -7,8 +7,11 @@ public class Constants {
 
 
     public static final String MAPVIEW_BUNDLE_KEY = "MapViewBundleKey";
+
     public static final String POST_PATH = "posts";
     public static final String USER_PATH = "users";
     public static final String FOLLOWERS_PATH = "followers";
     public static final String FOLLOWING_PATH = "following";
+
+    public static final int PICK_CONTACT_REQUEST = 1;
 }

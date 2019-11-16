@@ -1,5 +1,6 @@
 package cmput301.moodi.ui.loggedIn.post;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -7,16 +8,24 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import android.widget.CalendarView;
-import android.widget.ArrayAdapter;
 
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 
 
@@ -25,7 +34,7 @@ import java.util.Calendar;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
+
 
 /*
  * Class: PostFragment
@@ -41,7 +50,7 @@ public class PostFragment extends Fragment {
     private ImageButton PostMood;
     private ImageButton getCustomDateButton;
     private ImageButton getPictureButton;
-    private ImageButton getCustomLocationButton;
+    private ImageButton getLocationButton;
 
     private CalendarView calendar;
     private String inputDate;
@@ -50,6 +59,9 @@ public class PostFragment extends Fragment {
 
     private Spinner EmotionalStateSpinner;
     private Spinner SocialSituationSpinner;
+
+    private TextView lastLat;
+    private TextView lastLon;
 
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
@@ -68,7 +80,7 @@ public class PostFragment extends Fragment {
         PostMood = view.findViewById(R.id.post_mood_button);
         getCustomDateButton = view.findViewById(R.id.add_date_button);
         getPictureButton = view.findViewById(R.id.add_image_button);
-        getCustomLocationButton = view.findViewById(R.id.add_location_button);
+        getLocationButton = view.findViewById(R.id.add_location_button);
 
         EmotionalStateSpinner = view.findViewById(R.id.input_EmotionalState_Spinner);
         SocialSituationSpinner = view.findViewById(R.id.input_SocialSituation_Spinner);
@@ -76,6 +88,9 @@ public class PostFragment extends Fragment {
         inputHourSpinner = view.findViewById(R.id.input_hour);
         inputMinuteSpinner = view.findViewById(R.id.input_minute);
         calendar = view.findViewById(R.id.input_calendarView);
+
+        lastLat = view.findViewById(R.id.last_lat);
+        lastLon = view.findViewById(R.id.last_lon);
 
         // Get the current time and update the spinners
         Calendar instantCalendar = Calendar.getInstance();
@@ -98,6 +113,41 @@ public class PostFragment extends Fragment {
         // Access a Cloud Firestore instance from your Activity
         moodiStorage = new MoodiStorage();
 
+        getLocationButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity(), AddLocationActivity.class);
+                // pass old location to add location activity
+                if (lastLat.getText() != null && lastLon.getText() != null) {
+                    i.putExtra("Latitude", lastLat.getText().toString());
+                    i.putExtra("Longitude", lastLon.getText().toString());
+                }
+                startActivity(i);
+            }
+        });
+
+        // Get most recent user position data
+        DocumentReference docRef = moodiStorage.getLastLocation();
+        docRef.addSnapshotListener(new EventListener<DocumentSnapshot>() {
+            @Override
+            public void onEvent(@Nullable DocumentSnapshot snapshot,
+                                @Nullable FirebaseFirestoreException e) {
+                if (e != null) {
+                    Log.w(TAG, "Listen failed.", e);
+                    return;
+                }
+
+                if (snapshot != null && snapshot.exists()) {
+                    Log.d(TAG, "Current data: " + snapshot.getData());
+                    GeoPoint lastLocation = (GeoPoint) snapshot.getData().get("Location");
+                    lastLat.setText(String.valueOf(lastLocation.getLatitude()));
+                    lastLon.setText(String.valueOf(lastLocation.getLongitude()));
+                } else {
+                    Log.d(TAG, "Current data: null");
+                }
+            }
+        });
+
         // Set onclick listener for creation of new post
         PostMood.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,15 +163,18 @@ public class PostFragment extends Fragment {
                 String minute = inputMinuteSpinner.getSelectedItem().toString();
                 String date = inputDate + " " + hour + ":" + minute;
 
-                // Get most recent user position data
-                ((BottomNavigationActivity)getActivity()).updateUserLocation();
-                GeoPoint lastLocation = ((BottomNavigationActivity)getActivity()).getLastLocation();
 
                 // Create a new mood from the user input
                 Mood mood = new Mood(index, reason, socialSituation, date);
 
                 // Set mood location to the retrieved position data
-                mood.setLocation(lastLocation);
+                if (lastLat.getText() != null && lastLon.getText() != null) {
+                    mood.setLocation(new GeoPoint(Double.valueOf(lastLat.getText().toString()), Double.valueOf(lastLon.getText().toString())));
+                } else {
+                    Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
+
+                }
+
 
                 // Send data to the database
                 moodiStorage.addMoodPost(mood);
@@ -134,7 +187,7 @@ public class PostFragment extends Fragment {
                 inputMinuteSpinner.setSelection(minutes);
             }
         });
+
         return view;
     }
-
 }

@@ -11,9 +11,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static cmput301.moodi.util.Constants.POST_PATH;
 import static cmput301.moodi.util.Constants.USER_PATH;
@@ -28,30 +30,12 @@ public class MoodiStorage {
     private CollectionReference userCollection;
     private CollectionReference followingCollection;
     private CollectionReference followerCollection;
-
     private String UID;
 
     public MoodiStorage() {
-            this.db = FirebaseFirestore.getInstance();
-            FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
-            this.UID = mFirebaseAuth.getCurrentUser().getUid();
-
-//        userCollection.whereEqualTo("UID", UID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//            @Override
-//            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                if (task.isSuccessful()) {
-//                    // user found
-//                    for (QueryDocumentSnapshot document : task.getResult()) {
-//                        name = (String) document.getData().get("Username");
-//
-//                    }
-//                } else {
-//                    Log.d(TAG, "Error getting username: ", task.getException());
-//                }
-//            }
-//        });
-//
-//        this.username = name;
+        this.db = FirebaseFirestore.getInstance();
+        FirebaseAuth mFirebaseAuth = FirebaseAuth.getInstance();
+        this.UID = mFirebaseAuth.getCurrentUser().getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
         this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
@@ -143,4 +127,16 @@ public class MoodiStorage {
         // TODO later... fuc dat
         return null;
     }
+
+    // add the last known location to firebase
+    public Task addLastLocation(GeoPoint location) {
+        Map<String, Object> user_location = new HashMap<>();
+        user_location.put("Location", location);
+        return db.collection( "users" ).document(this.UID).collection( "LastLocation" ).document(this.UID).set(user_location);
+    }
+
+    public DocumentReference getLastLocation() {
+        return db.collection( "users" ).document(this.UID).collection( "LastLocation" ).document(this.UID);
+    }
+
 }

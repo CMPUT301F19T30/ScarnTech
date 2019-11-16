@@ -148,5 +148,6 @@
         <item>With a group</item>
         <item>Secret</item>
     </string-array>
+    <string name="title_activity_add_location">Map</string>
 
 </resources>

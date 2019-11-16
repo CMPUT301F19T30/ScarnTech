@@ -39,6 +39,8 @@ import java.util.Objects;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
+import cmput301.moodi.ui.loggedIn.home.ViewFragment;
+import cmput301.moodi.ui.loggedIn.profile.EditFragment;
 import cmput301.moodi.ui.login.LoginActivity;
 
 import static cmput301.moodi.util.Constants.ERROR_DIALOG_REQUEST;
@@ -52,7 +54,7 @@ import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
  * 11/09/2019
  */
 
-public class BottomNavigationActivity extends AppCompatActivity {
+public class BottomNavigationActivity extends AppCompatActivity implements ViewFragment.viewPost, EditFragment.addNewDate {
     private static final String TAG = "BottomNavActivity";
 
     // maps and location stuffity stuffs
@@ -270,4 +272,9 @@ public class BottomNavigationActivity extends AppCompatActivity {
             }
         }
     }
+    // DO nothing with, its to implement fragment listener for edit and view fragment
+    @Override
+    public void viewThePost() { }
+    @Override
+    public void customDate() { }
 }

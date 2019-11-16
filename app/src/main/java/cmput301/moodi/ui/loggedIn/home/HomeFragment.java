@@ -79,17 +79,23 @@ public class HomeFragment extends Fragment {
                     // Log for debugging and reference
                     Log.d(TAG, String.valueOf(doc.getData().get("Emotional State")));
 
+                    // Easy enough to pull more information from database!
                     String postID = doc.getId();
+                    String emotionalStateText = (String) doc.getData().get("Emotional State");
                     String reasonText = (String) doc.getData().get("Reason");
                     String date = (String) doc.getData().get("Date");
                     String socialSituation = (String) doc.getData().get("Social Situation");
                     Number index = (Number) doc.getData().get("Index");
-
+//                    int i = index.intValue();
                     if (index != null) {
                         int i = index.intValue();
-                        moodDataList.add(new Mood(reasonText, date, socialSituation , postID, i));
+                        moodDataList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
                         Log.d(TAG, socialSituation);
                     }
+
+
+
+
 
                     // TODO: Change it to receive the FULL mood + move firebase code to MoodiStorage
                     // Mood mood = new Mood();
@@ -106,9 +112,9 @@ public class HomeFragment extends Fragment {
         moodList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Mood moodSelected = moodDataList.get(i);
-                new ViewFragment().show(getChildFragmentManager(), "View_Moods");
-               ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(), "View_Moods");
+                db.collection("posts")
+                        .document(moodAdapter.getItem(i).getKeyID())
+                        .delete();
                 return false;
             }
         });

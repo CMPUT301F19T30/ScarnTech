@@ -1,12 +1,10 @@
 package cmput301.moodi.ui.loggedIn.profile;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ListView;
@@ -14,19 +12,14 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.EventListener;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -120,6 +113,7 @@ public class ProfileFragment extends Fragment {
 
         // TODO: close fragment (Taking two clicks bug)
         checkForUpdates();
+
         return root;
     }
 
@@ -158,8 +152,9 @@ public class ProfileFragment extends Fragment {
                 if (task.isSuccessful()) {
                     moodDataList.clear();
                     for (QueryDocumentSnapshot doc : task.getResult()) {
-
+                        // Easy enough to pull more information from database!
                         String postID = doc.getId();
+                        String emotionalStateText = (String) doc.getData().get("Emotional State");
                         String reasonText = (String) doc.getData().get("Reason");
                         String date = (String) doc.getData().get("Date");
                         String socialSituation = (String) doc.getData().get("Social Situation");
@@ -167,19 +162,15 @@ public class ProfileFragment extends Fragment {
 
                         if (index != null) {
                             int i = index.intValue();
-
-                            moodDataList.add(new Mood(reasonText, date, socialSituation , postID, i));
-
+                            moodList.add(new Mood(emotionalStateText, reasonText, date, socialSituation , postID, i));
                             Log.d(TAG, socialSituation);
                         }
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
-
                 //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
                 Collections.sort(moodDataList);
-
                 moodAdapter.notifyDataSetChanged();
             }
         });
@@ -229,6 +220,7 @@ public class ProfileFragment extends Fragment {
                 }
             });
     }
+
     /*
      * Load the notification view.
      */
@@ -254,7 +246,6 @@ public class ProfileFragment extends Fragment {
                 }
 
                 moodAdapter.notifyDataSetChanged();
-
             }
         });
     }

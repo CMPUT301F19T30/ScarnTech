@@ -37,8 +37,6 @@ import com.google.firebase.firestore.GeoPoint;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.loggedIn.home.ViewFragment;
-import cmput301.moodi.ui.loggedIn.profile.EditFragment;
 import cmput301.moodi.ui.login.LoginActivity;
 
 import static cmput301.moodi.util.Constants.ERROR_DIALOG_REQUEST;
@@ -52,7 +50,7 @@ import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
  * 11/09/2019
  */
 
-public class BottomNavigationActivity extends AppCompatActivity implements EditFragment.addNewDate, ViewFragment.viewPost {
+public class BottomNavigationActivity extends AppCompatActivity {
     private static final String TAG = "BottomNavActivity";
 
     // maps and location stuffity stuffs
@@ -273,9 +271,10 @@ public class BottomNavigationActivity extends AppCompatActivity implements EditF
             }
         }
     }
-    // Do nothing with, its to implement fragment listener for PostFragment
-    @Override
-    public void customDate() { }
-    @Override
-    public void viewThePost() { }
+
+//    // DO nothing with, its to implement fragment listener for PostFragment
+//    @Override
+//    public void customDate(String time, String date) {
+//        Log.d("getter","test1");
+//    }
 }

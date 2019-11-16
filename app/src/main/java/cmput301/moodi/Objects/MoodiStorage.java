@@ -101,7 +101,6 @@ public class MoodiStorage {
         return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
 
-
     /*
      * Creates a post object and adds it to Firebase post collection.
      *

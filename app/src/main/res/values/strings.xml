@@ -149,5 +149,6 @@
         <item>Secret</item>
     </string-array>
     <string name="title_activity_add_location">Map</string>
+    <string name="set_to_this_location">Set to this location</string>
 
 </resources>

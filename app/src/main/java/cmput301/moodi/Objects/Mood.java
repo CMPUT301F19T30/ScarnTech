@@ -13,6 +13,7 @@ import java.util.HashMap;
 public class Mood implements Comparable<Mood> {
 
     private String date;
+    private final static String TAG = "Mood class";
     private EmotionalState emotionalState = new EmotionalState();
 
     private String reason = "";
@@ -188,7 +189,7 @@ public class Mood implements Comparable<Mood> {
 
     @Override
     public int compareTo(Mood mood) {
-        return this.moodID.compareTo(mood.getID());
+        return mood.getDate().compareTo(this.date);
     }
 
     public String getKeyID() {

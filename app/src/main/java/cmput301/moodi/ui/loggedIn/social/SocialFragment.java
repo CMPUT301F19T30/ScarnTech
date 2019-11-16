@@ -9,7 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.RadioButton;
+import android.widget.RadioGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -42,6 +42,7 @@ public class SocialFragment extends Fragment {
     UserListAdapter userAdapter;
     UserList userList, followersList, followingList;
     EditText inputSearch;
+    String userStatusFilter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -75,9 +76,40 @@ public class SocialFragment extends Fragment {
             public void afterTextChanged(Editable arg0) {}
         });
 
+        RadioGroup selectionGroup = root.findViewById(R.id.filter_status);
+
+        selectionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int i) {
+
+                switch(i) {
+                    case R.id.radio_all:
+                        Log.d(TAG, "show all");
+                        userStatusFilter = "all";
+                        break;
+
+                    case R.id.radio_followers:
+                        Log.d(TAG, "show followers");
+                        userStatusFilter = "followers";
+                        break;
+
+                    case R.id.radio_following:
+                        Log.d(TAG, "show following");
+                        userStatusFilter = "following";
+                        break;
+                }
+                //Todo: notify that status filter has changed.
+
+            }
+        });
+
         return root;
+
     }
 
+    /*
+     * Begin by displaying all. Must update on radio click change.
+     */
     public void loadSocialList() {
         moodiStorage.getApplicationUsers().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -103,24 +135,4 @@ public class SocialFragment extends Fragment {
         });
     }
 
-    public void onRadioSelect(View view) {
-        boolean checked = ((RadioButton) view).isChecked();
-
-        switch(view.getId()) {
-            case R.id.radio_all:
-                if (checked)
-                    Log.d(TAG, "show all");
-                break;
-
-            case R.id.radio_followers:
-                if (checked)
-                    Log.d(TAG, "show followers");
-                    break;
-
-            case R.id.radio_following:
-                if (checked)
-                    Log.d(TAG, "show following");
-                    break;
-        }
-    }
 }

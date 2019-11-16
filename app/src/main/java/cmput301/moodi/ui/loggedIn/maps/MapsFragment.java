@@ -150,9 +150,11 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 // for each mood, extract the location and make a marker with it
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     GeoPoint gp = (GeoPoint) document.getData().get("Location");
-                                    Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
-                                    userMarkers.add(newMarker);
-                                    allMarkers.add(newMarker);
+                                    if (gp != null) {
+                                        Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
+                                        userMarkers.add(newMarker);
+                                        allMarkers.add(newMarker);
+                                    }
                                 }
 
                                 // display to user how many of their moods are now being shown

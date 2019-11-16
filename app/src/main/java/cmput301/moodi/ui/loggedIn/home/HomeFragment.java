@@ -84,10 +84,15 @@ public class HomeFragment extends Fragment {
                     String date = (String) doc.getData().get("Date");
                     String socialSituation = (String) doc.getData().get("Social Situation");
                     Number index = (Number) doc.getData().get("Index");
+                    byte[] image = (byte[]) doc.getData().get("Image");
 
                     if (index != null) {
                         int i = index.intValue();
-                        moodDataList.add(new Mood(reasonText, date, socialSituation , postID, i));
+                        // TODO: Implement image and serialize as a list
+
+                        //  moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, image));
+                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i));
+
                         Log.d(TAG, socialSituation);
                     }
 

@@ -35,6 +35,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 
 
+import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Calendar;
@@ -165,6 +166,14 @@ public class PostFragment extends Fragment {
                 String socialSituation = SocialSituationSpinner.getSelectedItem().toString();
                 int index = EmotionalStateSpinner.getSelectedItemPosition();
 
+                // Pulling image from user input & converting the data from an ImageView as bytes
+                userPhoto.setDrawingCacheEnabled(true);
+                userPhoto.buildDrawingCache();
+                Bitmap bitmap = userPhoto.getDrawingCache();
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] image = baos.toByteArray();
+
                 // Getting the updated time
                 String hour = inputHourSpinner.getSelectedItem().toString();
                 String minute = inputMinuteSpinner.getSelectedItem().toString();
@@ -175,7 +184,7 @@ public class PostFragment extends Fragment {
                 GeoPoint lastLocation = ((BottomNavigationActivity) getActivity()).getLastLocation();
 
                 // Create a new mood from the user input
-                Mood mood = new Mood(index, reason, socialSituation, date);
+                Mood mood = new Mood(index, reason, socialSituation, date, image);
 
                 // Set mood location to the retrieved position data
                 mood.setLocation(lastLocation);

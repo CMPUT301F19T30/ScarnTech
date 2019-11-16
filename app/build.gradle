@@ -39,7 +39,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-firestore:21.1.1'
     implementation 'com.google.android.material:material:1.0.0'
 
-    // From bottom nav test, to be filtered
+    // From bottom nav test, some must be removed
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'

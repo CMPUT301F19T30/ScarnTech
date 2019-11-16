@@ -22,7 +22,6 @@ import static cmput301.moodi.util.Constants.USER_PATH;
 import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
 import static cmput301.moodi.util.Constants.FOLLOWING_PATH;
 
-
 public class MoodiStorage {
     private FirebaseFirestore db;
     private static final String TAG = "moodiStorage";
@@ -77,14 +76,12 @@ public class MoodiStorage {
         return this.userCollection.get();
     }
 
-
     /*
      * Returns all of the users own posts.
      */
     public Task getUMoodHistory() {
         return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
-
 
     /*
      * Creates a post object and adds it to Firebase post collection.
@@ -96,7 +93,6 @@ public class MoodiStorage {
         return this.postCollection.add(postData);
     }
 
-
     /*
      * Deletes a post from Firebase.
      *
@@ -104,7 +100,6 @@ public class MoodiStorage {
     public void deletePost(String postID) {
         //Todo: implement post deletion from firebase.
     }
-
 
     /*
      * Returns user profile data. Need to complete onCompleteListeners to retrieve data.
@@ -128,13 +123,14 @@ public class MoodiStorage {
         return null;
     }
 
-    // add the last known location to firebase
+    // add the last given location to firebase
     public Task addLastLocation(GeoPoint location) {
         Map<String, Object> user_location = new HashMap<>();
         user_location.put("Location", location);
         return db.collection( "users" ).document(this.UID).collection( "LastLocation" ).document(this.UID).set(user_location);
     }
 
+    // retrieve last given location of the user
     public DocumentReference getLastLocation() {
         return db.collection( "users" ).document(this.UID).collection( "LastLocation" ).document(this.UID);
     }

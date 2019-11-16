@@ -2,11 +2,9 @@ package cmput301.moodi.ui.loggedIn.post;
 
 import androidx.fragment.app.FragmentActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -20,11 +18,8 @@ import com.google.firebase.firestore.GeoPoint;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 
-import static cmput301.moodi.util.Constants.PICK_CONTACT_REQUEST;
-
 public class AddLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
-    private GoogleMap mMap;
     MarkerOptions markerOptions;
     Double latitude;
     Double longitude;
@@ -34,16 +29,19 @@ public class AddLocationActivity extends FragmentActivity implements OnMapReadyC
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_add_location);
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
-                .findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+
+        // map setup
         mapFragment.getMapAsync(this);
 
         cancelLocation = findViewById(R.id.cancel_location);
         setLocation = findViewById(R.id.set_location);
 
-        // get last location data
+        // get last location data from bundle
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
             latitude = Double.valueOf(extras.getString("Latitude"));
@@ -54,6 +52,7 @@ public class AddLocationActivity extends FragmentActivity implements OnMapReadyC
             longitude = -113.512127;
         }
 
+        // when user cancels, back out of activity with no action
         cancelLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -61,68 +60,43 @@ public class AddLocationActivity extends FragmentActivity implements OnMapReadyC
             }
         });
 
+        // when user selects this as their location, the marker location will be uploaded to firebase
         setLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 // add location to the users last location document in firebase
                 MoodiStorage ms = new MoodiStorage();
                 ms.addLastLocation(new GeoPoint(markerOptions.getPosition().latitude, markerOptions.getPosition().longitude));
-                Toast.makeText(AddLocationActivity.this,
-                        "Added location: " +
-                        markerOptions.getPosition().latitude + ", " +
-                        markerOptions.getPosition().longitude,
-                        Toast.LENGTH_SHORT).show();
                 finish();
             }
         });
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-
-        // Check which request we're responding to
-        if (requestCode == PICK_CONTACT_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-
-            }
-        }
-    }
-
-    /**
-     * Manipulates the map once available.
-     * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
-     * If Google Play services is not installed on the device, the user will be prompted to install
-     * it inside the SupportMapFragment. This method will only be triggered once the user has
-     * installed Google Play services and returned to the app.
-     */
-    @Override
     public void onMapReady(final GoogleMap googleMap) {
-        mMap = googleMap;
+        // create map settings
         UiSettings mapUiSettings = googleMap.getUiSettings();
         mapUiSettings.setZoomControlsEnabled(true);
         mapUiSettings.setAllGesturesEnabled(true);
         mapUiSettings.setCompassEnabled(true);
 
-        // Creating old marker
+        // create old marker
         LatLng old_latlng = new LatLng(latitude, longitude);
         markerOptions = new MarkerOptions();
         markerOptions.position(old_latlng);
         markerOptions.title("Old Location");
+        googleMap.addMarker(markerOptions);
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(old_latlng, (float) 11));
 
+        // when user selects a new location, update marker
         googleMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
             @Override
             public void onMapClick(LatLng new_latlng) {
-                // Creating new marker
-//                markerOptions = new MarkerOptions();
+                // create new marker
                 markerOptions.position(new_latlng);
                 markerOptions.title("New Location");
 
-                // goto new marker
+                // go to new marker
                 googleMap.clear();
                 googleMap.animateCamera(CameraUpdateFactory.newLatLng(new_latlng));
                 googleMap.addMarker(markerOptions);

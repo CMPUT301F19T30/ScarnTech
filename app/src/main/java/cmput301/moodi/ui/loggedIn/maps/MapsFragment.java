@@ -31,7 +31,6 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
@@ -41,39 +40,39 @@ import static cmput301.moodi.util.Constants.MAPVIEW_BUNDLE_KEY;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
-    // stuff
-    TextView numUmoods;
-    TextView numFMoods;
-
-    // objects to interact with
+    // map
     MapView mMapView;
-    Switch userMoods;
-    Switch followingMoods;
 
-    // firebase access functions
+    // select to view user moods
+    Switch userMoods;
+    TextView numUmoods;
+
+    // select to view following moods
+    Switch followingMoods;
+    TextView numFmoods;
+
+    // interact with firebase
     MoodiStorage moodiStorage;
 
-    // managing the map markers
+    // manage the map markers, this might be optimized in the future
     private List<Marker> userMarkers;
     private List<Marker> followingMarkers;
     private List<Marker> allMarkers;
-
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_maps, container, false);
 
-        // set objects to interact with
         mMapView = view.findViewById(R.id.mood_list_map);
         userMoods = view.findViewById(R.id.switch_user);
         followingMoods = view.findViewById(R.id.switch_following);
         numUmoods = view.findViewById(R.id.num_u_moods);
-        numFMoods = view.findViewById(R.id.num_f_moods);
+        numFmoods = view.findViewById(R.id.num_f_moods);
 
         numUmoods.setText("0");
-        numFMoods.setText("0");
+        numFmoods.setText("0");
 
-        // create the map object
+        // init the map object
         initGoogleMap(savedInstanceState);
 
         // firebase access functions
@@ -83,9 +82,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     }
 
     private void initGoogleMap(Bundle savedInstanceState) {
-        // *** IMPORTANT ***
-        // MapView requires that the Bundle you pass contain _ONLY_ MapView SDK
-        // objects or sub-Bundles.
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
             mapViewBundle = savedInstanceState.getBundle(MAPVIEW_BUNDLE_KEY);
@@ -137,44 +133,44 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         mapUiSettings.setZoomControlsEnabled(true);
         mapUiSettings.setAllGesturesEnabled(true);
         mapUiSettings.setCompassEnabled(true);
-
-        // initial zoom settings
         map.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(53.5461, -113.4938), (float) 9.0));
 
-        // toggle for user to choose whether their moods show on the map
+        // toggle for user to choose whether their own moods show on the map
         userMoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
                 if (isChecked) {
-                    // query markers and add them to list
+                    // if user checks to see their moods query the mood locations and add them to list of markers
                     moodiStorage.getUserMoods().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                // user moods have been retrieved
-                                int count = 0;
+                                // user moods have been successfully retrieved
+
+                                // for each mood, extract the location and make a marker with it
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     GeoPoint gp = (GeoPoint) document.getData().get("Location");
                                     Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
                                     userMarkers.add(newMarker);
                                     allMarkers.add(newMarker);
-                                    count = count + 1;
                                 }
 
-                                numUmoods.setText(String.valueOf(count));
+                                // display to user how many of their moods are now being shown
+                                numUmoods.setText(String.valueOf(task.getResult().size()));
 
-                                // if markers were placed we can adjust the zoom settings
-                                if (count == 1) {
-                                    // zoom to marker
+                                // if new markers were placed we can adjust the zoom settings to see them
+                                if (allMarkers.size() == 1) {
+                                    // if there is only one marker, zoom to that marker
+                                    map.animateCamera(CameraUpdateFactory.newLatLng(allMarkers.get(0).getPosition()));
 
-                                } else if (count > 1) {
-                                    // zoom to group
+                                } else if (allMarkers.size() > 1) {
+                                    // if there are more, zoom to the group bounds
                                     LatLngBounds.Builder builder = new LatLngBounds.Builder();
                                     for (Marker marker : allMarkers) {
                                         builder.include(marker.getPosition());
                                     }
                                     LatLngBounds bounds = builder.build();
-                                    int padding = 50; // offset from edges of the map in pixels
+                                    int padding = 120; // offset from edges of the map in pixels
                                     CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
                                     map.animateCamera(cu);
                                 }
@@ -184,15 +180,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         }
                     });
                 } else {
-                    // delete user markers
+                    // delete user markers and update total markers
                     if (userMarkers != null) {
                         for (Marker marker : userMarkers) {
-                            marker.setVisible(false);
+                            marker.remove();
                         }
-
+                        userMarkers.clear(); // double check? why not
                         numUmoods.setText("0");
+                        allMarkers = followingMarkers;
                     }
-
                 }
             }
         });
@@ -207,9 +203,15 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     Toast.makeText(getActivity(), "Showing moods of followed users.", Toast.LENGTH_SHORT).show();
 
                 } else {
-                    // remove following moods from map
-                    Toast.makeText(getActivity(), "Removing moods of followed users.", Toast.LENGTH_SHORT).show();
-
+                    // delete following markers and update total markers
+                    if (followingMarkers != null) {
+                        for (Marker marker : followingMarkers) {
+                            marker.setVisible(false);
+                        }
+                        followingMarkers.clear(); // double check? why not
+                        numFmoods.setText("0");
+                        allMarkers = userMarkers;
+                    }
                 }
             }
         });

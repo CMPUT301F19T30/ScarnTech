@@ -57,9 +57,9 @@ public class ProfileFragment extends Fragment {
     private TextView username, nameDisplay;
 
     // Moods
-    private ListView moodListView;
+    private ListView moodList;
     private ArrayAdapter<Mood> moodAdapter;
-    private ArrayList<Mood> moodList;
+    private ArrayList<Mood> moodDataList;
     //private MoodList moodList; //Todo: use MoodList type in the future.
 
 
@@ -82,12 +82,12 @@ public class ProfileFragment extends Fragment {
         username = root.findViewById(R.id.username);
         nameDisplay = root.findViewById(R.id.full_name);
         notificationListView = root.findViewById(R.id.notification_list);
-        moodListView = root.findViewById(R.id.mood_history);
+        moodList = root.findViewById(R.id.mood_history);
 
         // Load lists for moods.
-        moodList = new ArrayList<Mood>();
-        moodAdapter = new MoodHistoryAdapter(container.getContext(), moodList);
-        moodListView.setAdapter(moodAdapter);
+        moodDataList = new ArrayList<Mood>();
+        moodAdapter = new MoodHistoryAdapter(container.getContext(), moodDataList);
+        moodList.setAdapter(moodAdapter);
 
         /* Load lists for notifications.
         notificationList = new NotificationList();
@@ -118,9 +118,8 @@ public class ProfileFragment extends Fragment {
             }
         });
 
-        // TODO: How to get list to update on change + close fragment
+        // TODO: close fragment (Taking two clicks bug)
         checkForUpdates();
-
         return root;
     }
 
@@ -157,7 +156,7 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    moodList.clear();
+                    moodDataList.clear();
                     for (QueryDocumentSnapshot doc : task.getResult()) {
 
                         String postID = doc.getId();
@@ -179,7 +178,7 @@ public class ProfileFragment extends Fragment {
                 }
 
                 //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
-                Collections.sort(moodList);
+                Collections.sort(moodDataList);
 
                 moodAdapter.notifyDataSetChanged();
             }
@@ -209,7 +208,7 @@ public class ProfileFragment extends Fragment {
                 moodDataList.clear();
 
                 // Point at database, receive any changes and append them to our list of posts
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
+                for (QueryDocumentSnapshot doc : queryDocumentSnapshots) {
 
                     // Log for debugging and reference
                     Log.d(TAG, String.valueOf(doc.getData().get("Emotional State")));
@@ -222,14 +221,14 @@ public class ProfileFragment extends Fragment {
 
                     if (index != null) {
                         int i = index.intValue();
-                        moodDataList.add(new Mood(reasonText, date, socialSituation , postID, i));
+                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i));
                         Log.d(TAG, socialSituation);
                     }
                 }
                 moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
-        });
+                }
+            });
     }
-
     /*
      * Load the notification view.
      */

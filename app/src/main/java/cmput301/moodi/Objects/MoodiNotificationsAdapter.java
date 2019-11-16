@@ -1,14 +1,17 @@
 package cmput301.moodi.Objects;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
+import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import java.util.ArrayList;
 
 import cmput301.moodi.R;
 
@@ -18,34 +21,20 @@ import cmput301.moodi.R;
  * groups of data such as users or moods
  * 11/04/2019
  */
-public class MoodiNotificationsAdapter extends BaseAdapter {
+public class MoodiNotificationsAdapter extends ArrayAdapter<MoodiNotification> {
 
-    private NotificationList notifications;
+    private ArrayList<MoodiNotification> notifications;
     private Context context;
+    private String TAG = "MoodiNotificationsAdapter";
 
     // Bridge between the list and the displayed list
-    public MoodiNotificationsAdapter(Context context, NotificationList notifications){
-        super();
+    public MoodiNotificationsAdapter(Context context, ArrayList<MoodiNotification> notifications){
+        super(context, 0, notifications);
         this.notifications = notifications;
         this.context = context;
     }
 
-    @Override
-    public int getCount() {
-        return 0;
-    }
 
-    @Override
-    public Object getItem(int i) {
-        return null;
-    }
-
-    @Override
-    public long getItemId(int i) {
-        return 0;
-    }
-
-    // Actual population of the list by sending entry to our content
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -61,10 +50,12 @@ public class MoodiNotificationsAdapter extends BaseAdapter {
         TextView typeExplanationView = view.findViewById(R.id.type_explanation);
 
         String type = notification.getType();
-        String sender = notification.getSender();
+        String sender = notification.getSenderName();
 
         typeView.setText(type);
         typeExplanationView.setText(sender);
+
+        Log.d(TAG, "Here now. ");
 
         return view;
     }

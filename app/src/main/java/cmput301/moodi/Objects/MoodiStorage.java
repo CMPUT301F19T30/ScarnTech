@@ -41,9 +41,9 @@ public class MoodiStorage {
         this.UID = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
+        this.notificationsCollection = this.db.collection(NOTIFICATIONS_PATH);
         this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
         this.followingCollection = this.userCollection.document(this.UID).collection(FOLLOWING_PATH);
-        this.notificationsCollection = this.userCollection.document(this.UID).collection(NOTIFICATIONS_PATH);
     }
 
     /*
@@ -51,6 +51,13 @@ public class MoodiStorage {
      */
     public String getUserUID() {
         return this.UID;
+    }
+
+    /*
+     * Return a users document reference.
+     */
+    public Task getUserByUID(String UID) {
+        return this.userCollection.document(UID).get();
     }
 
     /*
@@ -129,7 +136,7 @@ public class MoodiStorage {
      * Returns all moods of those users followed
      */
     public Query getFollowingMoods() {
-        // TODO later... fuc dat
+        // TODO later...
         return null;
     }
 

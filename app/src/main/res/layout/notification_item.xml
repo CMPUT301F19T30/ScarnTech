@@ -28,18 +28,20 @@
         android:orientation="horizontal">
 
         <Button
+            style="@style/Widget.AppCompat.Button.Colored"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/holo_red_dark"
+            android:text="Decline"
+            android:textColor="@color/moodiDarkBlue" />
+
+        <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@color/moodiDarkBlue"
             android:textColor="@color/moodiWhite"
             android:text="Accept"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@color/moodiWhite"
-            android:textColor="@color/moodiDarkBlue"
-            android:text="Decline"/>
     </LinearLayout>
 
 

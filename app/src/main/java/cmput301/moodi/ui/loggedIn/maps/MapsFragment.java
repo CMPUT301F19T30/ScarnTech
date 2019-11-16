@@ -152,9 +152,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 int count = 0;
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     GeoPoint gp = (GeoPoint) document.getData().get("Location");
-                                    if (gp != null) {
-
-
 //                                    Number emotionalstate = (Number) document.getData().get("Index");
 
 ////                                    int icon;
@@ -174,7 +171,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
                                     userMarkers.add(map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude()))));
                                     count = count + 1;
-                                    }
 //                                            .title("Big mood")));
 //                                            .icon(BitmapDescriptorFactory
 //                                                .defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));

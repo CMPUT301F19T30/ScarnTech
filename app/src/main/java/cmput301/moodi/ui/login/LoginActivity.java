@@ -16,6 +16,7 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
+import cmput301.moodi.ui.createAccount.GoogleAccountActivity;
 import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
 import cmput301.moodi.R;
 import cmput301.moodi.ui.createAccount.CreateAccountActivity;
@@ -31,10 +32,12 @@ public class LoginActivity extends AppCompatActivity {
     // log in page objects
     Button button_login, button_goto_signup;
     EditText emailId, password;
+    Button google_login;
 
     // firebase auth link
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,6 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         password = findViewById(R.id.login_password);
         button_login = findViewById(R.id.login_button);
         button_goto_signup = findViewById(R.id.goto_signup);
+        google_login = findViewById(R.id.button2);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
@@ -105,8 +109,16 @@ public class LoginActivity extends AppCompatActivity {
         // The user wishes create an account
         button_goto_signup.setOnClickListener(new View.OnClickListener() {
             @Override
+            public void onClick(View v2) {
+                Intent i2 = new Intent(LoginActivity.this, CreateAccountActivity.class);
+                startActivity(i2);
+            }
+        });
+
+        google_login.setOnClickListener(new View.OnClickListener() {
+            @Override
             public void onClick(View v) {
-                Intent i = new Intent(LoginActivity.this, CreateAccountActivity.class);
+                Intent i = new Intent(LoginActivity.this, GoogleAccountActivity.class);
                 startActivity(i);
             }
         });
@@ -117,4 +129,4 @@ public class LoginActivity extends AppCompatActivity {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
     }
-}
+    }

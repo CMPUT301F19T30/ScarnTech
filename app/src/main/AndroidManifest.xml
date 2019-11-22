@@ -4,7 +4,7 @@
     package="cmput301.moodi">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-feature
         android:glEsVersion="0x00020000"
         android:required="true"/>
@@ -21,7 +21,9 @@
         <activity
             android:name=".ui.loggedIn.post.AddLocationActivity"
             android:label="@string/title_activity_add_location" />
-        <activity android:name=".ui.createAccount.CreateAccountActivity" />
+        <activity android:name=".ui.createAccount.CreateAccountActivity"
+            />
+        <activity android:name=".ui.createAccount.GoogleAccountActivity" />
         <activity android:name=".ui.login.LoginActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

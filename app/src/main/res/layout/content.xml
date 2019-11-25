@@ -2,6 +2,7 @@
 
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:padding="@dimen/activity_vertical_margin">
@@ -12,7 +13,7 @@
         android:layout_height="wrap_content"
         android:text="Emotional State"
         android:textSize="30sp"
-        android:textColor="@color/moodiWhite"
+        android:textColor="@color/moodiBlack"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -21,10 +22,20 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:text="dow mon dd hh::ss zzz yyyy"
+        android:textColor="@color/moodiBlack"
         android:textSize="14sp"
-        android:textColor="@color/moodiWhite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/EmotionalState_text" />
+
+    <TextView
+        android:id="@+id/Username_text"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="Username"
+        android:textColor="@color/moodiBlack"
+        android:textSize="14sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/Date_text" />
 
     <ImageView
         android:id="@+id/emoji"
@@ -34,5 +45,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

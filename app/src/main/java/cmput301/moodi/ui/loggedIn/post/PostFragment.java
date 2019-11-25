@@ -1,12 +1,15 @@
 package cmput301.moodi.ui.loggedIn.post;
 
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,6 +24,7 @@ import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,19 +36,30 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.internal.CircularBorderDrawable;
+import com.google.api.LogDescriptor;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageMetadata;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.UUID;
+import java.util.concurrent.Executor;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
@@ -61,8 +76,10 @@ import static android.app.Activity.RESULT_OK;
 public class PostFragment extends Fragment {
 
     // Variables used to detect user input and send a request!
-    private String DateAndTime = ""; // Change this to the selection from drop down list
     private EditText ReasonView;
+
+    private Spinner EmotionalStateSpinner;
+    private Spinner SocialSituationSpinner;
 
     private ImageButton PostMoodButton;
     private ImageButton getLocationButton;
@@ -76,31 +93,35 @@ public class PostFragment extends Fragment {
     private Spinner inputHourSpinner;
     private Spinner inputMinuteSpinner;
 
-    private Spinner EmotionalStateSpinner;
-    private Spinner SocialSituationSpinner;
+    private ScrollView scrollView;
 
     // cheesy way to get "live" position values from the database
     private TextView lastLat;
     private TextView lastLon;
 
-    // Codes used to check permissions
+    // Codes used to check permissions and pulls image
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private int RESULT_LOAD_IMG;
 
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
+    FirebaseStorage storage = FirebaseStorage.getInstance();
     String TAG = "PostFragment";
     MoodiStorage moodiStorage;
+    private TextView intermediate;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-
-        // TODO: Add implementation of: EmotionalState Spinner, Date, Image & Location
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
         // Pointing variables for detection of user input (Text, buttons, than spinners and calendar)
+        intermediate = view.findViewById(R.id.intermediate);
+
         ReasonView = view.findViewById(R.id.input_Reasoning);
+
+        EmotionalStateSpinner = view.findViewById(R.id.input_EmotionalState_Spinner);
+        SocialSituationSpinner = view.findViewById(R.id.input_SocialSituation_Spinner);
 
         PostMoodButton = view.findViewById(R.id.post_mood_button);
         getPhotoGalleryButton = view.findViewById(R.id.add_gallery_button);
@@ -109,9 +130,6 @@ public class PostFragment extends Fragment {
 
         userPhoto = view.findViewById(R.id.input_photo);
 
-        EmotionalStateSpinner = view.findViewById(R.id.input_EmotionalState_Spinner);
-        SocialSituationSpinner = view.findViewById(R.id.input_SocialSituation_Spinner);
-
         inputHourSpinner = view.findViewById(R.id.input_hour);
         inputMinuteSpinner = view.findViewById(R.id.input_minute);
         calendar = view.findViewById(R.id.input_calendarView);
@@ -119,20 +137,25 @@ public class PostFragment extends Fragment {
         lastLat = view.findViewById(R.id.last_lat);
         lastLon = view.findViewById(R.id.last_lon);
 
-        // Get the current time and update the spinners in event that user doesnt customize date
+        scrollView = view.findViewById(R.id.scrollView);
+
+        // Get the current time and update the spinners in event that user doesn't customize date
         Calendar instantCalendar = Calendar.getInstance();
         int year = instantCalendar.get(instantCalendar.YEAR);
         int month = instantCalendar.get(instantCalendar.MONTH);
         int dayOfMonth = instantCalendar.get(instantCalendar.DAY_OF_MONTH);
         String newDate = year + "-" + month + "-" + dayOfMonth;
+
         inputDate = newDate;
         final int hours = instantCalendar.get(instantCalendar.HOUR_OF_DAY);
         final int minutes = instantCalendar.get(instantCalendar.MINUTE);
         inputHourSpinner.setSelection(hours);
         inputMinuteSpinner.setSelection(minutes);
 
+        // Reference to check for a new image from the user
+        final Drawable oldDrawable = userPhoto.getDrawable();
+
         // Getting updated date
-        // TODO: ITS NOT UPDATING DATE
         calendar.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
@@ -144,8 +167,9 @@ public class PostFragment extends Fragment {
 
         // Access a Cloud Firestore instance from your Activity
         moodiStorage = new MoodiStorage();
+        db = FirebaseFirestore.getInstance();
 
-        // user selected to add a location to the mood, go to add moood activity
+        // User selected to add a location to the mood, go to add moood activity
         getLocationButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,15 +221,38 @@ public class PostFragment extends Fragment {
 
                 if(ActivityCompat.checkSelfPermission(getContext(), android.Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED){
                     requestPermissions(new String[]{Manifest.permission.CAMERA}, MY_CAMERA_PERMISSION_CODE); }
-
                 else {
+                    // TODO: Look into why permission not being sent or acknowledged (Catching something when exiting camera?)
                     Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                     startActivityForResult(cameraIntent, CAMERA_REQUEST); }
+
+                Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                startActivityForResult(cameraIntent, CAMERA_REQUEST);
             }
         });
 
+        // Getting unique username and storing in a textView
+        String UID = moodiStorage.getUserUID();
+        CollectionReference Colref = db.collection("users");
+        DocumentReference docReff = Colref.document(UID);
+        docReff.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    if (document != null) {
+                        intermediate.setText(document.getString("username"));
+                    } else {
+                        Log.d("MoodiStorage", "No such user");
+                    }
+                } else {
+                    Log.d("MoodiStorage", "get failed with ", task.getException());
+                }
+            }
+        });
         // Set onClick Listener for creation of new post
         PostMoodButton.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
 
@@ -214,44 +261,78 @@ public class PostFragment extends Fragment {
                 String socialSituation = SocialSituationSpinner.getSelectedItem().toString();
                 int index = EmotionalStateSpinner.getSelectedItemPosition();
 
-                // Pulling image from user input & converting the data from an ImageView as bytes
-                userPhoto.setDrawingCacheEnabled(true);
-                userPhoto.buildDrawingCache();
-                Bitmap bitmap = userPhoto.getDrawingCache();
-                ByteArrayOutputStream baos = new ByteArrayOutputStream();
-                bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
-                byte[] image = baos.toByteArray();
-
                 // Getting the updated time
                 String hour = inputHourSpinner.getSelectedItem().toString();
                 String minute = inputMinuteSpinner.getSelectedItem().toString();
                 String date = inputDate + " " + hour + ":" + minute;
 
+                String username = intermediate.getText().toString();
 
-                // Create a new mood from the user input
-                Mood mood = new Mood(index, reason, socialSituation, date, image);
+                // Pulling image from user input & converting the data from an ImageView to bytes
+                if (userPhoto.getDrawable() != oldDrawable) {
+                    Bitmap capture = Bitmap.createBitmap(
+                            userPhoto.getWidth(),
+                            userPhoto.getHeight(),
+                            Bitmap.Config.ARGB_8888);
+                    Canvas captureCanvas = new Canvas(capture);
+                    userPhoto.draw(captureCanvas);
+                    ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+                    capture.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+                    byte[] data = outputStream.toByteArray();
 
-                // Set mood location to the most recent location data from firebase (through text view)
-                if (lastLat.getText() != null && lastLon.getText() != null) {
-                    mood.setLocation(new GeoPoint(Double.valueOf(lastLat.getText().toString()), Double.valueOf(lastLon.getText().toString())));
+                    // Creating a reference to the firebase storage for our users photos
+                    String path = "UserImage/" + UUID.randomUUID() + ".png";
+                    StorageReference userPhotoRef = storage.getReference(path);
+
+                    // Upload image to firebase with that url as a reference
+                    UploadTask uploadTask = userPhotoRef.putBytes(data);
+
+                    // Create a new mood from the user input
+                    Mood mood = new Mood(index, reason, socialSituation, date, path, username);
+
+                    // Set mood location to the most recent location data from firebase (through text view)
+                    if (lastLat.getText() != null && lastLon.getText() != null) {
+                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat.getText().toString()), Double.valueOf(lastLon.getText().toString())));
+                    } else {
+                        Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
+                    }
+
+                    // Send data to the database
+                    moodiStorage.addMoodPost(mood);
+
                 } else {
-                    Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
+                    // Create a new mood from the user input without an image
+                    Mood mood = new Mood(index, reason, socialSituation, date, username);
+
+                    // Set mood location to the most recent location data from firebase (through text view)
+                    if (lastLat.getText() != null && lastLon.getText() != null) {
+                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat.getText().toString()), Double.valueOf(lastLon.getText().toString())));
+                    } else {
+                        Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
+                    }
+                    // Send data to the database
+                    moodiStorage.addMoodPost(mood);
                 }
 
-                // Send data to the database
-                moodiStorage.addMoodPost(mood);
-
                 // Reset posts to prepare for more entries!
-                ReasonView.setText("");
-                SocialSituationSpinner.setSelection(0);
-                EmotionalStateSpinner.setSelection(0);
-                inputHourSpinner.setSelection(hours);
-                inputMinuteSpinner.setSelection(minutes);
-                userPhoto.setImageResource(R.drawable.ic_launcher_background);
+                resetPost(minutes, hours);
             }
         });
-
         return view;
+    }
+
+    /*
+     * Reset posts input fields to prepare for more entries
+     */
+    public void resetPost(int minutes, int hours) {
+        ReasonView.setText("");
+        SocialSituationSpinner.setSelection(0);
+        EmotionalStateSpinner.setSelection(0);
+        inputHourSpinner.setSelection(hours);
+        inputMinuteSpinner.setSelection(minutes);
+        userPhoto.setImageResource(android.R.drawable.ic_menu_gallery);
+        scrollView.scrollTo(0, 0);
+        calendar.setDate(System.currentTimeMillis(), false, true);
     }
 
     /*
@@ -263,8 +344,8 @@ public class PostFragment extends Fragment {
 
         // Picture from camera
         if (resultCode == RESULT_OK && reqCode == CAMERA_REQUEST) {
-            Bitmap photo = (Bitmap) data.getExtras().get("data");
-            userPhoto.setImageBitmap(photo); }
+            Bitmap photograph = (Bitmap) data.getExtras().get("data");
+            userPhoto.setImageBitmap(photograph); }
         // Gallery photo
         else {
 //            Bitmap photo = (Bitmap) data.getExtras().get("data");
@@ -281,4 +362,5 @@ public class PostFragment extends Fragment {
                 e.printStackTrace(); }
             }
     }
+
 }

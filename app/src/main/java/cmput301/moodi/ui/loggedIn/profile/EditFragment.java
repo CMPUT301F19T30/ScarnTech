@@ -3,12 +3,15 @@ package cmput301.moodi.ui.loggedIn.profile;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,9 +21,12 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 
@@ -42,8 +48,11 @@ public class EditFragment  extends DialogFragment {
     private EditText ReasonView;
     private TextView Location;
     private TextView Date;
+    private TextView ImageText;
     private Spinner EmotionalStateSpinner;
     private Spinner SocialSituationSpinner;
+    private ImageView Image;
+    private String UniquePostID;
 
     // Used to pass data to main activity
     private addNewDate listener;
@@ -51,8 +60,8 @@ public class EditFragment  extends DialogFragment {
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
     String TAG = "PostFragment";
-    MoodiStorage moodiStorage;
-    String UniquePostID;
+    FirebaseStorage storage = FirebaseStorage.getInstance("gs://moodi-app-1cf5d.appspot.com/");
+
 
     // Takes a selected moods properties to be able to reconstruct on edit
     public static EditFragment editSelection(Mood selectedMood) {
@@ -79,6 +88,7 @@ public class EditFragment  extends DialogFragment {
         args.putSerializable("Old Index", Index);
         args.putSerializable("Old SocialSituation", selectedMood.getSocialSituation());
         args.putSerializable("Old Date", selectedMood.getDate());
+        args.putSerializable("Old Image", selectedMood.getImage());
 
         EditFragment fragment = new EditFragment();
         fragment.setArguments(args);
@@ -123,6 +133,8 @@ public class EditFragment  extends DialogFragment {
         SocialSituationSpinner = view.findViewById(R.id.input_SocialSituation_Spinner);
         Date = view.findViewById(R.id.edit_Date_textView);
         Location = view.findViewById((R.id.edit_Location_textView));
+        ImageText = view.findViewById(R.id.edit_Photo_content);
+        Image = view.findViewById(R.id.edit_photo);
 
         // Retrieve properties of selected mood from bundle and populate display
         Bundle args = getArguments();
@@ -136,7 +148,7 @@ public class EditFragment  extends DialogFragment {
             // Check if reason is empty
             String intermediate2 = args.getString("Old Reason");
             if (intermediate2 == "No Reason Available")
-                ReasonView.setHint(intermediate2);
+                ReasonView.setHint("Add a Reason");
             else
                 ReasonView.setText(intermediate2);
 
@@ -149,13 +161,37 @@ public class EditFragment  extends DialogFragment {
                 int index = adapter.getPosition(inputSituation);
                 SocialSituationSpinner.setSelection(index);
             }
+
+            // Checking if an image is available
+            String path = args.getString("Old Image");
+            Log.d("Recieved path", path);
+            Log.d("Expected path", "No Photo Available");
+            if (path != null && !path.equals("No Photo Available")){
+                // Create a storage reference from our app
+                StorageReference storageRef = storage.getReference();
+                StorageReference userRef = storageRef.child(path);
+
+                final long ONE_MEGABYTE = 1024 * 1024;
+                userRef.getBytes(ONE_MEGABYTE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+                    @Override
+                    public void onSuccess(byte[] bytes) {
+                        Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
+                        ImageText.setText("");
+                        Image.setVisibility(View.VISIBLE);
+                        Image.setImageBitmap(bitmap);
+                    }
+                });
+                }
+            else {
+                ImageText.setText("No Photo Available");
+                Image.setVisibility(View.GONE);
+            }
         }
 
         // Build the fragment and set the buttons to call the delete or edit method in main
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
             return builder
                     .setView(view)
-                    .setTitle("Edit Your Post")
                     .setNeutralButton("Cancel", null)
                     .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                         @Override

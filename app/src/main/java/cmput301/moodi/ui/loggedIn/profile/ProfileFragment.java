@@ -131,7 +131,6 @@ public class ProfileFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document.exists()) {
-                        Log.d(TAG, "DocumentSnapshot data: " + document.getData());
                         String fullName = document.getString("first_name") + " " + document.getString("last_name");
                         username.setText(document.getString("username"));
                         nameDisplay.setText(fullName);
@@ -161,17 +160,12 @@ public class ProfileFragment extends Fragment {
                         String date = (String) doc.getData().get("Date");
                         String socialSituation = (String) doc.getData().get("Social Situation");
                         Number index = (Number) doc.getData().get("Index");
-                        byte[] image = (byte[]) doc.getData().get("Image");
-
+                        String path = (String) doc.getData().get("Image");
+                        String uniqueID = (String) doc.getData().get("Username");
                         if (index != null) {
                             int i = index.intValue();
-
-                            // TODO: Implement image and serialize as a list
-
-                            //  moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, image));
-                            moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i));
-
-                            Log.d(TAG, socialSituation);
+                            // TODO: Add location to constructor
+                            moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
                         }
                     }
                 } else {
@@ -219,14 +213,13 @@ public class ProfileFragment extends Fragment {
                     String date = (String) doc.getData().get("Date");
                     String socialSituation = (String) doc.getData().get("Social Situation");
                     Number index = (Number) doc.getData().get("Index");
-                    byte[] image = (byte[]) doc.getData().get("Image");
+                    String path = (String) doc.getData().get("Image");
+                    String uniqueID = (String) doc.getData().get("Username");
 
                     if (index != null) {
                         int i = index.intValue();
-                        // TODO: Implement image and serialize as a list
-//                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, image));
-                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i));
-                        Log.d(TAG, socialSituation);
+                        // TODO: Add Location to constructor
+                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
                     }
                 }
                 moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.

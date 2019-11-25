@@ -49,11 +49,13 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
         // Point at placeholders of the context in a post
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
+        TextView currentUsername = view.findViewById(R.id.Username_text);
         ImageView currentEmoji = view.findViewById(R.id.emoji);
 
         // Pull information from the post!
         int color = mood.getEmotionalState().getColor();
         String name = mood.getEmotionalState().getName();
+        String uniqueID = mood.getUniqueID();
 
         // Push information pulled from user input into a new post
         currentEmotionalState.setText(name);
@@ -61,6 +63,10 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
         currentEmoji.setImageResource(mood.getEmotionalState().getEmoji());
         view.setBackgroundColor(ContextCompat.getColor(context, color));
 
+        if (uniqueID == null)
+            currentUsername.setText("Old Post No Username Yet");
+        else
+            currentUsername.setText(uniqueID);
         return view;
     }
 }

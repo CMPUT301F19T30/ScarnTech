@@ -1,7 +1,6 @@
 package cmput301.moodi.ui.loggedIn.home;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +18,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -76,24 +77,21 @@ public class HomeFragment extends Fragment {
                 // Point at database, receive any changes and append them to our list of posts
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
 
-                    // Log for debugging and reference
-                    Log.d(TAG, String.valueOf(doc.getData().get("Emotional State")));
-
                     String postID = doc.getId();
                     String reasonText = (String) doc.getData().get("Reason");
                     String date = (String) doc.getData().get("Date");
                     String socialSituation = (String) doc.getData().get("Social Situation");
                     Number index = (Number) doc.getData().get("Index");
-                    byte[] image = (byte[]) doc.getData().get("Image");
+                    String path = (String) doc.getData().get("Image");
+                    String uniqueID = (String) doc.getData().get("Username");
 
                     if (index != null) {
                         int i = index.intValue();
                         // TODO: Implement image and serialize as a list
 
                         //  moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, image));
-                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i));
-
-                        Log.d(TAG, socialSituation);
+//                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path));
+                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
                     }
 
                     // TODO: Change it to receive the FULL mood + move firebase code to MoodiStorage
@@ -113,7 +111,7 @@ public class HomeFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);
                 new ViewFragment();
-               ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(), "View_Moods");
+               ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(),"View Selected Post");
                 return false;
             }
         });

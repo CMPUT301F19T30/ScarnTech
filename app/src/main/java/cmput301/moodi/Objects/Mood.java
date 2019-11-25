@@ -21,28 +21,37 @@ public class Mood implements Comparable<Mood> {
     private GeoPoint location;
     private String moodID = "";
     private Number emotionalIndex = 0;
-    private byte[] image;
+    private String image = "";
+
+    // Unique ID of a user's username
+    private String uniqueID;
 
     // Unique ID of a post assigned by FireBase
     private String keyID;
 
     /*
-     * Constructor for creation of a mood from a post which is sent to FireBase
+     * Constructor for creation of a mood from a post which is sent to FireBase with an image
      * (POSTS)
      */
-    public Mood(int index, String reason, String SocialSituation, String date, byte[] image) {
+    public Mood(int index, String reason, String SocialSituation, String date, String image, String uniqueID) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;
         this.socialSituation = SocialSituation;
         this.date = date;
         this.image = image;
+        this.uniqueID = uniqueID;
     }
-    public Mood(int index, String reason, String SocialSituation, String date) {
+    /*
+     * Constructor for creation of a mood from a post which is sent to FireBase without an image
+     * (POSTS)
+     */
+    public Mood(int index, String reason, String SocialSituation, String date, String uniqueID) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;
         this.socialSituation = SocialSituation;
         this.date = date;
-        this.image = image;
+        this.image = "No Photo Available";
+        this.uniqueID = uniqueID;
     }
 
     // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
@@ -50,7 +59,18 @@ public class Mood implements Comparable<Mood> {
     * Constructor for receiving a post from the FireBase and constructing a new mood
     * (HOME & PROFILE)
      */
-    public Mood(String reason, String date, String socialSituation, String keyID, int index, byte[] image) {
+
+    public Mood(String reason, String date, String socialSituation, String keyID, int index, String image, String uniqueID) {
+        this.emotionalState.setEmotionalState(index);
+        this.reason = reason;
+        this.date = date;
+        this.socialSituation = socialSituation;
+        this.keyID = keyID;
+        this.image = image;
+        this.getEmotionalState().setIndex((index));
+        this.uniqueID = uniqueID;}
+
+    public Mood(String reason, String date, String socialSituation, String keyID, int index, String image) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;
         this.date = date;
@@ -76,18 +96,25 @@ public class Mood implements Comparable<Mood> {
         this.location = location;
         setDate();
     }
+    /*
+     * This returns the username of the users post
+     * @return Return the username as a string
+     */
+    public String getUniqueID() {
+        return this.uniqueID;
+    }
 
     /*
      * This gets the byte array that is the image.
      * @return Return the image as a byte array
      */
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
     /*
      * This sets the byte array that is the image.
      */
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -202,7 +229,8 @@ public class Mood implements Comparable<Mood> {
         data.put("Social Situation", this.getSocialSituation());
         data.put("Location", this.getLocation());
         data.put("Date", this.getDate());
-//        data.put("Image", this.getImage());
+        data.put("Image", this.getImage());
+        data.put("Username", this.getUniqueID());
         return data;
     }
 

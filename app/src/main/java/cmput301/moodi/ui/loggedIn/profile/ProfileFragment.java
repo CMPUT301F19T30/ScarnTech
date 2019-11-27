@@ -7,8 +7,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -33,8 +35,6 @@ import java.util.Collections;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodHistoryAdapter;
-import cmput301.moodi.Objects.MoodiNotification;
-import cmput301.moodi.Objects.MoodiNotificationsAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.User;
 import cmput301.moodi.R;
@@ -52,19 +52,14 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileActivity";
     private User userProfile;
     private ImageButton logout;
+    EditText inputSearch;
     private TextView username, nameDisplay;
 
     // Moods
     private ListView moodList;
-    private ArrayAdapter<Mood> moodAdapter;
+    private MoodHistoryAdapter moodAdapter;
     private ArrayList<Mood> moodDataList;
     //private MoodList moodList; //Todo: use MoodList type in the future.
-
-
-    // Notifications
-    private ListView notificationListView;
-    private MoodiNotificationsAdapter notificationAdapter;
-    private ArrayList<MoodiNotification> notificationList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -86,17 +81,25 @@ public class ProfileFragment extends Fragment {
         moodAdapter = new MoodHistoryAdapter(container.getContext(), moodDataList);
         moodList.setAdapter(moodAdapter);
 
-        //Load lists for notifications.
-        notificationListView = root.findViewById(R.id.notification_list);
-        notificationList = new ArrayList<>();
-        notificationAdapter = new MoodiNotificationsAdapter(container.getContext(), notificationList);
-        notificationListView.setAdapter(notificationAdapter);
 
-        // Load views for profile.
-        this.loadUserPreferences();
-        this.loadMoodHistory();
-        this.loadNotifications();
-        this.loadSocialInfo();
+        // Load spinner resources
+        Spinner spinner = (Spinner) root.findViewById(R.id.filter_by);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.mood_history_filters, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String emotionalState = adapterView.getItemAtPosition(position).toString();
+                moodAdapter.getFilter().filter(emotionalState);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
+
 
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -117,7 +120,13 @@ public class ProfileFragment extends Fragment {
         });
 
         // TODO: close fragment (Taking two clicks bug)
+
+        // Load views for profile.
+        this.loadUserPreferences();
+        this.loadMoodHistory();
+        this.loadSocialInfo();
         checkForUpdates();
+
         return root;
     }
 
@@ -226,45 +235,6 @@ public class ProfileFragment extends Fragment {
                 moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
                 }
             });
-    }
-
-    /*
-     * Load the notification view.
-     */
-    private void loadNotifications() {
-        moodiStorage.getNotifications().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    notificationList.clear();
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        //Todo: retrieve user friendly username or name for display
-                        String UID = doc.getString("sender");
-                        final QueryDocumentSnapshot notificationData = doc;
-                        moodiStorage.searchByUID(UID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    Log.d(TAG, "username -> " + document.getString("username"));
-                                    String senderName = document.getString("first_name") + " " +
-                                            document.getString("last_name") + " (" +
-                                            document.getString("username") + ")";
-                                    MoodiNotification notification = new MoodiNotification();
-                                    notification.setFromDocument(notificationData);
-                                    notification.setSenderName(senderName);
-                                    notificationList.add(notification);
-                                    notificationAdapter.notifyDataSetChanged();
-                                }
-                            }
-                        });
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
-                }
-                notificationAdapter.notifyDataSetChanged();
-            }
-        });
     }
 
 

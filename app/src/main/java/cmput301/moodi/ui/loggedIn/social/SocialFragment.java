@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TabHost;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,8 +27,11 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
+import cmput301.moodi.Objects.MoodiNotification;
+import cmput301.moodi.Objects.MoodiNotificationsAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.User;
 import cmput301.moodi.Objects.UserList;
@@ -52,16 +56,37 @@ public class SocialFragment extends Fragment {
     EditText inputSearch;
     String userStatusFilter;
 
+    private ListView notificationListView;
+    private MoodiNotificationsAdapter notificationAdapter;
+    private ArrayList<MoodiNotification> notificationList;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_social, container, false);
+
+        TabHost tabs = (TabHost) root.findViewById(R.id.tabhost);
+        tabs.setup();
+        TabHost.TabSpec spec = tabs.newTabSpec("tag1");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator("Search");
+        tabs.addTab(spec);
+        spec = tabs.newTabSpec("tag2");
+        spec.setContent(R.id.tab2);
+        spec.setIndicator("Notifications");
+        tabs.addTab(spec);
 
         moodiStorage = new MoodiStorage();
 
         userListView = root.findViewById(R.id.social_list);
         userList = new UserList();
         userAdapter = new UserListAdapter(container.getContext(), userList);
+
+        //Load lists for notifications.
+        notificationListView = root.findViewById(R.id.notification_list);
+        notificationList = new ArrayList<>();
+        notificationAdapter = new MoodiNotificationsAdapter(container.getContext(), notificationList);
+        notificationListView.setAdapter(notificationAdapter);
 
         userListView.setAdapter(userAdapter);
 
@@ -139,7 +164,9 @@ public class SocialFragment extends Fragment {
             public void afterTextChanged(Editable arg0) {}
         });
 
+
         loadSocialList();
+        this.loadNotifications();
 
         return root;
 
@@ -179,6 +206,46 @@ public class SocialFragment extends Fragment {
             @Override
             public void onComplete(@NonNull Task task) {
 
+            }
+        });
+    }
+
+    /*
+     * Load the notification view.
+     */
+    private void loadNotifications() {
+        moodiStorage.getNotifications().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    notificationList.clear();
+
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        //Todo: move notifications to social tab
+                        String UID = doc.getString("sender");
+                        final QueryDocumentSnapshot notificationData = doc;
+                        moodiStorage.searchByUID(UID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                            @Override
+                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                if (task.isSuccessful()) {
+                                    DocumentSnapshot document = task.getResult();
+                                    Log.d(TAG, "username -> " + document.getString("username"));
+                                    String senderName = document.getString("first_name") + " " +
+                                            document.getString("last_name") + " (" +
+                                            document.getString("username") + ")";
+                                    MoodiNotification notification = new MoodiNotification();
+                                    notification.setFromDocument(notificationData);
+                                    notification.setSenderName(senderName);
+                                    notificationList.add(notification);
+                                    notificationAdapter.notifyDataSetChanged();
+                                }
+                            }
+                        });
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
+                notificationAdapter.notifyDataSetChanged();
             }
         });
     }

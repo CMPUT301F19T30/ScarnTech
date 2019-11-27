@@ -80,7 +80,7 @@ public class MoodiStorage {
     }
 
     public Task getNotifications() {
-        return this.notificationsCollection.get();
+        return this.notificationsCollection.whereEqualTo("receiver", this.UID).get();
     }
 
     public void sendFollowRequest(Object data) {

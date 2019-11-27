@@ -10,12 +10,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
- <!--   <include
+    <include
         layout="@layout/notification_list"
         android:id="@+id/notifications"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"/>
--->
+
 
     <include layout="@layout/mood_history"
         android:layout_width="match_parent"

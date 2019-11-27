@@ -6,16 +6,10 @@ package cmput301.moodi.Objects;
  * 11/04/2019
  */
 
-import android.util.Log;
-
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
@@ -24,22 +18,19 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
+import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
 import static cmput301.moodi.util.Constants.POST_PATH;
 import static cmput301.moodi.util.Constants.USER_PATH;
-import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
-import static cmput301.moodi.util.Constants.FOLLOWING_PATH;
-import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
 
 public class MoodiStorage {
     private FirebaseFirestore db;
     private static final String TAG = "moodiStorage";
+    private String UID;
     private CollectionReference postCollection;
     private CollectionReference userCollection;
-    private CollectionReference followingCollection;
-    private CollectionReference followerCollection;
     private CollectionReference notificationsCollection;
-
-    private String UID;
+    private CollectionReference followerCollection;
 
     public MoodiStorage() {
         this.db = FirebaseFirestore.getInstance();
@@ -47,34 +38,53 @@ public class MoodiStorage {
         this.UID = Objects.requireNonNull(mFirebaseAuth.getCurrentUser()).getUid();
         this.postCollection = this.db.collection(POST_PATH);
         this.userCollection = this.db.collection(USER_PATH);
-        this.followerCollection = this.userCollection.document(this.UID).collection(FOLLOWERS_PATH);
-        this.followingCollection = this.userCollection.document(this.UID).collection(FOLLOWING_PATH);
-        this.notificationsCollection = this.userCollection.document(this.UID).collection(NOTIFICATIONS_PATH);
+        this.notificationsCollection = this.db.collection(NOTIFICATIONS_PATH);
+        this.followerCollection = this.db.collection(FOLLOWERS_PATH);
     }
 
     /*
      * Returns the users UID associated with Firestore.
      */
-    public String getUserUID() {
+    public String getUID() {
         return this.UID;
     }
 
     /*
-     * Returns the followers documents for the user.
+     * Return a users document reference.
      */
-    public Task getFollowers() {
-        return this.followerCollection.get();
+    public Task searchByUID(String UID) {
+        return this.userCollection.document(UID).get();
     }
 
     /*
-     * Returns the followers documents for the user.
+     * Returns all moodi users following the user.
+     */
+    public Task getFollowers() {
+        return this.followerCollection.whereEqualTo("following", this.UID).get();
+    }
+
+    public void addFollower(Object data) {
+        this.followerCollection.document().set(data);
+    }
+
+    /*
+     * Returns all moodi users that I am following.
      */
     public Task getFollowing() {
-        return this.followingCollection.get();
+        return this.followerCollection.whereEqualTo("user", this.UID).get();
+    }
+
+
+    public Task isUserFollowing(String UID) {
+        return this.followerCollection.whereEqualTo("following", UID).get();
     }
 
     public Task getNotifications() {
-        return this.notificationsCollection.get();
+        return this.notificationsCollection.whereEqualTo("receiver", this.UID).get();
+    }
+
+    public void sendFollowRequest(Object data) {
+        this.notificationsCollection.document().set(data);
     }
 
     /*
@@ -135,7 +145,7 @@ public class MoodiStorage {
      * Returns all moods of those users followed
      */
     public Query getFollowingMoods() {
-        // TODO later... fuc dat
+        // TODO later...
         return null;
     }
 

@@ -2,8 +2,6 @@ package cmput301.moodi.Objects;
 /*
  * Class: User
  *
- * Still need to connect User class to firestore.
- *
  */
 
 import com.google.firebase.firestore.GeoPoint;
@@ -19,8 +17,9 @@ public class User implements Comparable<User>{
     private String UID;
     private GeoPoint lastLocation;
 
-    private ArrayList<User> permissionList;
     private ArrayList<Mood> moodHistory;
+    private ArrayList<User> followers;
+    private ArrayList<User> following;
 
 
     public User() {
@@ -101,7 +100,7 @@ public class User implements Comparable<User>{
     /*
      * Add follower permissions for a user with userID.
      */
-    public void addPermission(String userID) {
+    public void addFollowingPermission(String userID) {
         // Todo: add follower permissions.
     }
 
@@ -109,7 +108,7 @@ public class User implements Comparable<User>{
     /*
      * Remove follower permissions for a user with userID.
      */
-    public void removePermission(String userID) {
+    public void removeFollower(String userID) {
         // Todo: remove follower permissions.
     }
 

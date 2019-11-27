@@ -1,6 +1,5 @@
 package cmput301.moodi.ui.loggedIn.profile;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -8,13 +7,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
@@ -35,9 +35,7 @@ import java.util.Collections;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodHistoryAdapter;
-import cmput301.moodi.Objects.MoodiNotificationsAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
-import cmput301.moodi.Objects.NotificationList;
 import cmput301.moodi.Objects.User;
 import cmput301.moodi.R;
 
@@ -54,19 +52,14 @@ public class ProfileFragment extends Fragment {
     private static final String TAG = "ProfileActivity";
     private User userProfile;
     private ImageButton logout;
+    EditText inputSearch;
     private TextView username, nameDisplay;
 
     // Moods
     private ListView moodList;
-    private ArrayAdapter<Mood> moodAdapter;
+    private MoodHistoryAdapter moodAdapter;
     private ArrayList<Mood> moodDataList;
     //private MoodList moodList; //Todo: use MoodList type in the future.
-
-
-    // Notifications
-    private ListView notificationListView;
-    private MoodiNotificationsAdapter notificationAdapter;
-    private NotificationList notificationList;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -81,24 +74,32 @@ public class ProfileFragment extends Fragment {
         // Views from layout
         username = root.findViewById(R.id.username);
         nameDisplay = root.findViewById(R.id.full_name);
-        notificationListView = root.findViewById(R.id.notification_list);
-        moodList = root.findViewById(R.id.mood_history);
 
         // Load lists for moods.
-        moodDataList = new ArrayList<Mood>();
+        moodList = root.findViewById(R.id.mood_history);
+        moodDataList = new ArrayList<>();
         moodAdapter = new MoodHistoryAdapter(container.getContext(), moodDataList);
         moodList.setAdapter(moodAdapter);
 
-        /* Load lists for notifications.
-        notificationList = new NotificationList();
-        notificationAdapter = new MoodiNotificationsAdapter(container.getContext(), notificationList);
-        notificationListView.setAdapter(notificationAdapter);
-        */
 
-        // Load views for profile.
-        this.loadUserPreferences();
-        this.loadMoodHistory();
-        //this.loadNotifications();
+        // Load spinner resources
+        Spinner spinner = (Spinner) root.findViewById(R.id.filter_by);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.mood_history_filters, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String emotionalState = adapterView.getItemAtPosition(position).toString();
+                moodAdapter.getFilter().filter(emotionalState);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
+
 
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -119,7 +120,13 @@ public class ProfileFragment extends Fragment {
         });
 
         // TODO: close fragment (Taking two clicks bug)
+
+        // Load views for profile.
+        this.loadUserPreferences();
+        this.loadMoodHistory();
+        this.loadSocialInfo();
         checkForUpdates();
+
         return root;
     }
 
@@ -198,7 +205,7 @@ public class ProfileFragment extends Fragment {
         // Get a top-level reference to the collection.
         final CollectionReference collectionReference = db.collection("posts");
 
-        collectionReference.whereEqualTo("UID", moodiStorage.getUserUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        collectionReference.whereEqualTo("UID", moodiStorage.getUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
@@ -230,32 +237,48 @@ public class ProfileFragment extends Fragment {
             });
     }
 
+
     /*
-     * Load the notification view.
+     * Check user click on notifications.
+     *
      */
-    private void loadNotifications() {
-        moodiStorage.getNotifications().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void getNotificationResponse() {
+        //Todo: get id of clicked element.
+
+    }
+
+    /*
+     * Load following and followers list.
+     */
+    private void loadSocialInfo() {
+        moodiStorage.getFollowers().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    notificationList.clear();
+                    Log.d(TAG, "Getting followers... ");
                     for (QueryDocumentSnapshot doc : task.getResult()) {
-                        //Todo: serialize notification.
-                        /*
-                        if (index != null) {
-                            int i = index.intValue();
-                            moodList.add(new Mood(emotionalStateText, reasonText, date, socialSituation, postID, i));
-                            Log.d(TAG, socialSituation);
-                        }
-
-                         */
+                        Log.d(TAG, "user -> " + doc.getString("user"));
+                        Log.d(TAG, "following -> " + doc.getString("following"));
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
+            }
+        });
 
-                moodAdapter.notifyDataSetChanged();
 
+        moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Getting following... ");
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Log.d(TAG, "user -> " + doc.getString("user"));
+                        Log.d(TAG, "following -> " + doc.getString("following"));
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
             }
         });
     }

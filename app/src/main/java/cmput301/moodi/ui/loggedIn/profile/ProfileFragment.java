@@ -96,6 +96,7 @@ public class ProfileFragment extends Fragment {
         this.loadUserPreferences();
         this.loadMoodHistory();
         this.loadNotifications();
+        this.loadSocialInfo();
 
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -195,7 +196,7 @@ public class ProfileFragment extends Fragment {
         // Get a top-level reference to the collection.
         final CollectionReference collectionReference = db.collection("posts");
 
-        collectionReference.whereEqualTo("UID", moodiStorage.getUserUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        collectionReference.whereEqualTo("UID", moodiStorage.getUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
@@ -240,7 +241,7 @@ public class ProfileFragment extends Fragment {
                         //Todo: retrieve user friendly username or name for display
                         String UID = doc.getString("sender");
                         final QueryDocumentSnapshot notificationData = doc;
-                        moodiStorage.getUserByUID(UID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                        moodiStorage.searchByUID(UID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
                                 if (task.isSuccessful()) {
@@ -280,17 +281,34 @@ public class ProfileFragment extends Fragment {
      * Load following and followers list.
      */
     private void loadSocialInfo() {
-        moodiStorage.getFollowers().addOnCompleteListener(new OnCompleteListener() {
+        moodiStorage.getFollowers().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                //Todo: parse 'followers' into profile view
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Getting followers... ");
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Log.d(TAG, "user -> " + doc.getString("user"));
+                        Log.d(TAG, "following -> " + doc.getString("following"));
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
             }
         });
 
-        moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener() {
+
+        moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
-            public void onComplete(@NonNull Task task) {
-                //Todo: parse 'following' into profile view
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "Getting following... ");
+                    for (QueryDocumentSnapshot doc : task.getResult()) {
+                        Log.d(TAG, "user -> " + doc.getString("user"));
+                        Log.d(TAG, "following -> " + doc.getString("following"));
+                    }
+                } else {
+                    Log.d(TAG, "Error getting documents: ", task.getException());
+                }
             }
         });
     }

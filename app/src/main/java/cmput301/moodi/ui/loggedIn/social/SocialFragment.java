@@ -1,5 +1,6 @@
 package cmput301.moodi.ui.loggedIn.social;
 
+import android.app.Dialog;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -7,17 +8,25 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
+
+import java.util.HashMap;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.User;
@@ -25,11 +34,10 @@ import cmput301.moodi.Objects.UserList;
 import cmput301.moodi.Objects.UserListAdapter;
 import cmput301.moodi.R;
 
+import static cmput301.moodi.util.Constants.FOLLOW_REQUEST;
+
 /*
  * Class: SocialFragment
- * Todo: implement adding friends functionality
- * Todo: display all users of the app and allow filter of results
- * Todo:
  */
 
 public class SocialFragment extends Fragment {
@@ -53,13 +61,68 @@ public class SocialFragment extends Fragment {
 
         userListView = root.findViewById(R.id.social_list);
         userList = new UserList();
-        followersList = new UserList();
-        followingList = new UserList();
-
         userAdapter = new UserListAdapter(container.getContext(), userList);
+
         userListView.setAdapter(userAdapter);
 
-        loadSocialList();
+        userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+                final User user = (User) adapterView.getItemAtPosition(position);
+
+                moodiStorage.isUserFollowing(user.getUID()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task task) {
+                        if (task.isSuccessful()) {
+                            //DocumentReference doc = task.getResult();
+                            Log.d(TAG, task.getResult().toString());
+                            //UserDialogFragment dialog = new UserDialogFragment(user.getUsername());
+                            final Dialog userDialog = new Dialog(getContext());
+                            userDialog.setContentView(R.layout.user_dialog);
+
+                            TextView usernameView = userDialog.findViewById(R.id.username);
+                            usernameView.setText(user.getUsername());
+
+                            TextView nameView = userDialog.findViewById(R.id.full_name);
+                            nameView.setText(user.getFirstName() + " " + user.getLastName());
+
+                            ImageButton closeButton = userDialog.findViewById(R.id.close);
+                            closeButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    userDialog.dismiss();
+                                }
+                            });
+
+                            //Todo: set status on dialog. Set follow request button if user is not currently following.
+                            // Also ensure no pending notifications to user are matching the description.
+
+                            Button folloRequestButton = userDialog.findViewById(R.id.follow_request);
+                            folloRequestButton.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View view) {
+                                    userDialog.dismiss();
+                                    HashMap<String, Object> data = new HashMap<>();
+                                    data.put("sender", moodiStorage.getUID());
+                                    data.put("receiver", user.getUID());
+                                    data.put("type", FOLLOW_REQUEST);
+                                    moodiStorage.sendFollowRequest(data);
+                                    Toast.makeText(getActivity(), "Follow Request Sent!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                            userDialog.show();
+                            Window window = userDialog.getWindow();
+                            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
+                            //dialog.show(getActivity().getSupportFragmentManager(), "Hello");
+                        } else {
+                            Log.d(TAG, "Failed to check if following user.");
+                        }
+                    }
+                });
+            }
+        });
 
         inputSearch = (EditText) root.findViewById(R.id.search_bar);
         inputSearch.addTextChangedListener(new TextWatcher() {
@@ -76,36 +139,12 @@ public class SocialFragment extends Fragment {
             public void afterTextChanged(Editable arg0) {}
         });
 
-        RadioGroup selectionGroup = root.findViewById(R.id.filter_status);
-
-        selectionGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup radioGroup, int i) {
-
-                switch(i) {
-                    case R.id.radio_all:
-                        Log.d(TAG, "show all");
-                        userStatusFilter = "all";
-                        break;
-
-                    case R.id.radio_followers:
-                        Log.d(TAG, "show followers");
-                        userStatusFilter = "followers";
-                        break;
-
-                    case R.id.radio_following:
-                        Log.d(TAG, "show following");
-                        userStatusFilter = "following";
-                        break;
-                }
-                //Todo: notify that status filter has changed.
-
-            }
-        });
+        loadSocialList();
 
         return root;
 
     }
+
 
     /*
      * Begin by displaying all. Must update on radio click change.
@@ -117,14 +156,14 @@ public class SocialFragment extends Fragment {
                 if (task.isSuccessful()) {
                     userList.clear();
                     for (QueryDocumentSnapshot document : task.getResult()) {
-                        Log.d(TAG, "document ->" + document.getData());
-
-                        User user = new User();
-                        user.setUsername(document.getString("username"));
-                        user.setFirstName(document.getString("first_name"));
-                        user.setLastName(document.getString("last_name"));
-
-                        userList.add(user);
+                        if (!moodiStorage.getUID().equals(document.getId())) {
+                            User user = new User();
+                            user.setUsername(document.getString("username"));
+                            user.setFirstName(document.getString("first_name"));
+                            user.setLastName(document.getString("last_name"));
+                            user.setUID(document.getId());
+                            userList.add(user);
+                        }
                     }
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
@@ -134,5 +173,15 @@ public class SocialFragment extends Fragment {
             }
         });
     }
+
+    public void loadFollowers() {
+        moodiStorage.getFollowers().addOnCompleteListener(new OnCompleteListener() {
+            @Override
+            public void onComplete(@NonNull Task task) {
+
+            }
+        });
+    }
+
 
 }

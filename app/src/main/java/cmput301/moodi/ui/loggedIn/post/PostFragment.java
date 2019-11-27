@@ -2,8 +2,6 @@ package cmput301.moodi.ui.loggedIn.post;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -12,15 +10,11 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.CalendarView;
-import android.widget.ArrayAdapter;
-
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -31,15 +25,11 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.material.internal.CircularBorderDrawable;
-import com.google.api.LogDescriptor;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -48,23 +38,18 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageMetadata;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.UUID;
-import java.util.concurrent.Executor;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -232,7 +217,7 @@ public class PostFragment extends Fragment {
         });
 
         // Getting unique username and storing in a textView
-        String UID = moodiStorage.getUserUID();
+        String UID = moodiStorage.getUID();
         CollectionReference Colref = db.collection("users");
         DocumentReference docReff = Colref.document(UID);
         docReff.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {

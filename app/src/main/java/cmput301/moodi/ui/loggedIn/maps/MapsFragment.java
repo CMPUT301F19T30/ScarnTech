@@ -19,6 +19,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.UiSettings;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -175,8 +176,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                 // for each mood, extract the location and make a marker with it
                                 for (QueryDocumentSnapshot document : task.getResult()) {
                                     GeoPoint gp = (GeoPoint) document.getData().get("Location");
+
                                     if (gp != null) {
-                                        Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
+                                        String emSt = (String) document.getData().get("Emotional State");
+                                        Marker newMarker = map.addMarker(new MarkerOptions()
+                                                .position(new LatLng(gp.getLatitude(), gp.getLongitude()))
+                                                .icon(BitmapDescriptorFactory.defaultMarker(getColor(emSt)))
+                                                .title("You were feeling " + emSt));
                                         userMarkers.add(newMarker);
                                         allMarkers.add(newMarker);
                                     }
@@ -262,8 +268,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                 if (!moods.isEmpty()) {
                                                     Collections.sort(moods);
                                                     GeoPoint gp = moods.get(0).getLocation();
+                                                    String emSt = moods.get(0).getEmotionalState().getName();
+                                                    String user = moods.get(0).getUsername();
                                                     if (gp != null) {
-                                                        Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
+                                                        Marker newMarker = map.addMarker(new MarkerOptions()
+                                                                .position(new LatLng(gp.getLatitude(), gp.getLongitude()))
+                                                                .icon(BitmapDescriptorFactory.defaultMarker(getColor(emSt)))
+                                                                .title(user + " was feeling " + emSt));
                                                         followingMarkers.add(newMarker);
                                                         allMarkers.add(newMarker);
                                                     }
@@ -315,6 +326,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                 }
             }
         });
+    }
+
+    public float getColor(String emotional_state) {
+        switch(emotional_state) {
+            case "Happy":
+                return 55;
+            case "Mad":
+                return 14;
+            case "Sad":
+                return 230;
+            case "Love":
+                return 310;
+            case "Tired":
+                return 180;
+        }
+
+        // otherwise return the default color
+        return BitmapDescriptorFactory.HUE_RED;
     }
 
     @Override

@@ -112,13 +112,10 @@ public class ProfileFragment extends Fragment {
             @Override
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);
-//                new cmput301.moodi.ui.loggedIn.profile.EditFragment();
                 cmput301.moodi.ui.loggedIn.profile.EditFragment.editSelection(moodSelected).show(getChildFragmentManager(), "Edit_Moods");
                 return false;
             }
         });
-
-        // TODO: close fragment (Taking two clicks bug)
         checkForUpdates();
         return root;
     }
@@ -164,7 +161,7 @@ public class ProfileFragment extends Fragment {
                         String socialSituation = (String) doc.getData().get("Social Situation");
                         Number index = (Number) doc.getData().get("Index");
                         String path = (String) doc.getData().get("Image");
-                        String uniqueID = (String) doc.getData().get("Username");
+                        String uniqueID = "";
                         if (index != null) {
                             int i = index.intValue();
                             // TODO: Add location to constructor
@@ -217,7 +214,7 @@ public class ProfileFragment extends Fragment {
                     String socialSituation = (String) doc.getData().get("Social Situation");
                     Number index = (Number) doc.getData().get("Index");
                     String path = (String) doc.getData().get("Image");
-                    String uniqueID = (String) doc.getData().get("Username");
+                    String uniqueID = "";
 
                     if (index != null) {
                         int i = index.intValue();

@@ -98,6 +98,12 @@ public class MoodiStorage {
         return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
 
+    /*
+     * Returns all of the selected users own posts.
+     */
+    public Task getUserMoodHistory(String UID) {
+        return this.postCollection.whereEqualTo("UID", UID).get();
+    }
 
     /*
      * Creates a post object and adds it to Firebase post collection.
@@ -129,6 +135,13 @@ public class MoodiStorage {
      */
     public Task getUserMoods() {
         return this.postCollection.whereEqualTo("UID", UID).get();
+    }
+
+    /*
+     * Returns selected users unique id and full name
+     */
+    public Task getSelectedUserProfile(String username) {
+        return this.userCollection.whereEqualTo("username", username).get();
     }
 
     /*

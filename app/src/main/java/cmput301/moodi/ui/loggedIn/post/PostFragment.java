@@ -250,6 +250,7 @@ public class PostFragment extends Fragment {
                 }
             }
         });
+
         // Set onClick Listener for creation of new post
         PostMoodButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")

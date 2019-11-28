@@ -9,45 +9,56 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="38dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginStart="5dp"
             android:orientation="horizontal">
 
+            <!--            Username             -->
             <TextView
-                android:id="@+id/textView29"
+                android:id="@+id/input_User_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="Selected Post"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="30sp" />
+                android:background="@color/moodiBackground2"
+                android:fontFamily="@font/rancho"
+                android:gravity="center_horizontal"
+                android:text="Username"
+                android:textColor="@color/moodiBlack"
+                android:textSize="30sp"
+                android:onClick="onClick"
+                android:clickable="true"/>
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="38dp"
-            android:orientation="horizontal"
-            android:layout_marginTop="10dp">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:orientation="horizontal">
 
             <!--            Emotional State              -->
-            <TextView
-                android:id="@+id/textView1"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingLeft="10dp"
-                android:paddingRight="10dp"
-                android:text="Emotional State:"
-                android:textColor="#000000"
-                android:textSize="20sp" />
+<!--            <TextView-->
+<!--                android:id="@+id/textView1"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="match_parent"-->
+<!--                android:paddingLeft="10dp"-->
+<!--                android:paddingRight="10dp"-->
+<!--                android:text="Emotional State:"-->
+<!--                android:textColor="#000000"-->
+<!--                android:textSize="25sp" />-->
 
             <TextView
                 android:id="@+id/input_EmotionalState_textView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="sans-serif-black"
+                android:gravity="center_horizontal"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
                 android:text="The Emotional State"
-                android:textSize="20sp" />
+                android:textSize="25sp" />
         </LinearLayout>
 
         <LinearLayout

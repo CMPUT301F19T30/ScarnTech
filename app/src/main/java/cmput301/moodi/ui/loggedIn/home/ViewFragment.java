@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -40,8 +41,7 @@ import cmput301.moodi.ui.loggedIn.profile.EditFragment;
 
 /*
  * Class: ViewFragment
- * Fragment pulled up to enter a custom date if the user does not want the instantaneous date
- * on post creation.
+ * Fragment pulled up to pull up information on a post
  * 11/12/2019
  */
 
@@ -56,7 +56,7 @@ public class ViewFragment extends DialogFragment{
     private TextView Location;
     private TextView ImageText;
     private ImageView Image;
-    String UserID;
+    private TextView Username;
 
     FirebaseStorage storage = FirebaseStorage.getInstance("gs://moodi-app-1cf5d.appspot.com/");
 
@@ -85,6 +85,8 @@ public class ViewFragment extends DialogFragment{
         args.putSerializable("User Social Situation", selectedMood.getSocialSituation());
         args.putSerializable("User Date", selectedMood.getDate());
         args.putSerializable("Image", selectedMood.getImage());
+        args.putSerializable("Username", selectedMood.getUniqueID());
+        args.putSerializable("Color", selectedMood.getEmotionalState().getColor());
 
         ViewFragment fragment = new ViewFragment();
         fragment.setArguments(args);
@@ -125,17 +127,29 @@ public class ViewFragment extends DialogFragment{
             Location = view.findViewById((R.id.input_Location_textView));
             Image = view.findViewById(R.id.view_photo);
             ImageText = view.findViewById(R.id.view_Photo_content);
+            Username = view.findViewById(R.id.input_User_textView);
 
+            // Onclick listener to take a user to the selected profile!
+            Username.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // TODO: Make it close after opening new fragment
+                    new FollowingProfileFragment();
+                    FollowingProfileFragment.viewProfile(Username.getText().toString()).show(getChildFragmentManager(),"View User Profile");
+                }
+            });
             // Retrieve properties of selected mood from bundle and populate display
             Bundle args = getArguments();
             if (args != null) {
 
                 // Set text views to user selected mood
                 EmotionalState.setText(args.getString("User Emotional State"));
+                EmotionalState.setTextColor(ContextCompat.getColor(getContext(), args.getInt("Color")));
                 Reason.setText(args.getString("User Reason"));
                 SocialSituation.setText(args.getString("User Social Situation"));
                 Date.setText(args.getString("User Date"));
                 Location.setText(args.getString("Location"));
+                Username.setText(args.getString("Username"));
 
                 String path = args.getString("Image");
                 if (path != null && !path.equals("No Photo Available")){

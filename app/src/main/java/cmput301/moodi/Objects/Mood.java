@@ -23,6 +23,10 @@ public class Mood implements Comparable<Mood> {
     private Number emotionalIndex = 0;
     private String image = "";
 
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
+    }
+
     // Unique ID of a user's username
     private String uniqueID;
 

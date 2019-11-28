@@ -7,6 +7,7 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
     private String senderUID;
     private String senderName;
     private String receiverUID;
+    private String documentID;
     private Integer response;
 
     public MoodiNotification() {
@@ -20,6 +21,11 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
         this.setType(doc.getString("type"));
         this.setReceiver(doc.getString("receiver"));
         this.setSenderUID(doc.getString("sender"));
+        this.documentID = doc.getId();
+    }
+
+    public String getDocumentID() {
+        return this.documentID;
     }
 
     /*

@@ -55,6 +55,7 @@ public class SocialFragment extends Fragment {
     UserList userList, followersList, followingList;
     EditText inputSearch;
     String userStatusFilter;
+    TabHost tabs;
 
     private ListView notificationListView;
     private MoodiNotificationsAdapter notificationAdapter;
@@ -64,30 +65,20 @@ public class SocialFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
 
         View root = inflater.inflate(R.layout.fragment_social, container, false);
-
-        TabHost tabs = (TabHost) root.findViewById(R.id.tabhost);
-        tabs.setup();
-        TabHost.TabSpec spec = tabs.newTabSpec("tag1");
-        spec.setContent(R.id.tab1);
-        spec.setIndicator("Search");
-        tabs.addTab(spec);
-        spec = tabs.newTabSpec("tag2");
-        spec.setContent(R.id.tab2);
-        spec.setIndicator("Notifications");
-        tabs.addTab(spec);
+        this.setupTabs(root);
 
         moodiStorage = new MoodiStorage();
 
-        userListView = root.findViewById(R.id.social_list);
-        userList = new UserList();
-        userAdapter = new UserListAdapter(container.getContext(), userList);
-
-        //Load lists for notifications.
+        //Load notification resources.
         notificationListView = root.findViewById(R.id.notification_list);
         notificationList = new ArrayList<>();
         notificationAdapter = new MoodiNotificationsAdapter(container.getContext(), notificationList);
         notificationListView.setAdapter(notificationAdapter);
 
+        // Load social search resources.
+        userListView = root.findViewById(R.id.social_list);
+        userList = new UserList();
+        userAdapter = new UserListAdapter(container.getContext(), userList);
         userListView.setAdapter(userAdapter);
 
         userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -164,12 +155,28 @@ public class SocialFragment extends Fragment {
             public void afterTextChanged(Editable arg0) {}
         });
 
-
+        // Load views.
         loadSocialList();
         this.loadNotifications();
 
         return root;
 
+    }
+
+    /*
+     * Setup tabs for view.
+     */
+    public void setupTabs(View root) {
+        tabs = (TabHost) root.findViewById(R.id.tabhost);
+        tabs.setup();
+        TabHost.TabSpec spec = tabs.newTabSpec("tag1");
+        spec.setContent(R.id.tab1);
+        spec.setIndicator("Search");
+        tabs.addTab(spec);
+        spec = tabs.newTabSpec("tag2");
+        spec.setContent(R.id.tab2);
+        spec.setIndicator("Notifications");
+        tabs.addTab(spec);
     }
 
 
@@ -201,14 +208,6 @@ public class SocialFragment extends Fragment {
         });
     }
 
-    public void loadFollowers() {
-        moodiStorage.getFollowers().addOnCompleteListener(new OnCompleteListener() {
-            @Override
-            public void onComplete(@NonNull Task task) {
-
-            }
-        });
-    }
 
     /*
      * Load the notification view.

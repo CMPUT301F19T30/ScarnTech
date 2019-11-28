@@ -29,6 +29,7 @@
         android:orientation="horizontal">
 
         <Button
+            android:id="@+id/decline_notification"
             style="@style/Widget.AppCompat.Button.Colored"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -38,6 +39,7 @@
             android:textColor="@color/moodiRed" />
 
         <Button
+            android:id="@+id/accept_notification"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"

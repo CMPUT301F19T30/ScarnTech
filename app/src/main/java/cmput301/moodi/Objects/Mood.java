@@ -6,6 +6,7 @@ package cmput301.moodi.Objects;
  */
 
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -19,12 +20,10 @@ public class Mood implements Comparable<Mood> {
     private String reason = "";
     private String socialSituation = "";
     private GeoPoint location;
-    private String moodID = "";
     private Number emotionalIndex = 0;
     private String image = "";
-
-    // Unique ID of a user's username
-    private String uniqueID;
+    private String UID;
+    private String username;
 
     // Unique ID of a post assigned by FireBase
     private String keyID;
@@ -33,25 +32,25 @@ public class Mood implements Comparable<Mood> {
      * Constructor for creation of a mood from a post which is sent to FireBase with an image
      * (POSTS)
      */
-    public Mood(int index, String reason, String SocialSituation, String date, String image, String uniqueID) {
+    public Mood(int index, String reason, String SocialSituation, String date, String image, String username) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;
         this.socialSituation = SocialSituation;
         this.date = date;
         this.image = image;
-        this.uniqueID = uniqueID;
+        this.username = username;
     }
     /*
      * Constructor for creation of a mood from a post which is sent to FireBase without an image
      * (POSTS)
      */
-    public Mood(int index, String reason, String SocialSituation, String date, String uniqueID) {
+    public Mood(int index, String reason, String SocialSituation, String date, String username) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;
         this.socialSituation = SocialSituation;
         this.date = date;
         this.image = "No Photo Available";
-        this.uniqueID = uniqueID;
+        this.username = username;
     }
 
     // TODO: Clean up constructors and make sure it doesnt make a new date when pulling a post from database
@@ -60,7 +59,7 @@ public class Mood implements Comparable<Mood> {
     * (HOME & PROFILE)
      */
 
-    public Mood(String reason, String date, String socialSituation, String keyID, int index, String image, String uniqueID) {
+    public Mood(String reason, String date, String socialSituation, String keyID, int index, String image, String username) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;
         this.date = date;
@@ -68,7 +67,7 @@ public class Mood implements Comparable<Mood> {
         this.keyID = keyID;
         this.image = image;
         this.getEmotionalState().setIndex((index));
-        this.uniqueID = uniqueID;}
+        this.username = username;}
 
     public Mood(String reason, String date, String socialSituation, String keyID, int index, String image) {
         this.emotionalState.setEmotionalState(index);
@@ -96,12 +95,41 @@ public class Mood implements Comparable<Mood> {
         this.location = location;
         setDate();
     }
+
+    /*
+     * Setup notification from Firestore document.
+     */
+    public void setFromDocument(QueryDocumentSnapshot doc) {
+        this.setGivenDate(doc.getString("Date"));
+        this.emotionalState.setEmotionalState(((Number)doc.getData().get("Index")).intValue());
+        this.setImage(doc.getString("Image"));
+        this.setLocation(doc.getGeoPoint("Location"));
+        this.setReason(doc.getString("Reason"));
+        this.setSocialSituation(doc.getString("Social Situation"));
+        this.setUID(doc.getString("UID"));
+        this.setUsername(doc.getString("Username"));
+    }
+
+    /*
+     * Set the username of the user who posted the mood
+     */
+    private void setUsername(String username) {
+        this.username = username;
+    }
+
+    /*
+     * Set the UID of the user who posted the mood
+     */
+    private void setUID(String UID) {
+        this.UID = UID;
+    }
+
     /*
      * This returns the username of the users post
      * @return Return the username as a string
      */
-    public String getUniqueID() {
-        return this.uniqueID;
+    public String getUsername() {
+        return this.username;
     }
 
     /*
@@ -111,6 +139,7 @@ public class Mood implements Comparable<Mood> {
     public String getImage() {
         return image;
     }
+
     /*
      * This sets the byte array that is the image.
      */
@@ -133,6 +162,13 @@ public class Mood implements Comparable<Mood> {
         Date instantananeousDate;
         instantananeousDate = new Date();
         date = instantananeousDate.toString();
+    }
+
+    /*
+     * This instantaneously captures the date and time at runtime and converts to string
+     */
+    public void setGivenDate(String date) {
+        this.date = date;
     }
 
     /*
@@ -209,15 +245,6 @@ public class Mood implements Comparable<Mood> {
     }
 
     /*
-     * This returns the id of the mood.
-     */
-    public String getID() {
-        return this.moodID;
-    }
-
-
-
-    /*
      *
      */
     public HashMap<String, Object> serializeMood() {
@@ -230,7 +257,7 @@ public class Mood implements Comparable<Mood> {
         data.put("Location", this.getLocation());
         data.put("Date", this.getDate());
         data.put("Image", this.getImage());
-        data.put("Username", this.getUniqueID());
+        data.put("Username", this.getUsername());
         return data;
     }
 

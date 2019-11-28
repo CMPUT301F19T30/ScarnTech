@@ -3,22 +3,25 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:background="@color/moodiBackground2">
-
-    <include layout="@layout/profile_header"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+    android:background="@color/moodiBackground"
+    android:orientation="vertical">
 
     <include
-        layout="@layout/notification_list"
-        android:id="@+id/notifications"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content"/>
-
-
-    <include layout="@layout/mood_history"
+        layout="@layout/profile_header"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content" />
+
+    <include
+        android:id="@+id/notifications"
+        layout="@layout/notification_list"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@color/moodiBackground" />
+
+
+    <include
+        layout="@layout/mood_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
 </LinearLayout>

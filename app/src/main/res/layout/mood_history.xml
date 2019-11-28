@@ -1,36 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/moodiWhite"
-    android:clickable="true">
+    android:background="@color/moodiBackground"
+    android:clickable="true"
+    android:orientation="vertical">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/moodiBackground"
+        android:padding="@dimen/activity_vertical_margin"
         android:text="Mood History"
         android:textColor="@color/moodiDarkBlue"
-        android:padding="@dimen/activity_vertical_margin"
         android:textSize="24sp" />
 
     <TextView
         android:id="@+id/textView15"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/moodiBackground"
+        android:padding="@dimen/activity_vertical_margin"
         android:text="Filter by"
-        android:padding="@dimen/activity_vertical_margin"/>
+        android:textColor="@color/moodiWhite" />
 
     <Spinner
         android:id="@+id/filter_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/moodiBackground"
         android:padding="@dimen/activity_vertical_margin"
         android:spinnerMode="dropdown" />
 
     <ListView
         android:id="@+id/mood_history"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-    </ListView>
+        android:layout_height="match_parent"
+        android:background="@color/moodiBackground"></ListView>
 
 </LinearLayout>

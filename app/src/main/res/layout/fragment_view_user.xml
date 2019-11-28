@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/moodiBackground2">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="29dp"
+        android:background="@color/moodiMediumBlue"
+        android:fontFamily="@font/rancho"
+        android:text="Moodi"
+        android:textSize="20dp"
+        android:paddingLeft="5dp"
+        android:textColor="@color/moodiWhite"></TextView>
+
+    <include layout="@layout/viewed_profile_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <include layout="@layout/mood_history"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <TextView
+        android:id="@+id/intermediate2"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="invisible"/>
+</LinearLayout>

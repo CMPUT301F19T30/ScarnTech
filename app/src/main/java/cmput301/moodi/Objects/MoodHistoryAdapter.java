@@ -16,6 +16,7 @@ import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import cmput301.moodi.R;
 
@@ -132,6 +133,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         @Override
         protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
             moodsListFiltered =  (ArrayList<Mood>) filterResults.values;
+            Collections.sort(moodsListFiltered);
             notifyDataSetChanged();
         }
 

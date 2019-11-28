@@ -32,14 +32,23 @@ import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 
 import static android.content.ContentValues.TAG;
 import static cmput301.moodi.util.Constants.MAPVIEW_BUNDLE_KEY;
 import static cmput301.moodi.util.Constants.POST_PATH;
+
+/**
+ * Class:MapsFragments
+ * This class allow user to view google map in the app, it also allocate each mood on the map
+ * base on their location.
+ * @since 11/15/2019
+ */
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
@@ -61,6 +70,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
     private List<Marker> userMarkers;
     private List<Marker> followingMarkers;
     private List<Marker> allMarkers;
+    public List<Mood> moods;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -84,6 +94,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    /*
+    initialize google map on the app
+     */
     private void initGoogleMap(Bundle savedInstanceState) {
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -128,7 +141,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onStop();
         mMapView.onStop();
     }
-
+    /*
+    Allows app able be show moods on the map
+     */
     @Override
     public void onMapReady(final GoogleMap map) {
         // set some map settings
@@ -211,6 +226,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         });
 
         // toggle for the user to choose whether to show their following moods on the map
+        // this will only show the most recent mood for each person! if there is no location for
+        // this mood then nothing will be shown.
         followingMoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -227,9 +244,24 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
-                                                // TODO if only the most recent post is required here is where the filter must be done
+
+                                                if (moods == null) {
+                                                    moods = new ArrayList<>();
+                                                } else {
+                                                    moods.clear();
+                                                }
+
+                                                // for each mood of this person add to an array
                                                 for (QueryDocumentSnapshot mood_doc : task.getResult()) {
-                                                    GeoPoint gp = (GeoPoint) mood_doc.getData().get("Location");
+                                                    Mood mood = new Mood();
+                                                    mood.setFromDocument(mood_doc);
+                                                    moods.add(mood);
+
+                                                }
+
+                                                if (!moods.isEmpty()) {
+                                                    Collections.sort(moods);
+                                                    GeoPoint gp = moods.get(0).getLocation();
                                                     if (gp != null) {
                                                         Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
                                                         followingMarkers.add(newMarker);
@@ -238,7 +270,7 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                 }
 
                                                 // display to user how many of their moods are now being shown
-                                                numFmoods.setText(String.valueOf(task.getResult().size()));
+                                                numFmoods.setText(String.valueOf(followingMarkers.size()));
 
                                                 // if new markers were placed we can adjust the zoom settings to see them
                                                 if (allMarkers.size() == 1) {

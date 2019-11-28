@@ -139,7 +139,7 @@
     <string name="enter_your_password">Enter your password</string>
     <string name="log_in">Log In</string>
     <string name="sign_up">Sign Up</string>
-    <string name="not_yet_registered_sign_up_here">Not yet registered? Sign up here.</string>
+    <string name="not_yet_registered_sign_up_here">Not yet registered? </string>
     <string name="send_moods">Send Moods</string>
     <string name="create_a_new_account">Create a new account!</string>
     <string name="enter_a_password">Enter a password</string>

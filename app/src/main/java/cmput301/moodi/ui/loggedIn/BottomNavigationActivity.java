@@ -48,11 +48,11 @@ import static cmput301.moodi.util.Constants.ERROR_DIALOG_REQUEST;
 import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ACCESS_FINE_LOCATION;
 import static cmput301.moodi.util.Constants.PERMISSIONS_REQUEST_ENABLE_GPS;
 
-/*
+/**
  * Class: BottomNavigationActivity
  * Creates bottom navigation activity as well as controls app flow through the 5 fragments
  * associated with the bar.
- * 11/09/2019
+ * @since 11/09/2019
  */
 
 public class BottomNavigationActivity extends AppCompatActivity implements ViewFragment.viewPost, EditFragment.addNewDate, FollowingProfileFragment.viewUser {

@@ -40,8 +40,10 @@ import cmput301.moodi.R;
 
 import static cmput301.moodi.util.Constants.FOLLOW_REQUEST;
 
-/*
+/**
  * Class: SocialFragment
+ * allow user to see a list of people they are following and people who are following them
+ * @since 11/13/2019
  */
 
 public class SocialFragment extends Fragment {

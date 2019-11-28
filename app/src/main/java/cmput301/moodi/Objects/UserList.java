@@ -1,7 +1,7 @@
 package cmput301.moodi.Objects;
-/*
+/**
  * Class: UserList
- * 11/04/2019
+ * @since 11/04/2019
  */
 
 import java.util.ArrayList;

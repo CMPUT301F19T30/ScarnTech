@@ -1,7 +1,9 @@
 package cmput301.moodi.Objects;
-/*
- * Class: UserList
- * 11/04/2019
+/**
+ * Class: NotificationList
+ * Allocate multiple notification into a list and allow app to add or
+ * remove any notification in that list.
+ * @since 11/04/2019
  */
 
 import java.util.ArrayList;
@@ -13,7 +15,9 @@ public class NotificationList {
     private List<MoodiNotification> notifications = new ArrayList<>();
 
     /**
-     * @param notification Notification needed to be added
+     * add a notification into the list
+     * @param notification
+     * Notification needed to be added
      */
     public void add(MoodiNotification notification){
         if (this.notifications.contains(notification))
@@ -22,7 +26,9 @@ public class NotificationList {
     }
 
     /**
-     * @param notification Notification needed to be removed if existing in list already
+     * remove a notification from the list.
+     * @param notification
+     * Notification needed to be removed if existing in list already
      */
     public void removeNotification(MoodiNotification notification) {
         if (!this.notifications.contains(notification))
@@ -44,10 +50,16 @@ public class NotificationList {
         return this.notifications.get(i);
     }
 
+    /*
+    get the size of the notification
+     */
     public int size() {
         return this.notifications.size();
     }
 
+    /*
+    clean a notification
+     */
     public void clear() {
         this.notifications.clear();
     }

@@ -38,11 +38,11 @@ import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 import cmput301.moodi.ui.loggedIn.profile.EditFragment;
 
-/*
+/**
  * Class: ViewFragment
  * Fragment pulled up to enter a custom date if the user does not want the instantaneous date
  * on post creation.
- * 11/12/2019
+ * @since 11/12/2019
  */
 
 

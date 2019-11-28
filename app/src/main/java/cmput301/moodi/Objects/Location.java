@@ -1,8 +1,8 @@
 package cmput301.moodi.Objects;
-/*
+/**
  * Class: Location
  * Stores location data for use with Google Maps API.
- * 11/09/2019
+ * @since 11/09/2019
  */
 
 public class Location {
@@ -14,7 +14,7 @@ public class Location {
         this.longitude = longitude;
     }
 
-    /*
+    /**
      * This returns latitude of the location.
      *
      * @return Return the latitude
@@ -23,7 +23,7 @@ public class Location {
         return this.latitude;
     }
 
-    /*
+    /**
      * This returns longitude of the location.
      *
      * @return Return the longitude
@@ -32,22 +32,22 @@ public class Location {
         return this.longitude;
     }
 
-    /*
+    /**
      * This sets the latitude of the location.
      */
     public void setLatitude(double latitude) {
         this.latitude = latitude;
     }
 
-    /*
+    /**
      * This sets the longitude of the location.
      */
     public void setLongitude(double longitude) {
         this.longitude = longitude;
     }
 
-    /*
-     * Returns an array of location [longitude, latitude].
+    /**
+     * @return an array of location [longitude, latitude].
      */
     public double[] toArray(){
         double[] location = {this.latitude, this.longitude};

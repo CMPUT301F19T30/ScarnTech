@@ -39,10 +39,10 @@ import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.Objects.User;
 import cmput301.moodi.R;
 
-/*
+/**
  * Class: ProfileFragment
- *
  * Display profile username and name. Allow user to edit username and name. Display users personal mood history.
+ * @since 11/15/2019
  */
 
 public class ProfileFragment extends Fragment {

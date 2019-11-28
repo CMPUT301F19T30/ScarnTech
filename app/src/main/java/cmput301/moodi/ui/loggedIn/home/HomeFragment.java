@@ -30,10 +30,10 @@ import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodListAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
-/*
+/**
  * Class: HomeFragment
- * Main page where a user may view the most recent post of the users they follow
- * 11/09/2019
+ * Main page where a user may view there own personal posts or see "followers" posts
+ * @since 11/09/2019
  */
 public class HomeFragment extends Fragment {
 

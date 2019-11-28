@@ -18,9 +18,7 @@ import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.ScrollView;
 import android.widget.Spinner;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -78,11 +76,8 @@ public class PostFragment extends Fragment {
     private Spinner inputHourSpinner;
     private Spinner inputMinuteSpinner;
 
-    private ScrollView scrollView;
-
-    // cheesy way to get "live" position values from the database
-    private TextView lastLat;
-    private TextView lastLon;
+    private String lastLat = null;
+    private String lastLon = null;
 
     // Codes used to check permissions and pulls image
     private static final int CAMERA_REQUEST = 1888;
@@ -94,14 +89,14 @@ public class PostFragment extends Fragment {
     FirebaseStorage storage = FirebaseStorage.getInstance();
     String TAG = "PostFragment";
     MoodiStorage moodiStorage;
-    private TextView intermediate;
+    public String username;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_post, container, false);
 
         // Pointing variables for detection of user input (Text, buttons, than spinners and calendar)
-        intermediate = view.findViewById(R.id.intermediate);
+//        intermediate = view.findViewById(R.id.intermediate);
 
         ReasonView = view.findViewById(R.id.input_Reasoning);
 
@@ -118,11 +113,6 @@ public class PostFragment extends Fragment {
         inputHourSpinner = view.findViewById(R.id.input_hour);
         inputMinuteSpinner = view.findViewById(R.id.input_minute);
         calendar = view.findViewById(R.id.input_calendarView);
-
-        lastLat = view.findViewById(R.id.last_lat);
-        lastLon = view.findViewById(R.id.last_lon);
-
-        scrollView = view.findViewById(R.id.scrollView);
 
         // Get the current time and update the spinners in event that user doesn't customize date
         Calendar instantCalendar = Calendar.getInstance();
@@ -160,9 +150,9 @@ public class PostFragment extends Fragment {
             public void onClick(View v) {
                 Intent i = new Intent(getActivity(), AddLocationActivity.class);
                 // pass old location to add location activity for aesthetic
-                if (lastLat.getText() != null && lastLon.getText() != null) {
-                    i.putExtra("Latitude", lastLat.getText().toString());
-                    i.putExtra("Longitude", lastLon.getText().toString());
+                if (lastLat != null && lastLon != null) {
+                    i.putExtra("Latitude", lastLat);
+                    i.putExtra("Longitude", lastLon);
                 }
                 startActivity(i);
             }
@@ -181,8 +171,10 @@ public class PostFragment extends Fragment {
                 if (snapshot != null && snapshot.exists()) {
                     Log.d(TAG, "Current data: " + snapshot.getData());
                     GeoPoint lastLocation = (GeoPoint) snapshot.getData().get("Location");
-                    lastLat.setText(String.valueOf(lastLocation.getLatitude()));
-                    lastLon.setText(String.valueOf(lastLocation.getLongitude()));
+                    lastLat = String.valueOf(lastLocation.getLatitude());
+                    lastLon = String.valueOf(lastLocation.getLongitude());
+//                    lastLat.setText(String.valueOf(lastLocation.getLatitude()));
+//                    lastLon.setText(String.valueOf(lastLocation.getLongitude()));
                 } else {
                     Log.d(TAG, "Current data: null");
                 }
@@ -226,7 +218,8 @@ public class PostFragment extends Fragment {
                 if (task.isSuccessful()) {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
-                        intermediate.setText(document.getString("username"));
+                        username = document.getString("username");
+//                        intermediate.setText(document.getString("username"));
                     } else {
                         Log.d("MoodiStorage", "No such user");
                     }
@@ -252,8 +245,6 @@ public class PostFragment extends Fragment {
                 String minute = inputMinuteSpinner.getSelectedItem().toString();
                 String date = inputDate + " " + hour + ":" + minute;
 
-                String username = intermediate.getText().toString();
-
                 // Pulling image from user input & converting the data from an ImageView to bytes
                 if (userPhoto.getDrawable() != oldDrawable) {
                     Bitmap capture = Bitmap.createBitmap(
@@ -277,8 +268,8 @@ public class PostFragment extends Fragment {
                     Mood mood = new Mood(index, reason, socialSituation, date, path, username);
 
                     // Set mood location to the most recent location data from firebase (through text view)
-                    if (lastLat.getText() != null && lastLon.getText() != null) {
-                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat.getText().toString()), Double.valueOf(lastLon.getText().toString())));
+                    if (lastLat != null && lastLon != null) {
+                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat), Double.valueOf(lastLon)));
                     } else {
                         Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
                     }
@@ -291,8 +282,8 @@ public class PostFragment extends Fragment {
                     Mood mood = new Mood(index, reason, socialSituation, date, username);
 
                     // Set mood location to the most recent location data from firebase (through text view)
-                    if (lastLat.getText() != null && lastLon.getText() != null) {
-                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat.getText().toString()), Double.valueOf(lastLon.getText().toString())));
+                    if (lastLat != null && lastLon != null) {
+                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat), Double.valueOf(lastLon)));
                     } else {
                         Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
                     }
@@ -300,8 +291,9 @@ public class PostFragment extends Fragment {
                     moodiStorage.addMoodPost(mood);
                 }
 
-                // Reset posts to prepare for more entries!
-                resetPost(minutes, hours);
+                // reset the new post data and show user a post confirmation
+                resetPost();
+                new PostConfirmationFragment().show(getChildFragmentManager(), "Post_Confirmation_Fragment");
             }
         });
         return view;
@@ -310,14 +302,13 @@ public class PostFragment extends Fragment {
     /*
      * Reset posts input fields to prepare for more entries
      */
-    public void resetPost(int minutes, int hours) {
+    public void resetPost() {
         ReasonView.setText("");
         SocialSituationSpinner.setSelection(0);
         EmotionalStateSpinner.setSelection(0);
-        inputHourSpinner.setSelection(hours);
-        inputMinuteSpinner.setSelection(minutes);
+        inputHourSpinner.setSelection((int) ((System.currentTimeMillis() / (1000*60*60)) % 24));
+        inputMinuteSpinner.setSelection((int) ((System.currentTimeMillis() / (1000*60)) % 60));
         userPhoto.setImageResource(android.R.drawable.ic_menu_gallery);
-        scrollView.scrollTo(0, 0);
         calendar.setDate(System.currentTimeMillis(), false, true);
     }
 

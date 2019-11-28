@@ -55,7 +55,7 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
         // Pull information from the post!
         int color = mood.getEmotionalState().getColor();
         String name = mood.getEmotionalState().getName();
-        String uniqueID = mood.getUniqueID();
+        String username = mood.getUsername();
 
         // Push information pulled from user input into a new post
         currentEmotionalState.setText(name);
@@ -63,10 +63,10 @@ public class MoodListAdapter extends ArrayAdapter<Mood> {
         currentEmoji.setImageResource(mood.getEmotionalState().getEmoji());
         view.setBackgroundColor(ContextCompat.getColor(context, color));
 
-        if (uniqueID == null)
+        if (username == null)
             currentUsername.setText("Old Post No Username Yet");
         else
-            currentUsername.setText(uniqueID);
+            currentUsername.setText(username);
         return view;
     }
 }

@@ -178,6 +178,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                     CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
                                     map.animateCamera(cu);
                                 }
+                                Log.d(TAG, "Number of following markers: " + followingMarkers.size());
+                                Log.d(TAG, "Number of user mood markers: " + userMarkers.size());
                             } else {
                                 Log.d(TAG, "Error getting user moods: ", task.getException());
                             }
@@ -188,10 +190,13 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     if (userMarkers != null) {
                         for (Marker marker : userMarkers) {
                             marker.setVisible(false);
-//                            userMarkers.remove(marker);
                         }
+                        userMarkers.clear();
                         numUmoods.setText("0");
-                        allMarkers = followingMarkers;
+                        allMarkers.clear();
+                        for (Marker marker : followingMarkers) {
+                            allMarkers.add(marker);
+                        }
                     }
                 }
             }
@@ -207,13 +212,10 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                // list of following users has been retrieved
-
                                 // for each following, query the most recent mood
                                 for (QueryDocumentSnapshot following_doc : task.getResult()) {
                                     // query this following users last mood
-                                    String followingUID = (String) following_doc.getData().get("following");
-                                    FirebaseFirestore.getInstance().collection(POST_PATH).whereEqualTo("UID", followingUID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    moodiStorage.getUserMoods((String)following_doc.getData().get("following")).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                                         @Override
                                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                                             if (task.isSuccessful()) {
@@ -250,20 +252,25 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                         }
                                     });
                                 }
+                                Log.d(TAG, "Number of following markers: " + followingMarkers.size());
+                                Log.d(TAG, "Number of user mood markers: " + userMarkers.size());
                             } else {
                                 Log.d(TAG, "Error getting following moods: ", task.getException());
                             }
                         }
                     });
-
                 } else {
                     // delete following markers and update total markers
                     if (followingMarkers != null) {
                         for (Marker marker : followingMarkers) {
                             marker.setVisible(false);
                         }
+                        followingMarkers.clear();
                         numFmoods.setText("0");
-                        allMarkers = userMarkers;
+                        allMarkers.clear();
+                        for (Marker marker : userMarkers) {
+                            allMarkers.add(marker);
+                        }
                     }
                 }
             }

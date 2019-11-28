@@ -12,10 +12,16 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,15 +41,16 @@ import cmput301.moodi.R;
  */
 public class HomeFragment extends Fragment {
 
-    // Variables that are used to build the list of moods (User Posts)
+    // MoodList objects
     private ListView moodList;
     private ArrayAdapter<Mood> moodAdapter;
     private ArrayList<Mood> moodDataList;
 
-    // Variables that are used to connect and reference Firebase
+    // Firestore and reference objects
     private FirebaseFirestore db;
-    private String TAG = "HomeFragment";
+    private CollectionReference postReference;
     private MoodiStorage moodiStorage;
+    private String TAG = "HomeFragment";
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,26 +64,21 @@ public class HomeFragment extends Fragment {
         moodAdapter = new MoodListAdapter(container.getContext(), moodDataList);
         moodList.setAdapter(moodAdapter);
 
-        // Access a Cloud Firestore instance from your Activity
+        // Init firestore link and reference object
         db = FirebaseFirestore.getInstance();
-        this.moodiStorage = new MoodiStorage();
-
-        // Get a top-level reference to the collection.
-        final CollectionReference collectionReference = db.collection("posts");
+        postReference = db.collection("posts");
+        moodiStorage = new MoodiStorage();
 
         // TODO: Try to put most of this guy in moodistorage for the firebase side + filtering by userid associated with each post
         // Now listening to all the changes in the database and get notified, note that offline support is enabled by default.
-        // Note: The data stored in Firestore is sorted alphabetically and per their ASCII values. Therefore, adding a new city will not be appended to the list.
-        collectionReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
+        postReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
-                // clear the old list
+                // clear old mood list and re-create from updated firestore data
                 moodDataList.clear();
-
-                // Point at database, receive any changes and append them to our list of posts
                 for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
-
+                    // for each mood
                     String postID = doc.getId();
                     String reasonText = (String) doc.getData().get("Reason");
                     String date = (String) doc.getData().get("Date");
@@ -111,7 +113,7 @@ public class HomeFragment extends Fragment {
             public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);
                 new ViewFragment();
-               ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(),"View Selected Post");
+                ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(),"View Selected Post");
                 return false;
             }
         });

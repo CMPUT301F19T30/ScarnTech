@@ -147,10 +147,17 @@ public class MoodiStorage {
     }
 
     /*
-     * Returns all moods posted by the user
+     * Returns all moods posted by the current user
      */
     public Task getUserMoods() {
         return this.postCollection.whereEqualTo("UID", UID).get();
+    }
+
+    /*
+     * Returns all moods posted by a specific UID
+     */
+    public Task getUserMoods(String otherUID) {
+        return this.postCollection.whereEqualTo("UID", otherUID).get();
     }
 
 //    /*

@@ -42,7 +42,7 @@ public class CreateAccountActivity extends AppCompatActivity {
     EditText usernameField, firstNameField, lastNameField;
     GeoPoint lastLocation;
     TextView loginTextView;
-    public String username;
+    public String username, email, password;
     public boolean isUsernameValid;
 
     // Firebase auth link
@@ -81,46 +81,17 @@ public class CreateAccountActivity extends AppCompatActivity {
         button_signup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String email = emailField.getText().toString();
-                String pass = passwordField.getText().toString();
+                email = emailField.getText().toString();
+                password = passwordField.getText().toString();
 
-                if (!isValidUsername()) {
-                    Toast.makeText(CreateAccountActivity.this, "Username is not valid.", Toast.LENGTH_SHORT).show();
-                }
-                if (!isValidFirstName() || !isValidLastName()) {
-                    Toast.makeText(CreateAccountActivity.this, "Please fix errors to create account.", Toast.LENGTH_SHORT).show();
+                if (!isUsernameValid()) {
+                    Toast.makeText(CreateAccountActivity.this, "Username is not valid. Please fix errors to create account.", Toast.LENGTH_SHORT).show();
+                } else if (!isValidFirstName() || !isValidLastName()) {
+                    Toast.makeText(CreateAccountActivity.this, "First name or last name is not valid. Please fix errors to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!isValidPassword() || !isValidEmail()) {
-                    Toast.makeText(CreateAccountActivity.this, "Please fix password or email to create account.", Toast.LENGTH_SHORT).show();
-                } else if (!email.isEmpty() && !pass.isEmpty()) {
-                    // both values are given, try to create the account
-
-
-                    mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
-                        @Override
-                        public void onComplete(@NonNull Task<AuthResult> task) {
-                            if (!task.isSuccessful()) {
-                                // account was not able to be created
-                                Toast.makeText(CreateAccountActivity.this, "Account creation was not successful, try again.", Toast.LENGTH_SHORT).show();
-
-                            } else {
-                                // account was created, user is taken to the home screen
-                                Toast.makeText(CreateAccountActivity.this, "Account creation was successful! Welcome to Moodi!", Toast.LENGTH_SHORT).show();
-
-                                // Retrieve preferences and save in Firestore.
-                                moodiStorage = new MoodiStorage();
-                                moodiStorage.createNewUserProfile(getUserPreferences());
-
-                                // Start new activity.
-                                Intent i = new Intent(CreateAccountActivity.this, BottomNavigationActivity.class);
-                                i.putExtra("finish", true); // if you are checking for this in your other Activities
-                                i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
-                                        Intent.FLAG_ACTIVITY_CLEAR_TASK |
-                                        Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(i);
-                                finish();
-                            }
-                        }
-                    });
+                    Toast.makeText(CreateAccountActivity.this, "Password or email is not valid. Please fix errors to create account.", Toast.LENGTH_SHORT).show();
+                } else if (!email.isEmpty() && !password.isEmpty()) {
+                    checkUniqueUsername();
                 }
             }
         });
@@ -188,19 +159,13 @@ public class CreateAccountActivity extends AppCompatActivity {
     }
 
     /*
-     * Validate user input for username field.
-     * Requirements are:
-     * - Unique username in DB
-     * - Max Length: <=20
-     * - Min Length: >=5
+     * Check the database for any other occurence of the username.
      */
-    private boolean isValidUsername() {
+    private void checkUniqueUsername() {
         final int minLength = 5;
         final int maxLength = 20;
-
         username = this.usernameField.getText().toString();
-        isUsernameValid = false;
-        Log.d(TAG, "username ->" + username);
+
 
         userCollection.whereEqualTo("username", username).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
@@ -210,11 +175,33 @@ public class CreateAccountActivity extends AppCompatActivity {
                 if (!isUsernameValid) {
                     usernameField.setError("Sorry, that username is already taken. Please choose something else.");
                     usernameField.requestFocus();
+                } else {
+
+                    createMoodiAccount();
                 }
             }
         });
 
-        String username = this.usernameField.getText().toString();
+        if(username.length() >= minLength && username.length() <= maxLength) {
+            // Check if it is unique.
+
+        } else {
+
+        }
+    }
+
+    /*
+     * Validate user input for username field.
+     * Requirements are:
+     * - Unique username in DB
+     * - Max Length: <=20
+     * - Min Length: >=5
+     */
+    private boolean isUsernameValid() {
+        final int minLength = 5;
+        final int maxLength = 20;
+        username = this.usernameField.getText().toString();
+
         if(username.length() >= minLength && username.length() <= maxLength) {
             return true;
         }
@@ -253,6 +240,42 @@ public class CreateAccountActivity extends AppCompatActivity {
         passwordField.setError("Please enter a valid password.");
         passwordField.requestFocus();
         return false;
+    }
+
+
+    /*
+     * Create the user account for moodi, redirect to home screen of app.
+     */
+    public void createMoodiAccount() {
+        email = emailField.getText().toString();
+        password = passwordField.getText().toString();
+
+        mFirebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
+            @Override
+            public void onComplete(@NonNull Task<AuthResult> task) {
+                if (!task.isSuccessful()) {
+                    // account was not able to be created
+                    Toast.makeText(CreateAccountActivity.this, "Account creation was not successful, try again.", Toast.LENGTH_SHORT).show();
+
+                } else {
+                    // account was created, user is taken to the home screen
+                    Toast.makeText(CreateAccountActivity.this, "Account creation was successful! Welcome to Moodi!", Toast.LENGTH_SHORT).show();
+
+                    // Retrieve preferences and save in Firestore.
+                    moodiStorage = new MoodiStorage();
+                    moodiStorage.createNewUserProfile(getUserPreferences());
+
+                    // Start new activity.
+                    Intent i = new Intent(CreateAccountActivity.this, BottomNavigationActivity.class);
+                    i.putExtra("finish", true); // if you are checking for this in your other Activities
+                    i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                            Intent.FLAG_ACTIVITY_CLEAR_TASK |
+                            Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(i);
+                    finish();
+                }
+            }
+        });
     }
 
 }

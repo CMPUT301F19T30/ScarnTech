@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -21,6 +22,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
 import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
@@ -159,6 +161,23 @@ public class MoodiStorage {
     public Task getUserMoods(String otherUID) {
         return this.postCollection.whereEqualTo("UID", otherUID).get();
     }
+
+//    /*
+//     * Returns only the most recent mood posted by a specific UID
+//     */
+//    public Task getLastMood(String otherUID) {
+//        Task task = this.getUserMoods(UID);
+//
+//        try {
+//            Tasks.await(task);
+//        } catch (ExecutionException e) {
+//            e.printStackTrace();
+//        } catch (InterruptedException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return this.postCollection.whereEqualTo("UID", otherUID).get();
+//    }
 
 //    /*
 //     * Returns all moods of those users followed

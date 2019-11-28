@@ -74,6 +74,22 @@ public class HomeFragment extends Fragment {
         postReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+//                // query the list of followers
+//                moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+//                    @Override
+//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+//                        if (task.isSuccessful()) {
+//                            for (QueryDocumentSnapshot following_doc : task.getResult()) {
+//                                String followingUID = (String) following_doc.getData().get("following");
+//                                // for each follower get most recent mood
+//                                moodiStorage.getLastMood(followingUID);
+//                            }
+//                        } else {
+//
+//                        }
+//                    }
+//                });
+
 
                 // clear old mood list and re-create from updated firestore data
                 moodDataList.clear();

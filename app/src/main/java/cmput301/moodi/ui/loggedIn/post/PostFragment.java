@@ -19,6 +19,7 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -69,6 +70,8 @@ public class PostFragment extends Fragment {
     private ImageButton getPictureButton;
     private ImageButton getPhotoGalleryButton;
 
+    private Switch location_toggle;
+
     private ImageView userPhoto;
 
     private CalendarView calendar;
@@ -107,6 +110,8 @@ public class PostFragment extends Fragment {
         getPhotoGalleryButton = view.findViewById(R.id.add_gallery_button);
         getPictureButton = view.findViewById(R.id.add_picture_button);
         getLocationButton = view.findViewById(R.id.add_location_button);
+
+        location_toggle = view.findViewById(R.id.location_toggle);
 
         userPhoto = view.findViewById(R.id.input_photo);
 
@@ -228,6 +233,7 @@ public class PostFragment extends Fragment {
                 }
             }
         });
+
         // Set onClick Listener for creation of new post
         PostMoodButton.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
@@ -262,33 +268,18 @@ public class PostFragment extends Fragment {
 
                     // Upload image to firebase with that url as a reference
                     UploadTask uploadTask = userPhotoRef.putBytes(data);
-
-                    // Create a new mood from the user input
-                    Mood mood = new Mood(index, reason, socialSituation, date, path, username);
-
-                    // Set mood location to the most recent location data from firebase (through text view)
-                    if (lastLat != null && lastLon != null) {
-                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat), Double.valueOf(lastLon)));
-                    } else {
-                        Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
-                    }
-
-                    // Send data to the database
-                    moodiStorage.addMoodPost(mood);
-
-                } else {
-                    // Create a new mood from the user input without an image
-                    Mood mood = new Mood(index, reason, socialSituation, date, username);
-
-                    // Set mood location to the most recent location data from firebase (through text view)
-                    if (lastLat != null && lastLon != null) {
-                        mood.setLocation(new GeoPoint(Double.valueOf(lastLat), Double.valueOf(lastLon)));
-                    } else {
-                        Toast.makeText(getActivity(), "No location to add", Toast.LENGTH_SHORT).show();
-                    }
-                    // Send data to the database
-                    moodiStorage.addMoodPost(mood);
                 }
+
+                // Create a new mood from the user input without an image
+                Mood mood = new Mood(index, reason, socialSituation, date, username);
+
+                // Set mood location to the most recent location data from firebase (through text view)
+                if (location_toggle.isChecked()) {
+                    mood.setLocation(new GeoPoint(Double.valueOf(lastLat), Double.valueOf(lastLon)));
+                }
+
+                // Send data to the database
+                moodiStorage.addMoodPost(mood);
 
                 // reset the new post data and show user a post confirmation
                 resetPost();

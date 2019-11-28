@@ -25,6 +25,7 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -37,6 +38,7 @@ import cmput301.moodi.R;
 
 import static android.content.ContentValues.TAG;
 import static cmput301.moodi.util.Constants.MAPVIEW_BUNDLE_KEY;
+import static cmput301.moodi.util.Constants.POST_PATH;
 
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
@@ -185,9 +187,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                     // delete user markers and update total markers
                     if (userMarkers != null) {
                         for (Marker marker : userMarkers) {
-                            marker.remove();
+                            marker.setVisible(false);
+//                            userMarkers.remove(marker);
                         }
-                        userMarkers.clear(); // double check? why not
                         numUmoods.setText("0");
                         allMarkers = followingMarkers;
                     }
@@ -195,14 +197,64 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
             }
         });
 
-
         // toggle for the user to choose whether to show their following moods on the map
         followingMoods.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-                    // show following moods on the map
-                    Toast.makeText(getActivity(), "Showing moods of followed users.", Toast.LENGTH_SHORT).show();
+                    // User wants to see the moods of the users they follow
+                    moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                // list of following users has been retrieved
+
+                                // for each following, query the most recent mood
+                                for (QueryDocumentSnapshot following_doc : task.getResult()) {
+                                    // query this following users last mood
+                                    String followingUID = (String) following_doc.getData().get("following");
+                                    FirebaseFirestore.getInstance().collection(POST_PATH).whereEqualTo("UID", followingUID).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                // TODO if only the most recent post is required here is where the filter must be done
+                                                for (QueryDocumentSnapshot mood_doc : task.getResult()) {
+                                                    GeoPoint gp = (GeoPoint) mood_doc.getData().get("Location");
+                                                    if (gp != null) {
+                                                        Marker newMarker = map.addMarker(new MarkerOptions().position(new LatLng(gp.getLatitude(), gp.getLongitude())));
+                                                        followingMarkers.add(newMarker);
+                                                        allMarkers.add(newMarker);
+                                                    }
+                                                }
+
+                                                // display to user how many of their moods are now being shown
+                                                numFmoods.setText(String.valueOf(task.getResult().size()));
+
+                                                // if new markers were placed we can adjust the zoom settings to see them
+                                                if (allMarkers.size() == 1) {
+                                                    // if there is only one marker, zoom to that marker
+                                                    map.animateCamera(CameraUpdateFactory.newLatLng(allMarkers.get(0).getPosition()));
+
+                                                } else if (allMarkers.size() > 1) {
+                                                    // if there are more, zoom to the group bounds
+                                                    LatLngBounds.Builder builder = new LatLngBounds.Builder();
+                                                    for (Marker marker : allMarkers) {
+                                                        builder.include(marker.getPosition());
+                                                    }
+                                                    LatLngBounds bounds = builder.build();
+                                                    int padding = 120; // offset from edges of the map in pixels
+                                                    CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, padding);
+                                                    map.animateCamera(cu);
+                                                }
+                                            }
+                                        }
+                                    });
+                                }
+                            } else {
+                                Log.d(TAG, "Error getting following moods: ", task.getException());
+                            }
+                        }
+                    });
 
                 } else {
                     // delete following markers and update total markers
@@ -210,7 +262,6 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                         for (Marker marker : followingMarkers) {
                             marker.setVisible(false);
                         }
-                        followingMarkers.clear(); // double check? why not
                         numFmoods.setText("0");
                         allMarkers = userMarkers;
                     }

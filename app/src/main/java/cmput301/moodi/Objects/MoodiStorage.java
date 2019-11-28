@@ -6,6 +6,9 @@ package cmput301.moodi.Objects;
  * 11/04/2019
  */
 
+import androidx.annotation.NonNull;
+
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
@@ -13,6 +16,7 @@ import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -141,13 +145,11 @@ public class MoodiStorage {
         return this.postCollection.whereEqualTo("UID", UID).get();
     }
 
-    /*
-     * Returns all moods of those users followed
-     */
-    public Query getFollowingMoods() {
-        // TODO later...
-        return null;
-    }
+//    /*
+//     * Returns all moods of those users followed
+//     */
+//    public Task getFollowingMoods() {
+//    }
 
     // add the last given location to firebase
     public Task addLastLocation(GeoPoint location) {

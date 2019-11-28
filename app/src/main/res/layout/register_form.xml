@@ -13,10 +13,22 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
+        android:layout_marginBottom="16dp"
         android:ems="12"
         android:text='Create a new account!'
         android:textAlignment="center"
         android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/signup_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:background="@drawable/edit_text_background"
+        android:padding="8dp"
+        android:hint="Username"
+        android:inputType="text" />
 
     <EditText
         android:id="@+id/signup_firstName"
@@ -24,6 +36,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:background="@drawable/edit_text_background"
+        android:padding="8dp"
         android:hint="First Name"
         android:inputType="text" />
 
@@ -33,16 +47,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:background="@drawable/edit_text_background"
+        android:padding="8dp"
         android:hint="Last Name"
-        android:inputType="text" />
-
-    <EditText
-        android:id="@+id/signup_username"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:ems="10"
-        android:hint="Username"
         android:inputType="text" />
 
     <EditText
@@ -51,6 +58,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:background="@drawable/edit_text_background"
+        android:padding="8dp"
         android:hint="Enter your email address"
         android:inputType="textEmailAddress" />
 
@@ -60,15 +69,17 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:background="@drawable/edit_text_background"
         android:hint="Enter a password"
+        android:padding="8dp"
         android:inputType="textPassword"
         android:maxLength="20" />
 
     <Button
         android:id="@+id/signup_button"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="24dp"
         android:padding="8dp"
         android:text="Create Account"
         android:background="@color/moodiDarkBlue"

@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,14 +16,19 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
+import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
-import cmput301.moodi.ui.login.LoginActivity;
+
+import static cmput301.moodi.util.Constants.USER_PATH;
+
 /*
  * Handles account creation.
  */
@@ -31,16 +37,19 @@ public class CreateAccountActivity extends AppCompatActivity {
     private static final String TAG = "CreateAccountActivity";
 
     // Create account page objects
-    Button button_signup, button_goto_login;
+    Button button_signup;
     EditText emailField, passwordField;
     EditText usernameField, firstNameField, lastNameField;
     GeoPoint lastLocation;
+    TextView loginTextView;
+    public String username;
+    public boolean isUsernameValid;
 
     // Firebase auth link
     FirebaseAuth mFirebaseAuth;
     MoodiStorage moodiStorage;
-
-    String username;
+    FirebaseFirestore db;
+    CollectionReference userCollection;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,17 +58,21 @@ public class CreateAccountActivity extends AppCompatActivity {
 
         // link to firebase authentication
         mFirebaseAuth = FirebaseAuth.getInstance();
+        this.db = FirebaseFirestore.getInstance();
+        this.userCollection = this.db.collection(USER_PATH);
+
 
         // create all references to the layout
         emailField = findViewById(R.id.signup_email);
         passwordField = findViewById(R.id.signup_password);
         button_signup = findViewById(R.id.signup_button);
-        button_goto_login = findViewById(R.id.goto_login);
+        loginTextView = findViewById(R.id.login_text);
 
         // User preferences fields
         firstNameField = findViewById(R.id.signup_firstName);
         lastNameField = findViewById(R.id.signup_lastName);
         usernameField = findViewById(R.id.signup_username);
+
 
         lastLocation = null;
 
@@ -71,23 +84,10 @@ public class CreateAccountActivity extends AppCompatActivity {
                 String email = emailField.getText().toString();
                 String pass = passwordField.getText().toString();
 
-                /*
-                // Check is username is valid first
-                username = usernameField.getText().toString();
-                Object data;
-                data = moodiStorage.getApplicationUsers().getResult();
-
-                try {
-                    wait(500);
-                    Log.d(TAG, data.toString());
-                } catch(InterruptedException e) {
-                    Log.d(TAG, "Catch" + e.toString());
-                }finally {
-                    Log.d(TAG, "Finally.");
+                if (!isValidUsername()) {
+                    Toast.makeText(CreateAccountActivity.this, "Username is not valid.", Toast.LENGTH_SHORT).show();
                 }
-                */
-
-                if (!isValidFirstName() || !isValidLastName() || !isValidUsername()) {
+                if (!isValidFirstName() || !isValidLastName()) {
                     Toast.makeText(CreateAccountActivity.this, "Please fix errors to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!isValidPassword() || !isValidEmail()) {
                     Toast.makeText(CreateAccountActivity.this, "Please fix password or email to create account.", Toast.LENGTH_SHORT).show();
@@ -126,11 +126,12 @@ public class CreateAccountActivity extends AppCompatActivity {
         });
 
         // The user wishes to back out of the account creation and see the log in screen again
-        button_goto_login.setOnClickListener(new View.OnClickListener() {
+        loginTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(CreateAccountActivity.this, LoginActivity.class);
-                startActivity(i);
+                //Intent i = new Intent(CreateAccountActivity.this, LoginActivity.class);
+                //startActivity(i);
+                CreateAccountActivity.super.onBackPressed();
             }
         });
     }
@@ -194,10 +195,26 @@ public class CreateAccountActivity extends AppCompatActivity {
      * - Min Length: >=5
      */
     private boolean isValidUsername() {
-        String username = this.usernameField.getText().toString();
-        int minLength = 5;
-        int maxLength = 20;
+        final int minLength = 5;
+        final int maxLength = 20;
 
+        username = this.usernameField.getText().toString();
+        isUsernameValid = false;
+        Log.d(TAG, "username ->" + username);
+
+        userCollection.whereEqualTo("username", username).limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                isUsernameValid = task.getResult().isEmpty();
+
+                if (!isUsernameValid) {
+                    usernameField.setError("Sorry, that username is already taken. Please choose something else.");
+                    usernameField.requestFocus();
+                }
+            }
+        });
+
+        String username = this.usernameField.getText().toString();
         if(username.length() >= minLength && username.length() <= maxLength) {
             return true;
         }

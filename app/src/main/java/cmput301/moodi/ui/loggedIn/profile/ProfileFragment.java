@@ -158,7 +158,7 @@ public class ProfileFragment extends Fragment {
      * Query for users mood history.
      */
     private void loadMoodHistory() {
-        moodiStorage.getUMoodHistory().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+        moodiStorage.getMyMoodHistory().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {

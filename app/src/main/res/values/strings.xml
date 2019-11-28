@@ -19,6 +19,15 @@
         <item>With a crowd</item>
     </string-array>
 
+    <string-array name="mood_history_filters">
+        <item>All</item>
+        <item>Happy</item>
+        <item>Mad</item>
+        <item>Sad</item>
+        <item>Love</item>
+        <item>Tired</item>
+    </string-array>
+
     <!-- List of Minute and Hour for date entry -->
     <string-array name="hour_array">
         <item>00</item>

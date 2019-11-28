@@ -1,12 +1,31 @@
 package cmput301.moodi.Objects;
 
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+
 public class MoodiNotification implements Comparable<MoodiNotification> {
     private String type;
-    private String notificationSender;
-    private String notificationReceiver;
+    private String senderUID;
+    private String senderName;
+    private String receiverUID;
+    private String documentID;
+    private Integer response;
 
     public MoodiNotification() {
 
+    }
+
+    /*
+     * Setup notification from Firestore document.
+     */
+    public void setFromDocument(QueryDocumentSnapshot doc) {
+        this.setType(doc.getString("type"));
+        this.setReceiver(doc.getString("receiver"));
+        this.setSenderUID(doc.getString("sender"));
+        this.documentID = doc.getId();
+    }
+
+    public String getDocumentID() {
+        return this.documentID;
     }
 
     /*
@@ -26,29 +45,50 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
     /*
      * Set the sender of the notification request.
      */
-    public void setNotificationSender(String sender) {
-        this.notificationSender = sender;
+    public void setSenderName(String name) {
+        this.senderName = name;
+    }
+
+    /*
+     * Get the sender of the notification request.
+     */
+    public String getSenderName() {
+        return this.senderName;
     }
 
     /*
      * Return sender for notification.
      */
-    public String getSender() {
-        return this.notificationSender;
+    public void setSenderUID(String uid) {
+        this.senderUID = uid;
+    }
+
+    /*
+     * Return sender for notification.
+     */
+    public String getSenderUID() {
+        return this.senderUID;
     }
 
     /*
      * Set the reciever of the notification request.
      */
-    public void setNotificationReceiver(String receiver) {
-        this.notificationReceiver = receiver;
+    public void setReceiver(String receiver) {
+        this.receiverUID = receiver;
     }
 
     /*
      * Return receiver for notification.
      */
     public String getReceiver() {
-        return this.notificationReceiver;
+        return this.receiverUID;
+    }
+
+    /*
+     * Set the response from user.
+     */
+    public void setResponse(int response) {
+        this.response = response;
     }
 
 

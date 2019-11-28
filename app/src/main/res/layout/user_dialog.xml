@@ -6,7 +6,18 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     android:padding="@dimen/activity_vertical_margin"
+    android:paddingRight="0dp"
     android:background="@color/moodiWhite">
+
+    <ImageButton
+        android:id="@+id/close"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:background="#00FFFFFF"
+        android:src="@android:drawable/ic_menu_close_clear_cancel"
+        android:tint="@color/moodiMediumBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/full_name"
@@ -34,10 +45,28 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/full_name" />
 
-    <include layout="@layout/profile_social_counter"
+    <TextView
+        android:id="@+id/status"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/username"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:text="Following/Not Following"
+        android:textAlignment="textStart"
+        android:textAllCaps="false"
+        android:textColor="@color/moodiDarkBlue"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/username" />
+
+    <Button
+        android:id="@+id/follow_request"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="24dp"
+        android:text="Request to Follow"
+        android:textColor="@color/moodiDarkBlue"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/status" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

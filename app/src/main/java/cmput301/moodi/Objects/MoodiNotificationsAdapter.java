@@ -16,11 +16,11 @@ import java.util.HashMap;
 
 import cmput301.moodi.R;
 
-/*
- * Class: CustomList
- * Version 1: Creating a list class that will be used to create and manage various
- * groups of data such as users or moods
- * 11/04/2019
+/**
+ * Class: MoodiNotificationsAdapter
+ * This is a class that store Notifications for user
+ * @see MoodiNotification
+ * @since 11/04/2019
  */
 public class MoodiNotificationsAdapter extends ArrayAdapter<MoodiNotification> {
 

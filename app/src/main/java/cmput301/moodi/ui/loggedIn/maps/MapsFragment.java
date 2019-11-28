@@ -43,6 +43,13 @@ import static android.content.ContentValues.TAG;
 import static cmput301.moodi.util.Constants.MAPVIEW_BUNDLE_KEY;
 import static cmput301.moodi.util.Constants.POST_PATH;
 
+/**
+ * Class:MapsFragments
+ * This class allow user to view google map in the app, it also allocate each mood on the map
+ * base on their location.
+ * @since 11/15/2019
+ */
+
 public class MapsFragment extends Fragment implements OnMapReadyCallback {
 
     // map
@@ -87,6 +94,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         return view;
     }
 
+    /*
+    initialize google map on the app
+     */
     private void initGoogleMap(Bundle savedInstanceState) {
         Bundle mapViewBundle = null;
         if (savedInstanceState != null) {
@@ -131,7 +141,9 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
         super.onStop();
         mMapView.onStop();
     }
-
+    /*
+    Allows app able be show moods on the map
+     */
     @Override
     public void onMapReady(final GoogleMap map) {
         // set some map settings

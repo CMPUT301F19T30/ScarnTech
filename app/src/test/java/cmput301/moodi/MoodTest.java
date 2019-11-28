@@ -1,5 +1,8 @@
 package cmput301.moodi;
 
+import com.google.firebase.firestore.GeoPoint;
+
+import org.junit.Ignore;
 import org.junit.jupiter.api.Test;
 
 import cmput301.moodi.Objects.EmotionalState;
@@ -15,7 +18,7 @@ class MoodTest {
         EmotionalState mockEmotion = mockEmotionalState();
         String mockReason = mockReason();
         String mockSocialSituation = "Out for drinks with friends!";
-        Location mockLocation = new Location(53.123, 73.123);
+        GeoPoint mockLocation = new GeoPoint(53.123, 73.123);
 
         Mood mockMood = new Mood(mockEmotion, mockReason, mockSocialSituation, mockLocation);
 

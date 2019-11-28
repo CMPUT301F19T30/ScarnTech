@@ -51,10 +51,10 @@ import cmput301.moodi.R;
 
 import static android.app.Activity.RESULT_OK;
 
-/*
+/**
  * Class: PostFragment
  * Posting page where a user enters a "post" and on button press, sends it to the database
- * 11/09/2019
+ * @since 11/09/2019
  */
 public class PostFragment extends Fragment {
 

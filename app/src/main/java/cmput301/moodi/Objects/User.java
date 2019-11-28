@@ -1,6 +1,8 @@
 package cmput301.moodi.Objects;
-/*
+/**
  * Class: User
+ * This class store properties of user, getter and setter methods to modify
+ * and collect those property
  *
  */
 
@@ -32,7 +34,7 @@ public class User implements Comparable<User>{
         this.lastName = lastName;
     }
 
-    /*
+    /**
      * This returns the Users username.
      *
      * @return Return the username.
@@ -48,7 +50,7 @@ public class User implements Comparable<User>{
         this.username = username;
     }
 
-    /*
+    /**
      * This returns the Users firstName.
      *
      * @return Return the firstName.
@@ -64,7 +66,7 @@ public class User implements Comparable<User>{
         this.firstName = name;
     }
 
-    /*
+    /**
      * This returns the Users firstName.
      *
      * @return Return the firstName.

@@ -4,6 +4,11 @@ import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 import androidx.lifecycle.ViewModel;
 
+/**
+ * Class: ProfileViewModel
+ * A viewModel for user's profile
+ */
+
 public class ProfileViewModel extends ViewModel {
 
     private MutableLiveData<String> mText;

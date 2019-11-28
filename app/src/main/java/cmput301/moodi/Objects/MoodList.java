@@ -1,9 +1,9 @@
 package cmput301.moodi.Objects;
-/*
+/**
  * Class: MoodList
  * Version 1: Creating and maintaining a list of user posts (Moods)
  * that will be used to fill said users database (NOT AN ACTIVITY)
- * 11/04/2019
+ * @since 11/04/2019
  */
 
 import java.util.ArrayList;

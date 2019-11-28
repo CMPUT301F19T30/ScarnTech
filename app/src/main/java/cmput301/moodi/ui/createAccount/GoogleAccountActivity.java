@@ -1,4 +1,9 @@
 package cmput301.moodi.ui.createAccount;
+/**
+ * this is the class that allow user to sign up or log in with their google
+ * account
+ * @since 11/18/2019
+ */
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -59,8 +64,10 @@ public class GoogleAccountActivity extends AppCompatActivity {
         signInButton = findViewById(R.id.google_signup);
         lastLocation = null;
 
-        // Configure sign-in to request the user's ID, email address, and basic
-        // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
+        /*
+        Configure sign-in to request the user's ID, email address, and basic
+        profile. ID and basic profile are included in DEFAULT_SIGN_IN。
+        */
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
@@ -68,7 +75,9 @@ public class GoogleAccountActivity extends AppCompatActivity {
 
 
 
-        // Build a GoogleSignInClient with the options specified by gso.
+        /*
+        Build a GoogleSignInClient with the options specified by gso.
+         */
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
 
         mAuth = FirebaseAuth.getInstance();
@@ -87,13 +96,13 @@ public class GoogleAccountActivity extends AppCompatActivity {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+        /*
+        Result returned from launching the Intent from GoogleSignInClient.getSignInIntent(...);
+         */
         if (requestCode == RC_SIGN_IN) {
-            // The Task returned from this call is always completed, no need to attach
-            // a listener.
-            //Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
-            //GoogleSignInAccount account = task.getResult(ApiException.class);
-            //firebaseAuthWithGoogle(account);
+            /*
+            The Task returned from this call is always completed, no need to attach a listener.
+             */
 
 
 
@@ -111,11 +120,10 @@ public class GoogleAccountActivity extends AppCompatActivity {
 
     private void handleSignInResult(GoogleSignInAccount acct){
 
-            //GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-            //GoogleSignInAccount acct = completeTask.getResult(ApiException.class);
-
         AuthCredential credential = GoogleAuthProvider.getCredential(acct.getIdToken(), null);
-        //mAuth.id
+        /*
+        creating user using google account's information
+         */
         final String fname = acct.getGivenName();
         final String lname = acct.getFamilyName();
         final String username = acct.getDisplayName();
@@ -128,15 +136,12 @@ public class GoogleAccountActivity extends AppCompatActivity {
                     moodiStorage = new MoodiStorage();
                     moodiStorage.createNewUserProfile(getUserPreferences(fname ,lname,username));
 
-                    //FirebaseUser user = mAuth.getCurrentUser();
 
 
 
                 }
             });
 
-            // Signed in successfully, show authenticated UI.
-            //startActivity(new Intent(this, BottomNavigationActivity.class));
 
     }
 
@@ -157,8 +162,10 @@ public class GoogleAccountActivity extends AppCompatActivity {
 
     @Override
     protected void onStart() {
-        // Check for existing Google Sign In account, if the user is already signed in
-        // the GoogleSignInAccount will be non-null.
+        /*
+         Check for existing Google Sign In account, if the user is already signed in
+         the GoogleSignInAccount will be non-null.
+         */
         super.onStart();
         FirebaseUser currentUser = mAuth.getCurrentUser();
         //GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);

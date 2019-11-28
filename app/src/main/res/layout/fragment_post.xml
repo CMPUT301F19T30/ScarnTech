@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/moodiBackground">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout2"
@@ -63,6 +63,7 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:background="@color/moodiBackground"
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -71,7 +72,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/moodiBackground2"
+            android:background="@color/moodiBackground"
 
             android:orientation="vertical"
             android:padding="@dimen/activity_horizontal_margin">
@@ -86,7 +87,6 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@color/moodiBackground2"
                     android:entries="@array/EmotionalStates"
                     android:prompt="@string/Emo_propmt"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="And why's that? (Optional)"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -127,18 +127,17 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="How are you feeling today?"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView14" />
+                    app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
                 <Spinner
                     android:id="@+id/input_SocialSituation_Spinner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
-                    android:background="@color/moodiBackground2"
                     android:entries="@array/social_situation"
                     android:gravity="center"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -151,23 +150,11 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:text="Who are you with? (Optional)"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_Reasoning" />
-
-                <TextView
-                    android:id="@+id/textView14"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
-                    android:layout_marginTop="16dp"
-                    android:text="Update Your Mood:"
-                    android:textColor="@color/moodiRed"
-                    android:textSize="24sp"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/textView13"
@@ -177,7 +164,7 @@
                     android:gravity="center"
                     android:paddingTop="10dp"
                     android:text="@string/image"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
@@ -185,32 +172,32 @@
                     android:id="@+id/textView6"
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/min"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
                 <TextView
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="16dp"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:text="@string/time_24_hour"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
                 <Spinner
                     android:id="@+id/input_minute"
                     android:layout_width="83dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:entries="@array/minute_array"
                     app:layout_constraintEnd_toStartOf="@+id/textView6"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
                 <ImageView
                     android:id="@+id/input_photo"
@@ -229,30 +216,30 @@
                     android:id="@+id/input_hour"
                     android:layout_width="83dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:entries="@array/hour_array"
                     app:layout_constraintEnd_toStartOf="@+id/textView5"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
                 <TextView
                     android:id="@+id/textView5"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
                     android:text="@string/hr"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     app:layout_constraintEnd_toStartOf="@+id/input_minute"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
                 <CalendarView
                     android:id="@+id/input_calendarView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
+                    android:layout_marginTop="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/input_SocialSituation_Spinner" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
                 <TextView
                     android:id="@+id/textView12"
@@ -261,9 +248,36 @@
                     android:layout_marginTop="24dp"
                     android:gravity="center"
                     android:text="@string/date"
-                    android:textColor="@color/moodiBackground"
+                    android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
-                    app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
+                    app:layout_constraintTop_toBottomOf="@+id/input_SocialSituation_Spinner" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/constraintLayout3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/moodiBackground"
+                    android:backgroundTintMode="add"
+                    android:hapticFeedbackEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <TextView
+                        android:id="@+id/textView14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginTop="16dp"
+                        android:layout_marginBottom="16dp"
+                        android:text="Update Your Mood:"
+                        android:textColor="@color/moodiDarkBlue"
+                        android:textSize="30sp"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+                </androidx.constraintlayout.widget.ConstraintLayout>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
             <!--            Reasoning              -->

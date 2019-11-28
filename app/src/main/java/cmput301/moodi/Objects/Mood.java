@@ -28,6 +28,10 @@ public class Mood implements Comparable<Mood> {
     // Unique ID of a post assigned by FireBase
     private String keyID;
 
+    public Mood() {
+
+    }
+
     /*
      * Constructor for creation of a mood from a post which is sent to FireBase with an image
      * (POSTS)
@@ -58,7 +62,6 @@ public class Mood implements Comparable<Mood> {
     * Constructor for receiving a post from the FireBase and constructing a new mood
     * (HOME & PROFILE)
      */
-
     public Mood(String reason, String date, String socialSituation, String keyID, int index, String image, String username) {
         this.emotionalState.setEmotionalState(index);
         this.reason = reason;

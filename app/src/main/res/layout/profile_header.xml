@@ -4,9 +4,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/moodiBackground"
     android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin"
-    android:background="@color/moodiWhite">
+    android:padding="@dimen/activity_vertical_margin">
 
     <TextView
         android:id="@+id/full_name"
@@ -14,10 +14,11 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
+        android:background="@color/moodiBackground"
         android:text="First Last Name here."
         android:textAlignment="textStart"
-        android:textSize="24sp"
         android:textColor="@color/moodiDarkBlue"
+        android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,17 +28,20 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
+        android:background="@color/moodiBackground"
         android:text="Username"
         android:textAlignment="textStart"
         android:textAllCaps="false"
-        android:textColor="@color/moodiDarkBlue"
+        android:textColor="@color/moodiWhite"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/full_name" />
 
-    <include layout="@layout/profile_social_counter"
+    <include
+        layout="@layout/profile_social_counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/username"
-        app:layout_constraintStart_toStartOf="parent"/>
+        android:background="@color/moodiBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/username" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

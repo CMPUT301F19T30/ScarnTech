@@ -18,13 +18,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 
-    <include layout="@layout/mood_history"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:id="@+id/intermediate2"
+    <ListView
+        android:id="@+id/viewed_mood_history"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="invisible"/>
+        android:background="@color/moodiBackground"></ListView>
+
 </LinearLayout>

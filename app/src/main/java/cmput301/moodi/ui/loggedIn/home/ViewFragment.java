@@ -85,7 +85,7 @@ public class ViewFragment extends DialogFragment{
         args.putSerializable("User Social Situation", selectedMood.getSocialSituation());
         args.putSerializable("User Date", selectedMood.getDate());
         args.putSerializable("Image", selectedMood.getImage());
-        args.putSerializable("Username", selectedMood.getUniqueID());
+        args.putSerializable("Username", selectedMood.getUsername());
         args.putSerializable("Color", selectedMood.getEmotionalState().getColor());
 
         ViewFragment fragment = new ViewFragment();

@@ -101,7 +101,9 @@ public class FollowingProfileFragment extends DialogFragment {
     // Used to pass data to main activity
     private viewUser listener;
 
-    public String tester;
+    public String uniqueID;
+    private String userName;
+
     // Takes a selected moods properties to be able to reconstruct on view
     public static FollowingProfileFragment viewProfile(String Username) {
         Bundle args = new Bundle();
@@ -141,10 +143,9 @@ public class FollowingProfileFragment extends DialogFragment {
         userProfile = new User();
 
         // Point Variables to header & list
-        username = view.findViewById(R.id.viewed_full_name);
-        nameDisplay = view.findViewById(R.id.viewed_username);
-//        intermediate = view.findViewById(R.id.intermediate2);
-        moodList = view.findViewById(R.id.mood_history);
+        nameDisplay = view.findViewById(R.id.viewed_full_name);
+        username = view.findViewById(R.id.viewed_username);
+        moodList = view.findViewById(R.id.viewed_mood_history);
 
         // Load lists for moods.
         moodDataList = new ArrayList<Mood>();
@@ -154,61 +155,60 @@ public class FollowingProfileFragment extends DialogFragment {
         // Retrieve properties of selected mood from bundle and populate display
         Bundle args = getArguments();
         if (args != null) {
-            username.setText(args.getString("Username"));
-        }
+            userName = args.getString("Username");
+            username.setText(userName);
 
-        // Set text views to user selected mood
-        Task task = moodiStorage.getSelectedUserProfile(username.getText().toString());
-        task.addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                for (QueryDocumentSnapshot document : task.getResult()) {
-                    if (document.exists()) {
-                        String fullName = (String) document.getData().get("first_name") + " " + (String) document.getData().get("last_name");
-//                        if (fullName != null && uniqueID != null)
-                            nameDisplay.setText(fullName);
-                            tester = document.getId();
-                    } else {
-                        Log.d("MoodiStorage", "No such user"); }
-                }
-
-            }
-        });
-
-        /*
-         * Query for users mood history.
-         */
-//        Log.d("UID", tester);
-       moodiStorage.getUserMoodHistory(tester).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-            @Override
-            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                if (task.isSuccessful()) {
-                    moodDataList.clear();
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-
-                        String postID = doc.getId();
-                        String reasonText = (String) doc.getData().get("Reason");
-                        String date = (String) doc.getData().get("Date");
-                        String socialSituation = (String) doc.getData().get("Social Situation");
-                        Number index = (Number) doc.getData().get("Index");
-                        String path = (String) doc.getData().get("Image");
-                        String uniqueID = "";
-                        if (index != null) {
-                            int i = index.intValue();
-                            Log.d("UserProfile", date);
-                            // TODO: Add location to constructor
-                            moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
+            final Task task = moodiStorage.searchByUsername(userName)
+                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            for (QueryDocumentSnapshot document : task.getResult()) {
+                                if (document.exists()) {
+                                    String fullName = (String) document.getData().get("first_name") + " " + (String) document.getData().get("last_name");
+                                    nameDisplay.setText(fullName);
+                                    // Getting user's key ID to get there most recent post
+                                    uniqueID = document.getId();
+                                }
+                            }
                         }
-                    }
-                } else {
-                    Log.d("FollowingProfileFrag", "Error getting documents: ", task.getException());
-                }
+                    });
+            task.addOnSuccessListener(new OnSuccessListener() {
+                @Override
+                public void onSuccess(Object o) {
+                    Log.d("TEST", uniqueID);
+                    moodiStorage.getUserMoodHistory(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                            if (task.isSuccessful()) {
+                                moodDataList.clear();
+                                for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
-                Collections.sort(moodDataList);
-                moodAdapter.notifyDataSetChanged();
-            }
-        });
+                                    String postID = doc.getId();
+                                    String reasonText = (String) doc.getData().get("Reason");
+                                    String date = (String) doc.getData().get("Date");
+                                    String socialSituation = (String) doc.getData().get("Social Situation");
+                                    Number index = (Number) doc.getData().get("Index");
+                                    String path = (String) doc.getData().get("Image");
+                                    String uniqueID = "";
+                                    if (index != null) {
+                                        int i = index.intValue();
+                                        Log.d("UserProfile", date);
+                                        // TODO: Add location to constructor
+                                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
+                                    }
+                                }
+                            } else {
+                                Log.d("FollowingProfileFrag", "Error getting documents: ", task.getException());
+                            }
+
+                            //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
+                            Collections.sort(moodDataList);
+                            moodAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
+        }
 
         //Build the fragment and set the buttons to call the delete or edit method in main
         AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
@@ -216,7 +216,6 @@ public class FollowingProfileFragment extends DialogFragment {
                 .setView(view)
                 .setNegativeButton("Exit", null)
                 .create();
-
     }
 }
 

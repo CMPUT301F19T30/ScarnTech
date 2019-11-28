@@ -219,6 +219,7 @@ public class PostFragment extends Fragment {
                     DocumentSnapshot document = task.getResult();
                     if (document != null) {
                         username = document.getString("username");
+                        Log.d("USERNAME POST", username);
 //                        intermediate.setText(document.getString("username"));
                     } else {
                         Log.d("MoodiStorage", "No such user");

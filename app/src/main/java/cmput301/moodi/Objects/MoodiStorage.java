@@ -130,6 +130,13 @@ public class MoodiStorage {
     }
 
     /*
+     * Returns the selected users task
+     */
+    public Task searchByUsername(String UID) {
+        return this.userCollection.whereEqualTo("username", UID).get();
+    }
+
+    /*
      * Creates a post object and adds it to Firebase post collection.
      *
      */

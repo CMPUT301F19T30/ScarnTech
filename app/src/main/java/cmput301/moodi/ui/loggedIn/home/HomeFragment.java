@@ -7,28 +7,24 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodListAdapter;
@@ -36,7 +32,7 @@ import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 /*
  * Class: HomeFragment
- * Main page where a user may view there own personal posts or see "followers" posts
+ * Main page where a user may view the most recent post of the users they follow
  * 11/09/2019
  */
 public class HomeFragment extends Fragment {
@@ -51,6 +47,8 @@ public class HomeFragment extends Fragment {
     private CollectionReference postReference;
     private MoodiStorage moodiStorage;
     private String TAG = "HomeFragment";
+
+    public List<Mood> moods;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -69,68 +67,61 @@ public class HomeFragment extends Fragment {
         postReference = db.collection("posts");
         moodiStorage = new MoodiStorage();
 
-        // TODO: Try to put most of this guy in moodistorage for the firebase side + filtering by userid associated with each post
-        // Now listening to all the changes in the database and get notified, note that offline support is enabled by default.
+        // wait for posts to be updated, then re run queries for the moods of users being followed
         postReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
-//                // query the list of followers
-//                moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        if (task.isSuccessful()) {
-//                            for (QueryDocumentSnapshot following_doc : task.getResult()) {
-//                                String followingUID = (String) following_doc.getData().get("following");
-//                                // for each follower get most recent mood
-//                                moodiStorage.getLastMood(followingUID);
-//                            }
-//                        } else {
-//
-//                        }
-//                    }
-//                });
 
-
-                // clear old mood list and re-create from updated firestore data
+                // first clear the old list of moods
                 moodDataList.clear();
-                for (QueryDocumentSnapshot doc : queryDocumentSnapshots){
-                    // for each mood
-                    String postID = doc.getId();
-                    String reasonText = (String) doc.getData().get("Reason");
-                    String date = (String) doc.getData().get("Date");
-                    String socialSituation = (String) doc.getData().get("Social Situation");
-                    Number index = (Number) doc.getData().get("Index");
-                    String path = (String) doc.getData().get("Image");
-                    String uniqueID = (String) doc.getData().get("Username");
 
-                    if (index != null) {
-                        int i = index.intValue();
-                        // TODO: Implement image and serialize as a list
+                // then query the current list of followers
+                moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot following_doc : task.getResult()) {
 
-                        //  moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, image));
-//                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path));
-                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
+                                // for each following get most recent mood
+                                moodiStorage.getUserMoods((String) following_doc.getData().get("following")).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            if (moods == null) {
+                                                moods = new ArrayList<>();
+                                            } else {
+                                                moods.clear();
+                                            }
+
+                                            for (QueryDocumentSnapshot mood_doc : task.getResult()) {
+                                                Mood mood = new Mood();
+                                                mood.setFromDocument(mood_doc);
+                                                moods.add(mood);
+                                            }
+
+                                            if (!moods.isEmpty()) {
+                                                Collections.sort(moods);
+                                                moodDataList.add(moods.get(0)); // only the most recent from each following
+                                                moodAdapter.notifyDataSetChanged();
+                                            }
+                                        }
+                                    }
+                                });
+                            }
+                        }
                     }
-
-                    // TODO: Change it to receive the FULL mood + move firebase code to MoodiStorage
-                    // Mood mood = new Mood();
-//                    moodDataList.add(new Mood(emotionalStateText, reasonText, date, postID, i)); // Adding the posts from firestore
-                }
-                Collections.sort(moodDataList);
-                moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
+                });
             }
         });
 
-        // TODO: Make this pull up an edit screen / pop-up fragment where they can delete from there
-        // TODO: also find a way to implement this in MoodiStorage
-        // Adding an onItemLongClickListener to the list for deletion and removes post from both app and database sides.
-        moodList.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
+        // View the post by clicking it
+        moodList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
-            public boolean onItemLongClick(AdapterView<?> adapterView, View view, int i, long l) {
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);
                 new ViewFragment();
                 ViewFragment.viewSelection(moodSelected).show(getChildFragmentManager(),"View Selected Post");
-                return false;
+                return;
             }
         });
         return view;

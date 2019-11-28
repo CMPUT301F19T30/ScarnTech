@@ -25,7 +25,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -291,12 +290,8 @@ public class PostFragment extends Fragment {
                     moodiStorage.addMoodPost(mood);
                 }
 
+                // reset the new post data and show user a post confirmation
                 resetPost();
-
-                // ask user what to do next
-//                FragmentTransaction ft = getFragmentManager().beginTransaction();
-//                ft.replace(R.id.content, new PostConfirmationFragment());
-//                ft.commit();
                 new PostConfirmationFragment().show(getChildFragmentManager(), "Post_Confirmation_Fragment");
             }
         });

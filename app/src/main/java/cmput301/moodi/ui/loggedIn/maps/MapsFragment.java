@@ -169,7 +169,8 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                         String emSt = (String) document.getData().get("Emotional State");
                                         Marker newMarker = map.addMarker(new MarkerOptions()
                                                 .position(new LatLng(gp.getLatitude(), gp.getLongitude()))
-                                                .icon(BitmapDescriptorFactory.defaultMarker(getColor(emSt))));
+                                                .icon(BitmapDescriptorFactory.defaultMarker(getColor(emSt)))
+                                                .title("You were feeling " + emSt));
                                         userMarkers.add(newMarker);
                                         allMarkers.add(newMarker);
                                     }
@@ -256,10 +257,12 @@ public class MapsFragment extends Fragment implements OnMapReadyCallback {
                                                     Collections.sort(moods);
                                                     GeoPoint gp = moods.get(0).getLocation();
                                                     String emSt = moods.get(0).getEmotionalState().getName();
+                                                    String user = moods.get(0).getUsername();
                                                     if (gp != null) {
                                                         Marker newMarker = map.addMarker(new MarkerOptions()
                                                                 .position(new LatLng(gp.getLatitude(), gp.getLongitude()))
-                                                                .icon(BitmapDescriptorFactory.defaultMarker(getColor(emSt))));
+                                                                .icon(BitmapDescriptorFactory.defaultMarker(getColor(emSt)))
+                                                                .title(user + " was feeling " + emSt));
                                                         followingMarkers.add(newMarker);
                                                         allMarkers.add(newMarker);
                                                     }

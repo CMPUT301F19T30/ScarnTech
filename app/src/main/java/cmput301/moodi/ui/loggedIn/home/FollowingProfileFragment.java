@@ -72,6 +72,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.Objects.MoodiStorage;
@@ -101,6 +102,7 @@ public class FollowingProfileFragment extends DialogFragment {
     // Used to pass data to main activity
     private viewUser listener;
 
+    public List<Mood> moods;
     public String uniqueID;
     private String userName;
 
@@ -172,39 +174,33 @@ public class FollowingProfileFragment extends DialogFragment {
                             }
                         }
                     });
+
             task.addOnSuccessListener(new OnSuccessListener() {
                 @Override
                 public void onSuccess(Object o) {
-                    Log.d("TEST", uniqueID);
                     moodiStorage.getUserMoodHistory(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-                                moodDataList.clear();
-                                for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                                    String postID = doc.getId();
-                                    String reasonText = (String) doc.getData().get("Reason");
-                                    String date = (String) doc.getData().get("Date");
-                                    String socialSituation = (String) doc.getData().get("Social Situation");
-                                    Number index = (Number) doc.getData().get("Index");
-                                    String path = (String) doc.getData().get("Image");
-                                    String uniqueID = "";
-                                    if (index != null) {
-                                        int i = index.intValue();
-                                        Log.d("UserProfile", date);
-                                        // TODO: Add location to constructor
-                                        moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
-                                    }
-                                }
-                            } else {
-                                Log.d("FollowingProfileFrag", "Error getting documents: ", task.getException());
+                                if (moods == null) {
+                                    moods = new ArrayList<>();
+                                } else {
+                                    moods.clear(); }
+
+                                for (QueryDocumentSnapshot mood_doc : task.getResult()) {
+
+                                    Mood mood = new Mood();
+                                    mood.setFromDocument(mood_doc);
+                                    moods.add(mood); }
+
+                                if (!moods.isEmpty()) {
+                                    Collections.sort(moods);
+                                    moodDataList.add(moods.get(0)); // only the most recent from each following
+                                    moodAdapter.notifyDataSetChanged(); }
                             }
-
-                            //moodList.sortReverseChronological(); //Todo: implement MoodList sorting
-                            Collections.sort(moodDataList);
-                            moodAdapter.notifyDataSetChanged();
                         }
+
                     });
                 }
             });

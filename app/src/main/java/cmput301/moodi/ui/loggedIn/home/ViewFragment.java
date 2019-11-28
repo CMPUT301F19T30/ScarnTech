@@ -137,6 +137,7 @@ public class ViewFragment extends DialogFragment{
                     // TODO: Make it close after opening new fragment
                     new FollowingProfileFragment();
                     FollowingProfileFragment.viewProfile(Username.getText().toString()).show(getChildFragmentManager(),"View User Profile");
+
                 }
             });
             // Retrieve properties of selected mood from bundle and populate display

@@ -1,5 +1,9 @@
 package cmput301.moodi.Objects;
-
+/**
+Class: EmotionalState
+Preset 5 default emotion with 4 properties for user to pick
+ @since 14/11/2019
+ */
 import android.graphics.Color;
 import android.util.Log;
 
@@ -9,25 +13,39 @@ public class EmotionalState  {
 
     // Properties of an emotional state
     private String name;
-//    private String color;
     private int emoji;
     private int index;
     private int color;
 
-    public EmotionalState() { }
 
+    public EmotionalState() { }
+    // setter and getter for properties of EmotionalState
+    /**
+     * @param color
+     * int representing a specific color
+     */
     public void setColor(int color) {
         this.color = color;
     }
 
+    /**
+     *
+     * @return the int number represent the color of mood
+     */
     public int getColor() {
         return color;
     }
 
+    /**
+     * @return the number we assigned to a mood
+     */
     public int getIndex() {
         return index;
     }
-
+    /**
+     * @param index
+     * we assigned different index for different moods
+     */
     public void setIndex(int index) {
         this.index = index;
     }
@@ -40,17 +58,25 @@ public class EmotionalState  {
         this.name = name;
     }
 
-
+    /**
+     * @param emoji
+     * emoji is assigned to a png file in drawable
+     */
     public void setEmoji(int emoji) {
         this.emoji = emoji;
     }
 
+    /**
+     * @return the png file in drawable
+     */
     public int getEmoji() {
         return emoji;
     }
 
 
-    /*
+    /**
+     * @param i
+     * index of the emotionalstate.
     * Takes the index of the selected item from the spinner and returns
     * the corresponding emotional state selected as an object
      */

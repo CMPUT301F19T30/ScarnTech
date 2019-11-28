@@ -15,11 +15,11 @@ import androidx.annotation.Nullable;
 
 import cmput301.moodi.R;
 
-/*
+/**
  * Class: CustomList
  * Version 1: Creating a list class that will be used to create and manage various
  * groups of data such as users or moods
- * 11/04/2019
+ * @since 11/04/2019
  */
 public class UserListAdapter extends BaseAdapter implements Filterable {
 

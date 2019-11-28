@@ -22,10 +22,10 @@ import cmput301.moodi.ui.loggedIn.BottomNavigationActivity;
 import cmput301.moodi.R;
 import cmput301.moodi.ui.createAccount.CreateAccountActivity;
 
-/*
+/**
  * Class: LoginActivity
  * Takes a user input and authenticates on app as well as firebase side to verify
- * 11/07/2019
+ * @since 11/07/2019
  */
 
 public class LoginActivity extends AppCompatActivity {
@@ -117,7 +117,7 @@ public class LoginActivity extends AppCompatActivity {
                 startActivity(i2);
             }
         });
-
+        // The user wishes login in with google
         google_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -2,6 +2,12 @@ package cmput301.moodi.Objects;
 
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 
+/**
+ * Class: MoodiNotification
+ * This is a class that allow user to get notification from other user or
+ * send notification to other user
+ * @see MoodiNotificationsAdapter
+ */
 public class MoodiNotification implements Comparable<MoodiNotification> {
     private String type;
     private String senderUID;
@@ -14,7 +20,7 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
 
     }
 
-    /*
+    /**
      * Setup notification from Firestore document.
      */
     public void setFromDocument(QueryDocumentSnapshot doc) {
@@ -35,8 +41,8 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
         this.type = type;
     }
 
-    /*
-     * Return type for notification.
+    /**
+     * @Return type for notification.
      */
     public String getType() {
         return this.type;
@@ -56,8 +62,8 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
         return this.senderName;
     }
 
-    /*
-     * Return sender for notification.
+    /**
+     * @Return sender for notification.
      */
     public void setSenderUID(String uid) {
         this.senderUID = uid;
@@ -77,8 +83,8 @@ public class MoodiNotification implements Comparable<MoodiNotification> {
         this.receiverUID = receiver;
     }
 
-    /*
-     * Return receiver for notification.
+    /**
+     * @Return receiver for notification.
      */
     public String getReceiver() {
         return this.receiverUID;

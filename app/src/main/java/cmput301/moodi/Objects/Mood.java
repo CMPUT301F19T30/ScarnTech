@@ -1,8 +1,8 @@
 package cmput301.moodi.Objects;
-/*
+/**
  * Class: Mood
  * Version 1: Create a mood object along with its properties and getters & setters
- * 11/04/2019
+ * @since 11/04/2019
  */
 
 import com.google.firebase.firestore.GeoPoint;
@@ -135,7 +135,7 @@ public class Mood implements Comparable<Mood> {
         return this.username;
     }
 
-    /*
+    /**
      * This gets the byte array that is the image.
      * @return Return the image as a byte array
      */
@@ -150,7 +150,7 @@ public class Mood implements Comparable<Mood> {
         this.image = image;
     }
 
-    /*
+    /**
      * This returns the date the mood was created.
      * @return Return the reason
      */
@@ -183,14 +183,14 @@ public class Mood implements Comparable<Mood> {
         return this.emotionalState; // Convert to string?
     }
 
-    /*
+    /**
      * This sets the Moods emotional state.
      */
     public void setEmotionalState(EmotionalState emotionalState) {
         this.emotionalState = emotionalState;
     }
 
-    /*
+    /**
      * This returns the Moods reason.
      *
      * @return Return the reason
@@ -199,7 +199,7 @@ public class Mood implements Comparable<Mood> {
         return this.reason;
     }
 
-    /*
+    /**
      * This sets the Moods reason. Max size of 20 chars.
      *
      * @return Return true if reason is set and less than 20 chars. Else will return false.
@@ -212,7 +212,7 @@ public class Mood implements Comparable<Mood> {
         return false;
     }
 
-    /*
+    /**
      * This returns the Moods social situation.
      *
      * @return Return the socialSituation
@@ -221,7 +221,7 @@ public class Mood implements Comparable<Mood> {
         return this.socialSituation;
     }
 
-    /*
+    /**
      * This sets the Moods social situation.
      */
     public void setSocialSituation(String socialSituation) {
@@ -229,7 +229,7 @@ public class Mood implements Comparable<Mood> {
     }
 
 
-    /*
+    /**
      * This returns the Moods location.
      *
      * @return Return the location
@@ -238,7 +238,7 @@ public class Mood implements Comparable<Mood> {
         return this.location;
     }
 
-    /*
+    /**
      * This method sets the location of the mood.
      *
      * @return Return the location

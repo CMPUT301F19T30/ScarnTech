@@ -18,6 +18,14 @@ import com.google.firebase.firestore.GeoPoint;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 
+/**
+ * Class: AddLocationActivity
+ * This class allow user to choose whether show location when they are posting mood
+ * @see cmput301.moodi.ui.loggedIn.maps.MapsFragment
+ * @since 11/15/2019
+ * @author Andrew
+ */
+
 public class AddLocationActivity extends FragmentActivity implements OnMapReadyCallback {
 
     MarkerOptions markerOptions;

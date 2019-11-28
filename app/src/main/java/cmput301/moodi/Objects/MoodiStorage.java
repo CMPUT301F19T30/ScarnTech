@@ -1,9 +1,9 @@
 package cmput301.moodi.Objects;
 
-/*
+/**
  * Class: MoodiStorage
- * Implements methods for interacting with Firebase Firestore.
- * 11/04/2019
+ * This is the class that upload user's new mood to firebase.
+ * @since 11/04/2019
  */
 
 import com.google.android.gms.tasks.Task;
@@ -52,6 +52,10 @@ public class MoodiStorage {
 
     /*
      * Returns the users UID associated with Firestore.
+    /**
+     * @param uid
+     * is user's id which is created along with account
+     * @return the users UID associated with Firestore.
      */
     public String getUID() {
         return this.UID;
@@ -66,6 +70,8 @@ public class MoodiStorage {
 
     /*
      * Returns all moodi users following the user.
+    /**
+     * @return the followers documents for the user.
      */
     public Task getFollowers() {
         return this.followerCollection.whereEqualTo("following", this.UID).get();
@@ -77,6 +83,8 @@ public class MoodiStorage {
 
     /*
      * Returns all moodi users that I am following.
+    /**
+     * @return the following documents for the user.
      */
     public Task getFollowing() {
         return this.followerCollection.whereEqualTo("user", this.UID).get();
@@ -87,6 +95,9 @@ public class MoodiStorage {
         return this.followerCollection.whereEqualTo("following", UID).get();
     }
 
+    /**
+     * @return the notification documents for the user.
+     */
     public Task getNotifications() {
         return this.notificationsCollection.whereEqualTo("receiver", this.UID).get();
     }
@@ -104,30 +115,32 @@ public class MoodiStorage {
     }
 
     /*
+    /**
      * Creates a new user profile in Firestore.
      */
     public Task createNewUserProfile(HashMap<String, Object> preferences) {
         return this.userCollection.document(this.UID).set(preferences);
     }
 
-    /*
-     * Returns all users of the application.
+    /**
+     * @return all users of the application.
      */
     public Task getApplicationUsers() {
         return this.userCollection.get();
     }
 
-    /*
-     * Returns all of the users own posts.
+    /**
+     * @return all of the users own posts.
      */
     public Task getMyMoodHistory() {
         return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
 
 
-    /*
+    /**
      * Creates a post object and adds it to Firebase post collection.
-     *
+     * @param mood
+     * this is a object user created when they post a mood
      */
     public Task addMoodPost(Mood mood) {
         HashMap<String, Object> postData = mood.serializeMood();
@@ -143,8 +156,8 @@ public class MoodiStorage {
         //Todo: implement post deletion from firebase.
     }
 
-    /*
-     * Returns user profile data. Need to complete onCompleteListeners to retrieve data.
+    /**
+     * @return user profile data. Need to complete onCompleteListeners to retrieve data.
      */
     public DocumentReference getUserProfile() {
         return this.userCollection.document(this.UID);
@@ -152,6 +165,8 @@ public class MoodiStorage {
 
     /*
      * Returns all moods posted by the current user
+    /**
+     * @return all moods posted by the user
      */
     public Task getUserMoods() {
         return this.postCollection.whereEqualTo("UID", UID).get();
@@ -159,6 +174,8 @@ public class MoodiStorage {
 
     /*
      * Returns all moods posted by a specific UID
+    /**
+     * @return all moods of those users followed
      */
     public Task getUserMoods(String otherUID) {
         return this.postCollection.whereEqualTo("UID", otherUID).get();

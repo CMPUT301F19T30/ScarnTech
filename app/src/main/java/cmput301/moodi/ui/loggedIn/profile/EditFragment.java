@@ -29,11 +29,11 @@ import com.google.firebase.storage.StorageReference;
 import cmput301.moodi.Objects.Mood;
 import cmput301.moodi.R;
 
-/*
- * Class: DateFragment
+/**
+ * Class: EditFragment
  * Fragment pulled up to enter a custom date if the user does not want the instantaneous date
  * on post creation.
- * 11/12/2019
+ * @since 11/12/2019
  */
 
 public class EditFragment  extends DialogFragment {

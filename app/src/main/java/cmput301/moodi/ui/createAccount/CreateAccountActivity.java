@@ -30,15 +30,17 @@ import cmput301.moodi.ui.login.LoginActivity;
 public class CreateAccountActivity extends AppCompatActivity {
     private static final String TAG = "CreateAccountActivity";
 
-    // create account page objects
+    // Create account page objects
     Button button_signup, button_goto_login;
     EditText emailField, passwordField;
     EditText usernameField, firstNameField, lastNameField;
     GeoPoint lastLocation;
 
-    // firebase auth link
+    // Firebase auth link
     FirebaseAuth mFirebaseAuth;
     MoodiStorage moodiStorage;
+
+    String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +71,30 @@ public class CreateAccountActivity extends AppCompatActivity {
                 String email = emailField.getText().toString();
                 String pass = passwordField.getText().toString();
 
+                /*
+                // Check is username is valid first
+                username = usernameField.getText().toString();
+                Object data;
+                data = moodiStorage.getApplicationUsers().getResult();
+
+                try {
+                    wait(500);
+                    Log.d(TAG, data.toString());
+                } catch(InterruptedException e) {
+                    Log.d(TAG, "Catch" + e.toString());
+                }finally {
+                    Log.d(TAG, "Finally.");
+                }
+                */
+
                 if (!isValidFirstName() || !isValidLastName() || !isValidUsername()) {
                     Toast.makeText(CreateAccountActivity.this, "Please fix errors to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!isValidPassword() || !isValidEmail()) {
                     Toast.makeText(CreateAccountActivity.this, "Please fix password or email to create account.", Toast.LENGTH_SHORT).show();
                 } else if (!email.isEmpty() && !pass.isEmpty()) {
                     // both values are given, try to create the account
+
+
                     mFirebaseAuth.createUserWithEmailAndPassword(email, pass).addOnCompleteListener(CreateAccountActivity.this, new OnCompleteListener<AuthResult>() {
                         @Override
                         public void onComplete(@NonNull Task<AuthResult> task) {
@@ -178,7 +198,9 @@ public class CreateAccountActivity extends AppCompatActivity {
         int minLength = 5;
         int maxLength = 20;
 
-        if(username.length() >= minLength && username.length() <= maxLength) { return true; }
+        if(username.length() >= minLength && username.length() <= maxLength) {
+            return true;
+        }
 
         this.usernameField.setError("Must be between " + minLength + " and " + maxLength + " characters.");
         this.usernameField.requestFocus();
@@ -192,7 +214,6 @@ public class CreateAccountActivity extends AppCompatActivity {
      * - Max Length: <=40
      */
     private boolean isValidEmail() {
-        //Todo: create validation rules for email input.
         String email = this.emailField.getText().toString();
         int maxLength = 40;
 
@@ -207,7 +228,6 @@ public class CreateAccountActivity extends AppCompatActivity {
      * Validate user input for password field.
      */
     private boolean isValidPassword() {
-        //Todo: create validation rules for password input.
         String password = this.passwordField.getText().toString();
         int maxLength = 20;
 

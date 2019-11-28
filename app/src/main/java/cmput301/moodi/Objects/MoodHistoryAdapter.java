@@ -52,8 +52,6 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         }
 
         Mood mood = moods.get(position);
-
-        // Point at placeholders of the context in a post
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
         ImageView currentEmoji = view.findViewById(R.id.emoji);

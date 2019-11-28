@@ -6,13 +6,11 @@ import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -28,11 +26,7 @@ import com.google.firebase.firestore.GeoPoint;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
-import java.util.ArrayList;
-
 import cmput301.moodi.Objects.Mood;
-import cmput301.moodi.Objects.MoodListAdapter;
-import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 
 /*
@@ -164,8 +158,8 @@ public class EditFragment  extends DialogFragment {
 
             // Checking if an image is available
             String path = args.getString("Old Image");
-            Log.d("Recieved path", path);
-            Log.d("Expected path", "No Photo Available");
+            //Log.d("Recieved path", path);
+            //Log.d("Expected path", "No Photo Available");
             if (path != null && !path.equals("No Photo Available")){
                 // Create a storage reference from our app
                 StorageReference storageRef = storage.getReference();

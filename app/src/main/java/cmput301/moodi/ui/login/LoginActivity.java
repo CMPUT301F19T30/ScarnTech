@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -30,9 +31,10 @@ import cmput301.moodi.ui.createAccount.CreateAccountActivity;
 public class LoginActivity extends AppCompatActivity {
 
     // log in page objects
-    Button button_login, button_goto_signup;
+    Button button_login;
     EditText emailId, password;
     Button google_login;
+    TextView signupTextView;
 
     // firebase auth link
     FirebaseAuth mFirebaseAuth;
@@ -50,7 +52,8 @@ public class LoginActivity extends AppCompatActivity {
         emailId = findViewById(R.id.login_email);
         password = findViewById(R.id.login_password);
         button_login = findViewById(R.id.login_button);
-        button_goto_signup = findViewById(R.id.goto_signup);
+
+        signupTextView = findViewById(R.id.signup_text);
         google_login = findViewById(R.id.button2);
 
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
@@ -107,7 +110,7 @@ public class LoginActivity extends AppCompatActivity {
         });
 
         // The user wishes create an account
-        button_goto_signup.setOnClickListener(new View.OnClickListener() {
+        signupTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v2) {
                 Intent i2 = new Intent(LoginActivity.this, CreateAccountActivity.class);

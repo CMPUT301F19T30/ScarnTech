@@ -51,9 +51,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
 
-        Mood mood = moods.get(position);
-
-        // Point at placeholders of the context in a post
+        Mood mood = moodsListFiltered.get(position);
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
         ImageView currentEmoji = view.findViewById(R.id.emoji);
@@ -114,10 +112,12 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
 
                 for (int i=0; i< moods.size(); i++) {
                     Mood mood = moods.get(i);
-                    String moodType = mood.getEmotionalState().getName();
+                    String moodType = mood.getEmotionalState().getName().toLowerCase();
+                    Log.d(TAG, "Mood -> " + moodType.toString());
+                    Log.d(TAG, "constraint -> " + constraint.toString());
 
-                    if(moodType.toLowerCase().startsWith(constraint.toString())) {
-                        Log.d(TAG, "->" + moodType);
+                    if(moodType.startsWith(constraint.toString())) {
+                        Log.d(TAG, "Adding ->" + moodType);
                         filteredList.add(mood);
                     }
                 }

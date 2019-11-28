@@ -6,9 +6,6 @@ package cmput301.moodi.Objects;
  * 11/04/2019
  */
 
-import androidx.annotation.NonNull;
-
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
@@ -16,8 +13,6 @@ import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.GeoPoint;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -46,6 +41,13 @@ public class MoodiStorage {
         this.userCollection = this.db.collection(USER_PATH);
         this.notificationsCollection = this.db.collection(NOTIFICATIONS_PATH);
         this.followerCollection = this.db.collection(FOLLOWERS_PATH);
+    }
+
+    /*
+     *
+     */
+    public Task isUsernameUnique(String username) {
+        return this.userCollection.whereEqualTo("username", username).limit(1).get();
     }
 
     /*
@@ -118,7 +120,7 @@ public class MoodiStorage {
     /*
      * Returns all of the users own posts.
      */
-    public Task getUMoodHistory() {
+    public Task getMyMoodHistory() {
         return this.postCollection.whereEqualTo("UID", this.UID).get();
     }
 

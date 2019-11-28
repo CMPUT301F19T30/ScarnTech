@@ -87,8 +87,16 @@ public class MoodiStorage {
         return this.notificationsCollection.whereEqualTo("receiver", this.UID).get();
     }
 
+    public void deleteNotification(String notificationDoc) {
+        this.notificationsCollection.document(notificationDoc).delete();
+    }
+
     public void sendFollowRequest(Object data) {
         this.notificationsCollection.document().set(data);
+    }
+
+    public void createFollower(Object data) {
+        this.followerCollection.document().set(data);
     }
 
     /*

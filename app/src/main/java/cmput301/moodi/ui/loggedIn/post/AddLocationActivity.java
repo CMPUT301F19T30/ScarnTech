@@ -1,10 +1,10 @@
 package cmput301.moodi.ui.loggedIn.post;
 
-import androidx.fragment.app.FragmentActivity;
-
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+
+import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -12,6 +12,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MapStyleOptions;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.firebase.firestore.GeoPoint;
 
@@ -87,6 +88,10 @@ public class AddLocationActivity extends FragmentActivity implements OnMapReadyC
         mapUiSettings.setZoomControlsEnabled(true);
         mapUiSettings.setAllGesturesEnabled(true);
         mapUiSettings.setCompassEnabled(true);
+
+        // set the dark theme style
+        boolean success = googleMap.setMapStyle(new MapStyleOptions(getResources()
+                .getString(R.string.style_json)));
 
         // create old marker
         LatLng old_latlng = new LatLng(latitude, longitude);

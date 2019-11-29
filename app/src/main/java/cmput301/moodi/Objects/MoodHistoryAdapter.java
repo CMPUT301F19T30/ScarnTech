@@ -51,7 +51,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
-
+        // Sort here
         Collections.sort(moodsListFiltered);
         Mood mood = moodsListFiltered.get(position);
 

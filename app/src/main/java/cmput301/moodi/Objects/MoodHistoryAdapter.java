@@ -51,7 +51,8 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         if(view == null){
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
-
+        // Sort here
+        Collections.sort(moodsListFiltered);
         Mood mood = moodsListFiltered.get(position);
 
         // Point at placeholders of the context in a post
@@ -110,6 +111,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults();
             ArrayList<Mood> filteredList = new ArrayList<>();
 
+            Collections.sort(moodsList);
             results.count = moodsList.size();
             results.values = moodsList;
 

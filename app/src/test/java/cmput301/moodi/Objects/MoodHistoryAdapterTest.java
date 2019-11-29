@@ -15,7 +15,11 @@ import static org.junit.Assert.*;
 
 public class MoodHistoryAdapterTest {
 
-
+    /**
+     * Class: MoodiHistoryAdapterTest
+     * This class is to test the functionality of MoodHistoryAdapter class
+     * @since 27/11/2019
+     */
     //ArrayList<Mood> testlist = list();
     //private MoodHistoryAdapter ;
 
@@ -24,7 +28,10 @@ public class MoodHistoryAdapterTest {
     //private MoodHistoryAdapter.MoodFilter customFilter;
     private Context context;
 
-
+        /**
+         * mockadpter create a temp adapter to be test. In this case we add 2 moods into
+         * the adapter.
+         */
 
     MoodHistoryAdapter mockadapter(){
         //ArrayList<Mood> moodsarr;
@@ -44,26 +51,32 @@ public class MoodHistoryAdapterTest {
 
         return mymockadapter;
     }
-
+    /*
+    getCount is trying to test there it return correct number of moods
+    */
     @Test
     public void getCount() {
         MoodHistoryAdapter mymockadapter = mockadapter();
         assertEquals(2,mymockadapter.getCount());
     }
-
+    /*
+   getCount test whether it return correct item(moods) from adapter
+   */
     @Test
     public void getItem() {
         MoodHistoryAdapter mymockadapter = mockadapter();
         GeoPoint location1 = new GeoPoint(53.18923, -113.12312);
         assertEquals(location1,mymockadapter.getItem(0).getLocation());
     }
-
+    /*
+  getCount test whether it return correct item index(moods index) from adapter
+  */
     @Test
     public void getItemId() {
         MoodHistoryAdapter mymockadapter = mockadapter();
         GeoPoint location1 = new GeoPoint(53.18923, -113.12312);
         assertEquals(0,mymockadapter.getItemId(0));
-        //doesn't make sense
+
 
 
     }

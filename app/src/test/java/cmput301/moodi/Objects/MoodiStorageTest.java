@@ -1,16 +1,20 @@
 package cmput301.moodi.Objects;
 
-import org.junit.Test;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import java.lang.reflect.Field;
 
+import org.junit.Test;
+/**
+ * Class:MoodiStorageTest
+ * this class retrieve information from firebase it would needs a account to login.
+ */
 import static org.junit.Assert.*;
 
 public class MoodiStorageTest {
-    /*
-    private MoodiStorage mockMoodiStorage(){
-        MoodiStorage mystorage = new MoodiStorage();
-        //mystorage.
-    }
-     */
+
+
     @Test
     public void getUID() {
     }

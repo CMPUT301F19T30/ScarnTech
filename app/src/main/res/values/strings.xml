@@ -20,7 +20,7 @@
     </string-array>
 
     <string-array name="mood_history_filters">
-        <item>All</item>
+        <item>Show All</item>
         <item>Happy</item>
         <item>Mad</item>
         <item>Sad</item>

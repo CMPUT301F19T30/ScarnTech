@@ -28,7 +28,6 @@
                 android:text="Username"
                 android:textColor="@color/moodiBlack"
                 android:textSize="30sp"
-                android:onClick="onClick"
                 android:clickable="true"/>
         </LinearLayout>
 

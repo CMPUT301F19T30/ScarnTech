@@ -7,7 +7,6 @@ package cmput301.moodi.Objects;
  */
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
 import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
@@ -124,6 +122,13 @@ public class MoodiStorage {
      */
     public Task getNotifications() {
         return this.notificationsCollection.whereEqualTo("receiver", this.UID).get();
+    }
+
+    /*
+     * Check to see if there is a notification pending in the database.
+     */
+    public Task isNotificationPending(String receiver) {
+        return this.notificationsCollection.whereEqualTo("receiver", receiver).whereEqualTo("sender", this.UID).get();
     }
 
     public void deleteNotification(String notificationDoc) {

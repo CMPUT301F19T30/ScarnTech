@@ -7,34 +7,30 @@
     tools:context=".ui.createAccount.CreateAccountActivity">
 
     <TextView
-        android:id="@+id/textView7"
+        style="@style/MoodiTitle"
+        android:id="@+id/title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
         android:layout_marginTop="124dp"
-        android:ems="8"
-        android:fontFamily="@font/rancho"
         android:text="@string/moodi"
-        android:textAlignment="center"
-        android:textColor="@color/moodiDarkBlue"
-        android:textSize="60sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
 
     <TextView
-        android:id="@+id/textView6"
+        style="@style/MoodiSubtitle"
+        android:id="@+id/subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text="@string/send_moods"
-        android:textColor="@color/moodiDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView7" />
+        app:layout_constraintTop_toBottomOf="@+id/title" />
 
     <EditText
+        style="@style/MoodiEditText"
         android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -50,9 +46,10 @@
         android:textColor="@color/moodiDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView6" />
+        app:layout_constraintTop_toBottomOf="@+id/subtitle" />
 
     <EditText
+        style="@style/MoodiEditText"
         android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -125,6 +122,16 @@
             android:textColor="@color/moodiMediumBlue" />
 
     </LinearLayout>
+
+    <ImageView
+        android:id="@+id/psyduckimage"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

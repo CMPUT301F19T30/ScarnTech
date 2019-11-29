@@ -6,9 +6,17 @@ import cmput301.moodi.Objects.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class: UserTest
+ * This class test method in the User class
+ */
 class UserTest {
 
-
+    /**
+     * Create a temp User object to be test
+     * @return
+     * a User object
+     */
     private User mockUser() {
         User mockUser = new User("jdoe", "John", "Doe");
         return mockUser;

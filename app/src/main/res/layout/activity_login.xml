@@ -24,6 +24,7 @@
 
 
     <TextView
+        style="@style/MoodiText"
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -35,6 +36,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView7" />
 
     <EditText
+        style="@style/MoodiEditText"
         android:id="@+id/login_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -53,6 +55,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     <EditText
+        style="@style/MoodiEditText"
         android:id="@+id/login_password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -129,10 +132,11 @@
         android:id="@+id/psyduckimage"
         android:layout_width="100dp"
         android:layout_height="130dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="1dp" />
+        tools:layout_editor_absoluteY="1dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

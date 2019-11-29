@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/moodiBackground"
+    android:background="#eeeeee"
     android:clickable="true"
     android:orientation="vertical">
 
@@ -15,22 +15,13 @@
         android:textColor="@color/moodiDarkBlue"
         android:textSize="24sp" />
 
-    <TextView
-        android:id="@+id/filter_testView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@color/moodiBackground"
-        android:padding="@dimen/activity_vertical_margin"
-        android:text="Filter by"
-        android:textColor="@color/moodiWhite" />
-
     <Spinner
         android:id="@+id/filter_by"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/moodiBackground"
         android:padding="@dimen/activity_vertical_margin"
-        android:spinnerMode="dropdown" />
+        android:spinnerMode="dialog" />
 
     <ListView
         android:id="@+id/mood_history"

@@ -1,11 +1,24 @@
 <resources>
-
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style
+        name="MoodiTheme"
+        parent="Theme.AppCompat.Light.NoActionBar">
         <item name="colorPrimary">@color/moodiMediumBlue</item>
         <item name="colorPrimaryDark">@color/moodiDarkBlue</item>
         <item name="colorAccent">@color/moodiDarkBlue</item>
+    </style>
+
+    <style name="MoodiText" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/moodiDarkBlue</item>
+    </style>
+
+    <style name="MoodiEditText" parent="@style/Widget.AppCompat.EditText">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/moodiDarkBlue</item>
+        <item name="background">@drawable/edit_text_background</item>
+        <item name="android:padding">@dimen/text_padding</item>
+        <item name="android:layout_marginRight">@dimen/text_vertical_margin</item>
+        <item name="android:layout_marginLeft">@dimen/text_vertical_margin</item>
     </style>
 
 </resources>

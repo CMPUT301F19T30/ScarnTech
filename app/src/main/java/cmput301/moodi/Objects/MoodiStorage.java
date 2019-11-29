@@ -86,6 +86,9 @@ public class MoodiStorage {
         return this.followerCollection.whereEqualTo("following", selectedUserUID).get();
     }
 
+    /*
+    * Add a follower to firebase
+     */
     public void addFollower(Object data) {
         this.followerCollection.document().set(data);
     }

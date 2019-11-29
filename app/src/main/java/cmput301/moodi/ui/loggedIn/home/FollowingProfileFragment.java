@@ -182,7 +182,7 @@ public class FollowingProfileFragment extends DialogFragment {
                         @Override
                         public void onComplete(@NonNull Task<QuerySnapshot> task) {
                             if (task.isSuccessful()) {
-
+                                Log.d("UID", uniqueID);
                                 if (moods == null) {
                                     moods = new ArrayList<>();
                                 } else {
@@ -198,6 +198,23 @@ public class FollowingProfileFragment extends DialogFragment {
                                     Collections.sort(moods);
                                     moodDataList.add(moods.get(0)); // only the most recent from each following
                                     moodAdapter.notifyDataSetChanged(); }
+
+                                // Getting user follower and following count
+                                moodiStorage.getFollowers(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            followers.setText(String.valueOf(task.getResult().size()));
+                                        }
+                                    }
+                                });
+
+                                moodiStorage.getFollowing(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                        following.setText(String.valueOf(task.getResult().size()));
+                                    }
+                                });
                             }
                         }
 
@@ -205,20 +222,7 @@ public class FollowingProfileFragment extends DialogFragment {
                 }
             });
 
-            // Getting user follower and following count
-            moodiStorage.getFollowers(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    followers.setText(String.valueOf(task.getResult().size()));
-                }
-            });
 
-            moodiStorage.getFollowing(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                @Override
-                public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                    following.setText(String.valueOf(task.getResult().size()));
-                }
-            });
         }
 
         //Build the fragment and set the buttons to call the delete or edit method in main

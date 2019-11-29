@@ -86,6 +86,7 @@ public class PostFragment extends Fragment {
     private static final int CAMERA_REQUEST = 1888;
     private static final int MY_CAMERA_PERMISSION_CODE = 100;
     private int RESULT_LOAD_IMG;
+    public String path;
 
     // Variables that are used to connect and reference Firebase
     FirebaseFirestore db;
@@ -264,15 +265,15 @@ public class PostFragment extends Fragment {
                     byte[] data = outputStream.toByteArray();
 
                     // Creating a reference to the firebase storage for our users photos
-                    String path = "UserImage/" + UUID.randomUUID() + ".png";
+                    path = "UserImage/" + UUID.randomUUID() + ".png";
                     StorageReference userPhotoRef = storage.getReference(path);
 
                     // Upload image to firebase with that url as a reference
                     UploadTask uploadTask = userPhotoRef.putBytes(data);
-                }
+                } else { path = "No Photo Available"; }
 
                 // Create a new mood from the user input without an image
-                Mood mood = new Mood(index, reason, socialSituation, date, username);
+                Mood mood = new Mood(index, reason, socialSituation, date, path, username);
 
                 // Set mood location to the most recent location data from firebase (through text view)
                 if (location_toggle.isChecked()) {

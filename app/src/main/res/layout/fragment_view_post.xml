@@ -47,7 +47,7 @@
 <!--                android:paddingRight="10dp"-->
 <!--                android:text="Emotional State:"-->
 <!--                android:textColor="#000000"-->
-<!--                android:textSize="25sp" />-->
+            <!--                android:textSize="25sp" />-->
 
             <TextView
                 android:id="@+id/input_EmotionalState_textView"
@@ -172,7 +172,7 @@
             android:layout_marginTop="10dp">
 
             <TextView
-                android:id="@+id/textView28"
+                android:id="@+id/imageTextView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="10dp"

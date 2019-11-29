@@ -58,6 +58,7 @@ public class ViewFragment extends DialogFragment{
     private TextView ImageText;
     private ImageView Image;
     private TextView Username;
+    private TextView imageTextview;
 
     FirebaseStorage storage = FirebaseStorage.getInstance("gs://moodi-app-1cf5d.appspot.com/");
 
@@ -128,6 +129,7 @@ public class ViewFragment extends DialogFragment{
             Location = view.findViewById((R.id.input_Location_textView));
             Image = view.findViewById(R.id.view_photo);
             ImageText = view.findViewById(R.id.view_Photo_content);
+            imageTextview = view.findViewById(R.id.imageTextView);
             Username = view.findViewById(R.id.input_User_textView);
 
             // Onclick listener to take a user to the selected profile!
@@ -165,7 +167,8 @@ public class ViewFragment extends DialogFragment{
                         public void onSuccess(byte[] bytes) {
                             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length );
                             Image.setVisibility(View.VISIBLE);
-                            ImageText.setText("");
+                            ImageText.setVisibility(View.GONE);
+                            imageTextview.setVisibility(View.GONE);
                             Image.setImageBitmap(bitmap);
                         }
                     });}

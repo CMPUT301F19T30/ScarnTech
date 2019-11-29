@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CalendarView;
 import android.widget.EditText;
 import android.widget.ImageButton;
@@ -65,7 +66,7 @@ public class PostFragment extends Fragment {
     private Spinner EmotionalStateSpinner;
     private Spinner SocialSituationSpinner;
 
-    private ImageButton PostMoodButton;
+    private Button PostMoodButton;
     private ImageButton getLocationButton;
     private ImageButton getPictureButton;
     private ImageButton getPhotoGalleryButton;

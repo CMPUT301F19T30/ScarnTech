@@ -128,5 +128,14 @@
 
     </LinearLayout>
 
+    <ImageView
+        android:id="@+id/psyduckimage"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.498"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="1dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
 

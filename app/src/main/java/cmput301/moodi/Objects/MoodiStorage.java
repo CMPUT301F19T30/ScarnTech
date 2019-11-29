@@ -7,6 +7,7 @@ package cmput301.moodi.Objects;
  */
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -16,6 +17,7 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.ExecutionException;
 
 import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
 import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
@@ -72,13 +74,23 @@ public class MoodiStorage {
 
     /*
      * Returns all moodi users following the user.
-    /**
      * @return the followers documents for the user.
      */
     public Task getFollowers() {
         return this.followerCollection.whereEqualTo("following", this.UID).get();
     }
 
+    /*
+     * Returns all moodi users following the selected user (Overloaded Const.).
+     * @return the followers documents for the user.
+     */
+    public Task getFollowers(String selectedUserUID) {
+        return this.followerCollection.whereEqualTo("following", selectedUserUID).get();
+    }
+
+    /*
+    * Add a follower to firebase
+     */
     public void addFollower(Object data) {
         this.followerCollection.document().set(data);
     }
@@ -92,7 +104,15 @@ public class MoodiStorage {
     }
 
     /*
-     * Check to see if the current user is following another application user
+     * Returns all moodi users of a selected user (Overloaded Constructor).
+     * @return the following documents for the user.
+     */
+    public Task getFollowing(String selectedUserUID) {
+        return this.followerCollection.whereEqualTo("user", selectedUserUID).get();
+    }
+
+    /*
+    * @return the reference to which users are following the provided UID.
      */
     public Task isUserFollowing(String UID) {
         return this.followerCollection.whereEqualTo("following", UID).whereEqualTo("user", this.UID).limit(1).get();

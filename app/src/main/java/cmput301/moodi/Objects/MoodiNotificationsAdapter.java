@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -68,6 +69,7 @@ public class MoodiNotificationsAdapter extends ArrayAdapter<MoodiNotification> {
            @Override
            public void onClick(View view) {
                 moodiStorage.deleteNotification(notification.getDocumentID());
+               Toast.makeText(getContext(),"Follow Request Declined", Toast.LENGTH_SHORT).show();
            }
        });
 
@@ -75,6 +77,7 @@ public class MoodiNotificationsAdapter extends ArrayAdapter<MoodiNotification> {
            @Override
            public void onClick(View view) {
                 acceptNotification(notification);
+               Toast.makeText(getContext(),"Follow Request Accepted", Toast.LENGTH_SHORT).show();
            }
        });
 

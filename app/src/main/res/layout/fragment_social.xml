@@ -22,19 +22,17 @@
                 android:id="@android:id/tabs"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/moodiBackground" />
+                android:background="@color/moodiWhite"/>
 
             <FrameLayout
                 android:id="@android:id/tabcontent"
                 android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:background="@color/moodiBackground">
+                android:layout_height="fill_parent">
 
                 <LinearLayout
                     android:id="@+id/tab1"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="@color/moodiBackground">
+                    android:layout_height="match_parent">
 
                     <include
                         layout="@layout/social_list"
@@ -54,6 +52,7 @@
                         layout="@layout/notification_list"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/activity_vertical_margin"
                         android:background="@color/moodiBackground" />
 
                 </LinearLayout>

@@ -21,7 +21,6 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Switch;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -277,7 +276,7 @@ public class PostFragment extends Fragment {
                 Mood mood = new Mood(index, reason, socialSituation, date, path, username);
 
                 // Set mood location to the most recent location data from firebase (through text view)
-                if (location_toggle.isChecked()) {
+                if (location_toggle.isChecked() && !(lastLat ==  null) &&  !(lastLon == null)) {
                     mood.setLocation(new GeoPoint(Double.valueOf(lastLat), Double.valueOf(lastLon)));
                 }
 

@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -41,6 +42,9 @@ public class HomeFragment extends Fragment {
     private ListView moodListView;
     private MoodHistoryAdapter moodAdapter;
     private ArrayList<Mood> moodDataList;
+    public List<Mood> moods;
+    public Spinner spinner;
+    public TextView showNoneMessage, greeting;
 
     // Firestore and reference objects
     private FirebaseFirestore db;
@@ -48,7 +52,6 @@ public class HomeFragment extends Fragment {
     private MoodiStorage moodiStorage;
     private String TAG = "HomeFragment";
 
-    public List<Mood> moods;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -57,9 +60,17 @@ public class HomeFragment extends Fragment {
         // Get a reference to the ListView and create an object for the mood list.
         moodListView = view.findViewById(R.id.mood_list);
         moodDataList = new ArrayList<>();
+        showNoneMessage = view.findViewById(R.id.show_none);
+        greeting = view.findViewById(R.id.greeting);
+        spinner = view.findViewById(R.id.filter_by);
+
+        showNoneMessage.setVisibility(View.INVISIBLE);
+        greeting.setVisibility(View.INVISIBLE);
+        spinner.setVisibility(View.INVISIBLE);
+
 
         // Set the adapter for the listView to the CustomAdapter that we created in Lab 3.
-        moodAdapter = new MoodHistoryAdapter(container.getContext(),moodDataList);
+        moodAdapter = new MoodHistoryAdapter(container.getContext(), moodDataList);
         moodListView.setAdapter(moodAdapter);
 
         // Init firestore link and reference object
@@ -68,7 +79,6 @@ public class HomeFragment extends Fragment {
         moodiStorage = new MoodiStorage();
 
         // Load spinner resources
-        Spinner spinner = (Spinner) view.findViewById(R.id.filter_by);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.mood_history_filters, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -99,33 +109,39 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onComplete(@NonNull Task<QuerySnapshot> task) {
                         if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot following_doc : task.getResult()) {
+                            if (task.getResult().isEmpty()) {
+                                showEmptyFeed();
+                            } else {
 
-                                // for each following get most recent mood
-                                moodiStorage.getUserMoods((String) following_doc.getData().get("following")).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                        if (task.isSuccessful()) {
-                                            if (moods == null) {
-                                                moods = new ArrayList<>();
-                                            } else {
-                                                moods.clear();
-                                            }
+                                showPopulatedFeed();
+                                for (QueryDocumentSnapshot following_doc : task.getResult()) {
 
-                                            for (QueryDocumentSnapshot mood_doc : task.getResult()) {
-                                                Mood mood = new Mood();
-                                                mood.setFromDocument(mood_doc);
-                                                moods.add(mood);
-                                            }
+                                    // for each following get most recent mood
+                                    moodiStorage.getUserMoods((String) following_doc.getData().get("following")).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                            if (task.isSuccessful()) {
+                                                if (moods == null) {
+                                                    moods = new ArrayList<>();
+                                                } else {
+                                                    moods.clear();
+                                                }
 
-                                            if (!moods.isEmpty()) {
-                                                Collections.sort(moods);
-                                                moodDataList.add(moods.get(0)); // only the most recent from each following
-                                                moodAdapter.notifyDataSetChanged();
+                                                for (QueryDocumentSnapshot mood_doc : task.getResult()) {
+                                                    Mood mood = new Mood();
+                                                    mood.setFromDocument(mood_doc);
+                                                    moods.add(mood);
+                                                }
+
+                                                if (!moods.isEmpty()) {
+                                                    Collections.sort(moods);
+                                                    moodDataList.add(moods.get(0)); // only the most recent from each following
+                                                    moodAdapter.notifyDataSetChanged();
+                                                }
                                             }
                                         }
-                                    }
-                                });
+                                    });
+                                }
                             }
                         }
                     }
@@ -144,5 +160,18 @@ public class HomeFragment extends Fragment {
             }
         });
         return view;
+    }
+
+    public void showEmptyFeed() {
+        showNoneMessage.setVisibility(View.VISIBLE);
+        greeting.setVisibility(View.GONE);
+        spinner.setVisibility(View.GONE);
+
+    }
+
+    public void showPopulatedFeed() {
+        showNoneMessage.setVisibility(View.GONE);
+        greeting.setVisibility(View.VISIBLE);
+        spinner.setVisibility(View.VISIBLE);
     }
 }

@@ -124,6 +124,7 @@
                     android:layout_marginTop="24dp"
                     android:text="@string/min"
                     android:textColor="@color/moodiWhite"
+                    android:paddingLeft="@dimen/text_padding"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
@@ -144,6 +145,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:entries="@array/minute_array"
+                    android:background="@color/moodiWhite"
                     app:layout_constraintEnd_toStartOf="@+id/textView6"
                     app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
@@ -166,6 +168,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:entries="@array/hour_array"
+                    android:background="@color/moodiWhite"
                     app:layout_constraintEnd_toStartOf="@+id/textView5"
                     app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
@@ -175,6 +178,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:layout_marginEnd="8dp"
+                    android:paddingLeft="@dimen/text_padding"
                     android:text="@string/hr"
                     android:textColor="@color/moodiWhite"
                     app:layout_constraintEnd_toStartOf="@+id/input_minute"
@@ -188,7 +192,8 @@
                     android:clickable="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView12" />
+                    app:layout_constraintTop_toBottomOf="@+id/textView12"
+                    android:background="@color/moodiWhite"/>
 
                 <TextView
                     android:id="@+id/textView12"
@@ -222,7 +227,7 @@
                         android:layout_marginBottom="16dp"
                         android:fontFamily="@font/rancho"
                         android:text="Update Your Mood:"
-                        android:textColor="@color/moodiBlack"
+                        android:textColor="#FFFFFF"
                         android:textSize="36sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
@@ -255,7 +260,7 @@
                         android:id="@+id/add_location_button"
                         android:layout_width="80dp"
                         android:layout_height="50dp"
-                        android:background="@android:drawable/btn_default"
+                        android:background="@color/moodiTeal"
                         android:contentDescription="@string/add_location_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -266,7 +271,7 @@
                         android:layout_width="0dp"
                         android:layout_height="0dp"
                         android:layout_marginStart="32dp"
-                        android:background="@android:drawable/btn_default"
+                        android:background="@color/moodiBackground2"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/add_location_button"
@@ -310,7 +315,7 @@
                         android:id="@+id/add_picture_button"
                         android:layout_width="80dp"
                         android:layout_height="50dp"
-                        android:background="@android:drawable/btn_default"
+                        android:background="@color/moodiRed"
                         android:contentDescription="@string/add_camera_photo_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -322,7 +327,7 @@
                         android:layout_width="80dp"
                         android:layout_height="50dp"
                         android:layout_marginStart="32dp"
-                        android:background="@android:drawable/btn_default"
+                        android:background="@color/moodiYellow"
                         android:contentDescription="@string/add_gallery_photo_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

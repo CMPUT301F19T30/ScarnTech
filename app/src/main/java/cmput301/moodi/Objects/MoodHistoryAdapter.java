@@ -27,7 +27,7 @@ import cmput301.moodi.R;
  */
 public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
 
-    private ArrayList<Mood> moods;
+    private ArrayList<Mood> moodsList;
     private ArrayList<Mood> moodsListFiltered;
     private MoodFilter customFilter;
     private Context context;
@@ -36,7 +36,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
     // Bridge between the list and the displayed list
     public MoodHistoryAdapter(Context context, ArrayList<Mood> moods){
         super();
-        this.moods = moods;
+        this.moodsList = moods;
         this.moodsListFiltered = moods;
         this.context = context;
     }
@@ -52,7 +52,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
 
-        Mood mood = moods.get(position);
+        Mood mood = moodsListFiltered.get(position);
 
         // Point at placeholders of the context in a post
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
@@ -110,8 +110,8 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             FilterResults results = new FilterResults();
             ArrayList<Mood> filteredList = new ArrayList<>();
 
-            results.count = moods.size();
-            results.values = moods;
+            results.count = moodsList.size();
+            results.values = moodsList;
 
             if (constraint.equals("Show All")) {
                 return results;
@@ -120,8 +120,8 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             if (constraint != null && constraint.length()>0) {
                 constraint = constraint.toString().toLowerCase();
 
-                for (int i=0; i< moods.size(); i++) {
-                    Mood mood = moods.get(i);
+                for (int i=0; i< moodsList.size(); i++) {
+                    Mood mood = moodsList.get(i);
                     String moodType = mood.getEmotionalState().getName().toLowerCase();
                     if(moodType.startsWith(constraint.toString())) {
                         filteredList.add(mood);

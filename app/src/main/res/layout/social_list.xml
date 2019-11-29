@@ -10,7 +10,7 @@
         android:id="@+id/search_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/moodiBackground"
+        android:background="@color/moodiLightGrey"
         android:hint="Search..."
         android:padding="@dimen/activity_vertical_margin"
         android:textSize="24sp" />

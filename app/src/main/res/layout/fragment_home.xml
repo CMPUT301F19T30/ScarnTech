@@ -6,16 +6,30 @@
     android:background="@color/moodiBackground">
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/greeting"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
+        android:layout_marginStart="@dimen/activity_horizontal_margin"
         android:layout_marginTop="24dp"
+        android:padding="@dimen/text_padding"
         android:text="Your friends are feeling..."
         android:textColor="@color/moodiWhite"
         android:textSize="24sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/show_none"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="No moods"
+        android:gravity="center"
+        android:visibility="invisible"
+        android:textSize="20sp"
+        android:background="@color/moodiLightGrey"
+        android:textColor="@color/moodiBackground"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/greeting"/>
 
     <Spinner
         android:id="@+id/filter_by"
@@ -25,13 +39,13 @@
         android:padding="@dimen/activity_vertical_margin"
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/greeting" />
 
     <ListView
         android:id="@+id/mood_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

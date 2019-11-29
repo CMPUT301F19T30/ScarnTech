@@ -51,6 +51,8 @@ public class ProfileFragment extends Fragment {
     private User userProfile;
     private TextView username, nameDisplay;
     private TextView numFollowers, numFollowing;
+    public TextView showNoneMessage;
+    public Spinner spinner;
 
     // Moods
     private ListView moodList;
@@ -72,6 +74,10 @@ public class ProfileFragment extends Fragment {
         nameDisplay = root.findViewById(R.id.full_name);
         numFollowers = root.findViewById(R.id.followers_number);
         numFollowing = root.findViewById(R.id.following_number);
+        showNoneMessage = root.findViewById(R.id.show_none);
+        showNoneMessage.setVisibility(View.INVISIBLE);
+        spinner = root.findViewById(R.id.filter_by);
+
 
         // Load lists for moods.
         moodList = root.findViewById(R.id.mood_history);
@@ -80,7 +86,7 @@ public class ProfileFragment extends Fragment {
         moodList.setAdapter(moodAdapter);
 
         // Load spinner resources
-        Spinner spinner = (Spinner) root.findViewById(R.id.filter_by);
+
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.mood_history_filters, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
@@ -158,21 +164,29 @@ public class ProfileFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     moodDataList.clear();
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
 
-                        String postID = doc.getId();
-                        String reasonText = (String) doc.getData().get("Reason");
-                        String date = (String) doc.getData().get("Date");
-                        String socialSituation = (String) doc.getData().get("Social Situation");
-                        Number index = (Number) doc.getData().get("Index");
-                        String path = (String) doc.getData().get("Image");
-                        String uniqueID = "";
-                        if (index != null) {
-                            int i = index.intValue();
-                            // TODO: Add location to constructor
-                            moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
+                    if (task.getResult().isEmpty()) {
+                        showNoneMessage.setVisibility(View.VISIBLE);
+                        spinner.setVisibility(View.INVISIBLE);
+                    } else {
+                        for (QueryDocumentSnapshot doc : task.getResult()) {
+                            showNoneMessage.setVisibility(View.GONE);
+                            spinner.setVisibility(View.VISIBLE);
+                            String postID = doc.getId();
+                            String reasonText = (String) doc.getData().get("Reason");
+                            String date = (String) doc.getData().get("Date");
+                            String socialSituation = (String) doc.getData().get("Social Situation");
+                            Number index = (Number) doc.getData().get("Index");
+                            String path = (String) doc.getData().get("Image");
+                            String uniqueID = "";
+                            if (index != null) {
+                                int i = index.intValue();
+                                // TODO: Add location to constructor
+                                moodDataList.add(new Mood(reasonText, date, socialSituation, postID, i, path, uniqueID));
+                            }
                         }
                     }
+
                 } else {
                     Log.d(TAG, "Error getting documents: ", task.getException());
                 }
@@ -239,14 +253,6 @@ public class ProfileFragment extends Fragment {
         });
     }
 
-    /*
-     * Check user click on notifications.
-     *
-     */
-    private void getNotificationResponse() {
-        //Todo: get id of clicked element.
-
-    }
 
     /*
      * Load following and followers list.

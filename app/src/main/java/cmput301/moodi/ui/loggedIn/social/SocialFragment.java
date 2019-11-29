@@ -166,7 +166,7 @@ public class SocialFragment extends Fragment {
     /*
      * Setup the dialog view
      */
-    private void dialogHandler(User userData) {
+    private void dialogHandler(final User userData) {
         final User user = userData;
         final Dialog userDialog = new Dialog(getContext());
         userDialog.setContentView(R.layout.user_dialog);
@@ -184,22 +184,22 @@ public class SocialFragment extends Fragment {
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
                     if (task.getResult().isEmpty()) {
-                        // Not currently following. Allow user to send notification.
-                        Log.d(TAG, "Empty!");
-                        statusView.setText("Not following");
-                        followRequestButton.setVisibility(View.VISIBLE);
-                        followRequestButton.setOnClickListener(new View.OnClickListener() {
+                        moodiStorage.isNotificationPending(userData.getUID()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                             @Override
-                            public void onClick(View view) {
-                                userDialog.dismiss();
-                                HashMap<String, Object> data = new HashMap<>();
-                                data.put("sender", moodiStorage.getUID());
-                                data.put("receiver", user.getUID());
-                                data.put("type", FOLLOW_REQUEST);
-                                moodiStorage.sendFollowRequest(data);
-                                Toast.makeText(getActivity(), "Follow Request Sent!", Toast.LENGTH_SHORT).show();
+                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                if(task.isSuccessful()) {
+                                    if(task.getResult().isEmpty()) {
+                                        Log.d(TAG, "Empty!");
+                                        statusView.setText("Not following");
+                                        setupRequestButton(followRequestButton, userDialog, user);
+
+                                    } else {
+                                        statusView.setText("Pending Request");
+                                    }
+                                }
                             }
                         });
+
                     } else {
                         // Currently following the user.
                         Log.d(TAG, "Following");
@@ -229,6 +229,32 @@ public class SocialFragment extends Fragment {
         window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
     }
+
+
+    /*
+     * Setup Follow Button
+     */
+    public void setupRequestButton(Button button, Dialog userDialog, User userData) {
+        final User user = userData;
+        final Dialog dialog = userDialog;
+
+        button.setVisibility(View.VISIBLE);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.dismiss();
+                HashMap<String, Object> data = new HashMap<>();
+                data.put("sender", moodiStorage.getUID());
+                data.put("receiver", user.getUID());
+                data.put("type", FOLLOW_REQUEST);
+                moodiStorage.sendFollowRequest(data);
+                Toast.makeText(getActivity(), "Follow Request Sent!", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+
 
 
     /*

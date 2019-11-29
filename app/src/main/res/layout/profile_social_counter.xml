@@ -4,14 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/moodiBackground">
+    android:background="@color/moodiBackground"
+    android:layout_marginTop="@dimen/activity_vertical_margin"
+    android:paddingLeft="32dp"
+    android:paddingRight="32dp">
 
     <TextView
         android:id="@+id/following_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/moodiBackground"
-        android:padding="@dimen/activity_vertical_margin"
+        android:padding="@dimen/text_padding"
         android:text="Following"
         android:textColor="@color/moodiWhite"
         app:layout_constraintStart_toStartOf="parent"
@@ -21,10 +24,12 @@
         android:id="@+id/following_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/moodiBackground"
-        android:padding="@dimen/activity_vertical_margin"
+        android:background="@drawable/circle_background"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:textAlignment="center"
         android:text="0"
-        android:textColor="@color/moodiWhite"
+        android:textColor="@color/moodiDarkBlue"
         app:layout_constraintStart_toEndOf="@id/following_text"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -33,7 +38,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:background="@color/moodiBackground"
-        android:padding="@dimen/activity_vertical_margin"
+        android:padding="@dimen/text_padding"
         android:text="Followers"
         android:textColor="@color/moodiWhite"
         app:layout_constraintEnd_toStartOf="@id/followers_number"
@@ -43,10 +48,12 @@
         android:id="@+id/followers_number"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/moodiBackground"
-        android:padding="@dimen/activity_vertical_margin"
+        android:background="@drawable/circle_background"
+        android:layout_marginTop="4dp"
+        android:gravity="center"
+        android:textAlignment="center"
         android:text="0"
-        android:textColor="@color/moodiWhite"
+        android:textColor="@color/moodiDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

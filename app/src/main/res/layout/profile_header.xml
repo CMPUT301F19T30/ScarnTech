@@ -4,44 +4,44 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/moodiBackground"
-    android:orientation="vertical"
-    android:padding="@dimen/activity_vertical_margin">
+    android:background="@color/moodiWhite"
+    android:orientation="vertical">
 
     <TextView
-        android:id="@+id/full_name"
+        android:id="@+id/username"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:background="@color/moodiBackground"
-        android:text="First Last Name here."
+        android:text="Username"
         android:textAlignment="textStart"
         android:textColor="@color/moodiDarkBlue"
         android:textSize="24sp"
+        android:padding="@dimen/text_padding"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/username"
+        android:id="@+id/full_name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:background="@color/moodiBackground"
-        android:text="Username"
+        android:layout_marginBottom="@dimen/activity_vertical_margin"
+        android:text="name"
         android:textAlignment="textStart"
         android:textAllCaps="false"
-        android:textColor="@color/moodiWhite"
+        android:textColor="@color/moodiDarkBlue"
+        android:padding="@dimen/text_padding"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/full_name" />
+        app:layout_constraintTop_toBottomOf="@+id/username" />
 
     <include
         layout="@layout/profile_social_counter"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/moodiBackground"
+        android:layout_marginTop="16dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/username" />
+        app:layout_constraintTop_toBottomOf="@id/full_name" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

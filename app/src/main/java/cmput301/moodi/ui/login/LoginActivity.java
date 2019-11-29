@@ -1,10 +1,14 @@
 package cmput301.moodi.ui.login;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -39,7 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     // firebase auth link
     FirebaseAuth mFirebaseAuth;
     private FirebaseAuth.AuthStateListener mAuthStateListener;
+    AnimationDrawable psyduck;
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -56,6 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         signupTextView = findViewById(R.id.signup_text);
         google_login = findViewById(R.id.button2);
 
+
+
+
         mAuthStateListener = new FirebaseAuth.AuthStateListener() {
             @Override
             public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
@@ -65,14 +74,45 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(LoginActivity.this, BottomNavigationActivity.class);
                     startActivity(i);
                 }
+
             }
         };
+
+
+
+        emailId.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ImageView imageView = (ImageView)findViewById(R.id.psyduckimage);
+                imageView.setBackgroundResource(R.drawable.psyduckanimation);
+                psyduck = (AnimationDrawable) imageView.getBackground();
+                //AnimationDrawable animationDrawable = (AnimationDrawable) signupTextView.getBackground();
+                psyduck.start();
+
+                return false;
+            }
+        });
+
+        password.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                ImageView imageView = (ImageView)findViewById(R.id.psyduckimage);
+                imageView.setBackgroundResource(R.drawable.psyduckanimation);
+                psyduck = (AnimationDrawable) imageView.getBackground();
+                //AnimationDrawable animationDrawable = (AnimationDrawable) signupTextView.getBackground();
+                psyduck.start();
+                return false;
+            }
+        });
+
 
 
         // when a user clicks log in, the following logic checks if account is in the database
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+
                 String email = emailId.getText().toString();
                 String pass = password.getText().toString();
 
@@ -131,5 +171,6 @@ public class LoginActivity extends AppCompatActivity {
     protected void onStart() {
         super.onStart();
         mFirebaseAuth.addAuthStateListener(mAuthStateListener);
+
     }
     }

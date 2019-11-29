@@ -42,6 +42,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         this.context = context;
     }
 
+
     // Actual population of the list by sending entry to our content
     @NonNull
     @Override
@@ -52,14 +53,18 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             view = LayoutInflater.from(context).inflate(R.layout.content, parent,false);
         }
 
-        Mood mood = moodsListFiltered.get(position);
+        Mood mood = moods.get(position);
+
+        // Point at placeholders of the context in a post
         TextView currentEmotionalState = view.findViewById(R.id.EmotionalState_text);
         TextView currentDate = view.findViewById(R.id.Date_text);
+        TextView currentUsername = view.findViewById(R.id.Username_text);
         ImageView currentEmoji = view.findViewById(R.id.emoji);
 
         // Pull information from the post!
         int color = mood.getEmotionalState().getColor();
         String name = mood.getEmotionalState().getName();
+        String username = mood.getUsername();
 
         // Push information pulled from user input into a new post
         currentEmotionalState.setText(name);
@@ -67,8 +72,13 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         currentEmoji.setImageResource(mood.getEmotionalState().getEmoji());
         view.setBackgroundColor(ContextCompat.getColor(context, color));
 
+        if (username == null)
+            currentUsername.setText("Old Post No Username Yet");
+        else
+            currentUsername.setText(username);
         return view;
     }
+
 
     @Override
     public int getCount() {

@@ -181,13 +181,6 @@ public class CreateAccountActivity extends AppCompatActivity {
                 }
             }
         });
-
-        if(username.length() >= minLength && username.length() <= maxLength) {
-            // Check if it is unique.
-
-        } else {
-
-        }
     }
 
     /*

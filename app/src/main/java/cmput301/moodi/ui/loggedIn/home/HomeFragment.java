@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -27,7 +27,7 @@ import java.util.Collections;
 import java.util.List;
 
 import cmput301.moodi.Objects.Mood;
-import cmput301.moodi.Objects.MoodListAdapter;
+import cmput301.moodi.Objects.MoodHistoryAdapter;
 import cmput301.moodi.Objects.MoodiStorage;
 import cmput301.moodi.R;
 /**
@@ -37,9 +37,9 @@ import cmput301.moodi.R;
  */
 public class HomeFragment extends Fragment {
 
-    // MoodList objects
-    private ListView moodList;
-    private ArrayAdapter<Mood> moodAdapter;
+    // Moods
+    private ListView moodListView;
+    private MoodHistoryAdapter moodAdapter;
     private ArrayList<Mood> moodDataList;
 
     // Firestore and reference objects
@@ -55,17 +55,36 @@ public class HomeFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Get a reference to the ListView and create an object for the mood list.
-        moodList = view.findViewById(R.id.mood_list);
+        moodListView = view.findViewById(R.id.mood_list);
         moodDataList = new ArrayList<>();
 
         // Set the adapter for the listView to the CustomAdapter that we created in Lab 3.
-        moodAdapter = new MoodListAdapter(container.getContext(), moodDataList);
-        moodList.setAdapter(moodAdapter);
+        moodAdapter = new MoodHistoryAdapter(container.getContext(),moodDataList);
+        moodListView.setAdapter(moodAdapter);
 
         // Init firestore link and reference object
         db = FirebaseFirestore.getInstance();
         postReference = db.collection("posts");
         moodiStorage = new MoodiStorage();
+
+        // Load spinner resources
+        Spinner spinner = (Spinner) view.findViewById(R.id.filter_by);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getActivity(), R.array.mood_history_filters, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int position, long l) {
+                String emotionalState = adapterView.getItemAtPosition(position).toString();
+                moodAdapter.getFilter().filter(emotionalState);
+            }
+
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Another interface callback
+            }
+        });
+
 
         // wait for posts to be updated, then re run queries for the moods of users being followed
         postReference.addSnapshotListener(new EventListener<QuerySnapshot>() {
@@ -115,7 +134,7 @@ public class HomeFragment extends Fragment {
         });
 
         // View the post by clicking it
-        moodList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        moodListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Mood moodSelected = moodDataList.get(i);

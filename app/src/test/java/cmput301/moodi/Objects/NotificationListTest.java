@@ -6,8 +6,17 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
+/**
+ * Class NotificationListTest
+ * This class test the functionality of NotificationList
+ */
 public class NotificationListTest {
 
+    /**
+     * this method create a temp Noticationlist to be test.
+     * @return
+     * a temp Noticationlist
+     */
     private NotificationList mockNotiList(){
         NotificationList mylist = new NotificationList();
         MoodiNotification not1 = new MoodiNotification();

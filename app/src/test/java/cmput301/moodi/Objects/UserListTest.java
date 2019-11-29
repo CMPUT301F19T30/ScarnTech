@@ -8,9 +8,18 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class: UserListTest
+ * This class test the functionality of UserList
+ * @since 27/11/2019
+ */
 class UserListTest {
 
-
+    /**
+     *Create a temp list of user
+     * @return
+     * list of user
+     */
     private UserList mocklist(){
         UserList mylist = new UserList();
         //List<User> mylist = new ArrayList<>();

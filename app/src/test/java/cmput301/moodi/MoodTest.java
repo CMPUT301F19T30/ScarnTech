@@ -11,9 +11,17 @@ import cmput301.moodi.Objects.Mood;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class: MoodTest
+ * this Class test methods in Mood class
+ */
 
 class MoodTest {
-
+    /**
+     * Create a temp mood object to be test
+     * @return
+     * a temp mood object
+     */
     private Mood mockMood() {
         EmotionalState mockEmotion = mockEmotionalState();
         String mockReason = mockReason();

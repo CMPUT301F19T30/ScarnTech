@@ -7,6 +7,10 @@ import cmput301.moodi.Objects.User;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Class:LocationTest
+ * this class test method in Location
+ */
 class LocationTest {
 
     private User mockUser() {
@@ -14,6 +18,11 @@ class LocationTest {
         return mockUser;
     }
 
+    /**
+     * this method create  a temp location to be test
+     * @return
+     * temp location object
+     */
     private Location mockLocation() {
         Location location = new Location(53.18923, -113.12312);
         return location;

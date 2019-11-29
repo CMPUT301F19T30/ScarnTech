@@ -12,6 +12,24 @@
         <item name="android:textColor">@color/moodiDarkBlue</item>
     </style>
 
+    <style name="MoodiTitle" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">60sp</item>
+        <item name="android:textColor">@color/moodiDarkBlue</item>
+        <item name="android:fontFamily">@font/rancho</item>
+        <item name="android:ems">8</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
+    <style name="MoodiSubtitle" parent="@style/Widget.AppCompat.TextView">
+        <item name="android:textSize">20sp</item>
+        <item name="android:textColor">@color/moodiDarkBlue</item>
+        <item name="android:fontFamily">@font/rancho</item>
+        <item name="android:ems">8</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:layout_centerVertical">true</item>
+    </style>
+
     <style name="MoodiEditText" parent="@style/Widget.AppCompat.EditText">
         <item name="android:textSize">20sp</item>
         <item name="android:textColor">@color/moodiDarkBlue</item>

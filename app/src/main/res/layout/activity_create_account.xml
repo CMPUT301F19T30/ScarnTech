@@ -21,16 +21,12 @@
                 android:layout_height="match_parent">
 
                 <TextView
+                    style="@style/MoodiTitle"
                     android:id="@+id/title"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
                     android:layout_marginTop="32dp"
-                    android:ems="8"
                     android:text="@string/moodi"
-                    android:textAlignment="center"
-                    android:textColor="@color/moodiDarkBlue"
-                    android:textSize="60sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
@@ -56,6 +52,7 @@
                     app:layout_constraintStart_toStartOf="parent">
 
                     <TextView
+                        style="@style/MoodiText"
                         android:id="@+id/login_description"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -64,6 +61,7 @@
                         android:textColor="@color/moodiDarkBlue" />
 
                     <TextView
+                        style="@style/MoodiText"
                         android:id="@+id/login_text"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"

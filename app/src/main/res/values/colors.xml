@@ -16,6 +16,7 @@
     <color name="moodiBlack">#000000</color>
     <color name="moodiRed">#B91E1E</color>
     <color name="moodiYellow">#FFFF00</color>
+    <color name="moodiLightGrey">#EEEEEE</color>
 
     <color name="Happy">#F4DB75</color>
     <color name="Mad">#FF5B42</color>

@@ -1,7 +1,6 @@
 package cmput301.moodi.Objects;
 
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -73,7 +72,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
         view.setBackgroundColor(ContextCompat.getColor(context, color));
 
         if (username == null)
-            currentUsername.setText("Old Post No Username Yet");
+            currentUsername.setText("");
         else
             currentUsername.setText(username);
         return view;
@@ -114,7 +113,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
             results.count = moods.size();
             results.values = moods;
 
-            if (constraint.equals("All")) {
+            if (constraint.equals("Show All")) {
                 return results;
             }
 
@@ -124,11 +123,7 @@ public class MoodHistoryAdapter extends BaseAdapter implements Filterable {
                 for (int i=0; i< moods.size(); i++) {
                     Mood mood = moods.get(i);
                     String moodType = mood.getEmotionalState().getName().toLowerCase();
-                    Log.d(TAG, "Mood -> " + moodType.toString());
-                    Log.d(TAG, "constraint -> " + constraint.toString());
-
                     if(moodType.startsWith(constraint.toString())) {
-                        Log.d(TAG, "Adding ->" + moodType);
                         filteredList.add(mood);
                     }
                 }

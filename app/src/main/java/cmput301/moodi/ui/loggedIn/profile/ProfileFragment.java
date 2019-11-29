@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,8 +49,6 @@ public class ProfileFragment extends Fragment {
     private MoodiStorage moodiStorage;
     private static final String TAG = "ProfileActivity";
     private User userProfile;
-    private ImageButton logout;
-    EditText inputSearch;
     private TextView username, nameDisplay;
     private TextView numFollowers, numFollowing;
 

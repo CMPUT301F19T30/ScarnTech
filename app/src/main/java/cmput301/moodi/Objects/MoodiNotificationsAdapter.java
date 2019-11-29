@@ -11,6 +11,10 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -70,16 +74,39 @@ public class MoodiNotificationsAdapter extends ArrayAdapter<MoodiNotification> {
        accept.setOnClickListener(new View.OnClickListener() {
            @Override
            public void onClick(View view) {
-               HashMap<String, Object> data = new HashMap<>();
-               data.put("user", notification.getSenderUID());
-               data.put("following", notification.getReceiver());
-               data.put("permission", 2);
-               moodiStorage.createFollower(data);
-               moodiStorage.deleteNotification(notification.getDocumentID());
+                acceptNotification(notification);
            }
        });
 
         return view;
+    }
+
+    /*
+     * Accept the notification and create a follower in moodi.
+     */
+    public void acceptNotification(MoodiNotification notification) {
+        // Ensure that the user is not already being followed.
+        final MoodiNotification notificationData = notification;
+
+        moodiStorage.isUserFollowing(notification.getSenderUID()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (task.isSuccessful()) {
+                    if (task.getResult().isEmpty()) {
+                        HashMap<String, Object> data = new HashMap<>();
+                        data.put("user", notificationData.getSenderUID());
+                        data.put("following", notificationData.getReceiver());
+                        data.put("permission", 1);
+                        moodiStorage.createFollower(data);
+                        moodiStorage.deleteNotification(notificationData.getDocumentID());
+                    } else {
+                        //Do nothing, follower already exists.
+                    }
+                }
+
+            }
+        });
+
     }
 
 

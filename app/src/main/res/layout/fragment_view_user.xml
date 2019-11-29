@@ -14,7 +14,7 @@
         android:paddingLeft="5dp"
         android:textColor="@color/moodiWhite"></TextView>
 
-    <include layout="@layout/viewed_profile_header"
+    <include layout="@layout/profile_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
 

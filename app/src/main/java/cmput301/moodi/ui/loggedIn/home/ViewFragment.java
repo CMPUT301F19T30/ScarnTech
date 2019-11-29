@@ -41,8 +41,7 @@ import cmput301.moodi.ui.loggedIn.profile.EditFragment;
 
 /*
  * Class: ViewFragment
- * Fragment pulled up to enter a custom date if the user does not want the instantaneous date
- * on post creation.
+ * Fragment pulled up to view more information on a users post
  * @since 11/12/2019
  */
 

@@ -70,11 +70,18 @@ public class MoodiStorage {
 
     /*
      * Returns all moodi users following the user.
-    /**
      * @return the followers documents for the user.
      */
     public Task getFollowers() {
         return this.followerCollection.whereEqualTo("following", this.UID).get();
+    }
+
+    /*
+     * Returns all moodi users following the selected user (Overloaded Const.).
+     * @return the followers documents for the user.
+     */
+    public Task getFollowers(String selectedUserUID) {
+        return this.followerCollection.whereEqualTo("following", selectedUserUID).get();
     }
 
     public void addFollower(Object data) {
@@ -83,14 +90,23 @@ public class MoodiStorage {
 
     /*
      * Returns all moodi users that I am following.
-    /**
      * @return the following documents for the user.
      */
     public Task getFollowing() {
         return this.followerCollection.whereEqualTo("user", this.UID).get();
     }
 
+    /*
+     * Returns all moodi users of a selected user (Overloaded Constructor).
+     * @return the following documents for the user.
+     */
+    public Task getFollowing(String selectedUserUID) {
+        return this.followerCollection.whereEqualTo("user", selectedUserUID).get();
+    }
 
+    /*
+    * @return the reference to which users are following the provided UID.
+     */
     public Task isUserFollowing(String UID) {
         return this.followerCollection.whereEqualTo("following", UID).get();
     }

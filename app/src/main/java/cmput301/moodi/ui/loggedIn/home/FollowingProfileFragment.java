@@ -81,7 +81,7 @@ import cmput301.moodi.ui.loggedIn.profile.EditFragment;
 
 /*
  * Class: FollowingProfileFragment
- * Fragment pulled up a followed users profile
+ * Fragment pulled up from the View fragment to view a users profile
  * 11/27/2019
  */
 public class FollowingProfileFragment extends DialogFragment {
@@ -91,16 +91,12 @@ public class FollowingProfileFragment extends DialogFragment {
 
     private MoodiStorage moodiStorage;
     private static final String TAG = "SelectedUserProfileActivity";
-    private TextView username, nameDisplay; //,intermediate;
-    private User userProfile;
+    private TextView username, nameDisplay, followers, following;
 
     // Moods
     private ListView moodList;
     private MoodHistoryAdapter moodAdapter;
     private ArrayList<Mood> moodDataList;
-
-    // Used to pass data to main activity
-    private viewUser listener;
 
     public List<Mood> moods;
     public String uniqueID;
@@ -124,7 +120,8 @@ public class FollowingProfileFragment extends DialogFragment {
     public void onAttach(Context context) {
         super.onAttach(context);
         if (context instanceof viewUser) {
-            listener = (viewUser) context;
+            // Used to pass data to main activity
+            viewUser listener = (viewUser) context;
             if (this.getDialog() != null)
                 this.getDialog().dismiss();
         } else {
@@ -142,11 +139,12 @@ public class FollowingProfileFragment extends DialogFragment {
 
         db = FirebaseFirestore.getInstance();
         moodiStorage = new MoodiStorage();
-        userProfile = new User();
 
         // Point Variables to header & list
-        nameDisplay = view.findViewById(R.id.viewed_full_name);
-        username = view.findViewById(R.id.viewed_username);
+        nameDisplay = view.findViewById(R.id.full_name);
+        username = view.findViewById(R.id.username);
+        followers = view.findViewById(R.id.followers_number);
+        following = view.findViewById(R.id.following_number);
         moodList = view.findViewById(R.id.viewed_mood_history);
 
         // Load lists for moods.
@@ -160,6 +158,7 @@ public class FollowingProfileFragment extends DialogFragment {
             userName = args.getString("Username");
             username.setText(userName);
 
+            // Getting the users full name as well as unique id to retrieve more information
             final Task task = moodiStorage.searchByUsername(userName)
                     .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                         @Override
@@ -175,6 +174,7 @@ public class FollowingProfileFragment extends DialogFragment {
                         }
                     });
 
+            // Getting the selected users most recent post
             task.addOnSuccessListener(new OnSuccessListener() {
                 @Override
                 public void onSuccess(Object o) {
@@ -202,6 +202,21 @@ public class FollowingProfileFragment extends DialogFragment {
                         }
 
                     });
+                }
+            });
+
+            // Getting user follower and following count
+            moodiStorage.getFollowers(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    followers.setText(String.valueOf(task.getResult().size()));
+                }
+            });
+
+            moodiStorage.getFollowing(uniqueID).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                @Override
+                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                    following.setText(String.valueOf(task.getResult().size()));
                 }
             });
         }

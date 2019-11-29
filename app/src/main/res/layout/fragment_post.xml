@@ -6,46 +6,25 @@
     android:layout_height="match_parent"
     android:background="@color/moodiBackground">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout2"
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/post_mood_button"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:background="@color/moodiLightBlue"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:capitalize="none"
+        android:fontFamily="@font/rancho"
+        android:text="Send Mood!"
+        android:textAllCaps="false"
+        android:textSize="30sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        tools:layout_editor_absoluteX="16dp">
-
-        <TextView
-            android:id="@+id/textView9"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="32dp"
-            android:text="Share your mood:"
-            android:textColor="@color/moodiWhite"
-            android:textSize="18sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/post_mood_button"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageButton
-            android:id="@+id/post_mood_button"
-            android:layout_width="80dp"
-            android:layout_height="50dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginBottom="8dp"
-            android:contentDescription="@string/post_mood_button"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@android:drawable/ic_menu_send" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintEnd_toEndOf="parent" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:background="@color/moodiBackground"
-        app:layout_constraintBottom_toTopOf="@+id/constraintLayout2"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -65,10 +44,12 @@
 
                 <Spinner
                     android:id="@+id/input_EmotionalState_Spinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_background"
                     android:entries="@array/EmotionalStates"
+                    android:padding="8dp"
                     android:prompt="@string/Emo_propmt"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -82,7 +63,6 @@
                     android:text="And why's that? (Optional)"
                     android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_EmotionalState_Spinner" />
 
@@ -90,13 +70,13 @@
                     android:id="@+id/input_Reasoning"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="24dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginEnd="24dp"
+                    android:background="@drawable/edit_text_background"
                     android:ems="10"
                     android:importantForAutofill="no"
                     android:inputType="textPersonName"
                     android:maxLength="20"
+                    android:padding="8dp"
                     android:textSize="16sp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
@@ -110,17 +90,18 @@
                     android:text="How are you feeling today?"
                     android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout3" />
 
                 <Spinner
                     android:id="@+id/input_SocialSituation_Spinner"
-                    android:layout_width="wrap_content"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:background="@drawable/edit_text_background"
                     android:entries="@array/social_situation"
                     android:gravity="center"
+                    android:padding="8dp"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView20" />
@@ -133,28 +114,14 @@
                     android:text="Who are you with? (Optional)"
                     android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
-                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_Reasoning" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="24dp"
-                    android:gravity="center"
-                    android:paddingTop="10dp"
-                    android:text="@string/image"
-                    android:textColor="@color/moodiWhite"
-                    android:textSize="18sp"
-                    app:layout_constraintTop_toBottomOf="@+id/textView" />
 
                 <TextView
                     android:id="@+id/textView6"
                     android:layout_width="35dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
-                    android:layout_marginEnd="8dp"
                     android:text="@string/min"
                     android:textColor="@color/moodiWhite"
                     app:layout_constraintEnd_toEndOf="parent"
@@ -164,10 +131,10 @@
                     android:id="@+id/textView"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginStart="16dp"
                     android:layout_marginTop="24dp"
                     android:text="@string/time_24_hour"
                     android:textColor="@color/moodiWhite"
+                    android:textSize="18sp"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/input_calendarView" />
 
@@ -184,13 +151,13 @@
                     android:id="@+id/input_photo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
+                    android:layout_marginTop="24dp"
                     android:contentDescription="@string/users_uploaded_photo"
                     android:gravity="center"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/textView13"
+                    app:layout_constraintTop_toBottomOf="@+id/textView"
                     app:srcCompat="@android:drawable/ic_menu_gallery" />
 
                 <Spinner
@@ -218,19 +185,21 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
+                    android:clickable="true"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView12" />
 
                 <TextView
                     android:id="@+id/textView12"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="24dp"
                     android:gravity="center"
-                    android:text="@string/date"
+                    android:text="When did you feel this?"
                     android:textColor="@color/moodiWhite"
                     android:textSize="18sp"
+                    app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/constraintLayout5" />
 
                 <androidx.constraintlayout.widget.ConstraintLayout
@@ -251,9 +220,10 @@
                         android:layout_marginStart="8dp"
                         android:layout_marginTop="16dp"
                         android:layout_marginBottom="16dp"
+                        android:fontFamily="@font/rancho"
                         android:text="Update Your Mood:"
-                        android:textColor="@color/moodiDarkBlue"
-                        android:textSize="30sp"
+                        android:textColor="@color/moodiBlack"
+                        android:textSize="36sp"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -285,29 +255,33 @@
                         android:id="@+id/add_location_button"
                         android:layout_width="80dp"
                         android:layout_height="50dp"
+                        android:background="@android:drawable/btn_default"
                         android:contentDescription="@string/add_location_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintTop_toTopOf="parent"
                         app:srcCompat="@android:drawable/ic_menu_mylocation" />
 
-                    <Switch
-                        android:id="@+id/location_toggle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:checked="true"
+                    <androidx.constraintlayout.widget.ConstraintLayout
+                        android:layout_width="0dp"
+                        android:layout_height="0dp"
+                        android:layout_marginStart="32dp"
+                        android:background="@android:drawable/btn_default"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintStart_toEndOf="@+id/space"
-                        app:layout_constraintTop_toTopOf="parent" />
-
-                    <Space
-                        android:id="@+id/space"
-                        android:layout_width="16dp"
-                        android:layout_height="0dp"
-                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toEndOf="@+id/add_location_button"
-                        app:layout_constraintTop_toTopOf="parent" />
+                        app:layout_constraintTop_toTopOf="parent">
+
+                        <Switch
+                            android:id="@+id/location_toggle"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:checked="true"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+                    </androidx.constraintlayout.widget.ConstraintLayout>
 
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -336,6 +310,7 @@
                         android:id="@+id/add_picture_button"
                         android:layout_width="80dp"
                         android:layout_height="50dp"
+                        android:background="@android:drawable/btn_default"
                         android:contentDescription="@string/add_camera_photo_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
@@ -346,7 +321,8 @@
                         android:id="@+id/add_gallery_button"
                         android:layout_width="80dp"
                         android:layout_height="50dp"
-                        android:layout_marginStart="16dp"
+                        android:layout_marginStart="32dp"
+                        android:background="@android:drawable/btn_default"
                         android:contentDescription="@string/add_gallery_photo_button"
                         app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"

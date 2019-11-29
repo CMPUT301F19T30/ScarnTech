@@ -17,6 +17,16 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <Spinner
+        android:id="@+id/filter_by"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/moodiWhite"
+        android:padding="@dimen/activity_vertical_margin"
+        android:spinnerMode="dropdown"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+
     <ListView
         android:id="@+id/mood_list"
         android:layout_width="match_parent"
@@ -25,6 +35,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/filter_by" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

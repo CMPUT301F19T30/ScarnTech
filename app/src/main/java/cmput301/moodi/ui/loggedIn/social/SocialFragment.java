@@ -19,11 +19,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
@@ -86,59 +89,8 @@ public class SocialFragment extends Fragment {
         userListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-                final User user = (User) adapterView.getItemAtPosition(position);
-
-                moodiStorage.isUserFollowing(user.getUID()).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task task) {
-                        if (task.isSuccessful()) {
-                            //DocumentReference doc = task.getResult();
-                            Log.d(TAG, task.getResult().toString());
-                            //UserDialogFragment dialog = new UserDialogFragment(user.getUsername());
-                            final Dialog userDialog = new Dialog(getContext());
-                            userDialog.setContentView(R.layout.user_dialog);
-
-                            TextView usernameView = userDialog.findViewById(R.id.username);
-                            usernameView.setText(user.getUsername());
-
-                            TextView nameView = userDialog.findViewById(R.id.full_name);
-                            nameView.setText(user.getFirstName() + " " + user.getLastName());
-
-                            ImageButton closeButton = userDialog.findViewById(R.id.close);
-                            closeButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    userDialog.dismiss();
-                                }
-                            });
-
-                            //Todo: set status on dialog. Set follow request button if user is not currently following.
-                            // Also ensure no pending notifications to user are matching the description.
-
-                            Button folloRequestButton = userDialog.findViewById(R.id.follow_request);
-                            folloRequestButton.setOnClickListener(new View.OnClickListener() {
-                                @Override
-                                public void onClick(View view) {
-                                    userDialog.dismiss();
-                                    HashMap<String, Object> data = new HashMap<>();
-                                    data.put("sender", moodiStorage.getUID());
-                                    data.put("receiver", user.getUID());
-                                    data.put("type", FOLLOW_REQUEST);
-                                    moodiStorage.sendFollowRequest(data);
-                                    Toast.makeText(getActivity(), "Follow Request Sent!", Toast.LENGTH_SHORT).show();
-                                }
-                            });
-
-                            userDialog.show();
-                            Window window = userDialog.getWindow();
-                            window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
-
-                            //dialog.show(getActivity().getSupportFragmentManager(), "Hello");
-                        } else {
-                            Log.d(TAG, "Failed to check if following user.");
-                        }
-                    }
-                });
+                User user = (User) adapterView.getItemAtPosition(position);
+                dialogHandler(user);
             }
         });
 
@@ -212,44 +164,114 @@ public class SocialFragment extends Fragment {
 
 
     /*
-     * Load the notification view.
+     * Setup the dialog view
      */
-    private void loadNotifications() {
-        moodiStorage.getNotifications().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void dialogHandler(User userData) {
+        final User user = userData;
+        final Dialog userDialog = new Dialog(getContext());
+        userDialog.setContentView(R.layout.user_dialog);
+        TextView usernameView = userDialog.findViewById(R.id.username);
+        ImageButton closeButton = userDialog.findViewById(R.id.close);
+        TextView nameView = userDialog.findViewById(R.id.full_name);
+        final TextView statusView = userDialog.findViewById(R.id.status);
+        statusView.setText("");
+        final Button followRequestButton = userDialog.findViewById(R.id.follow_request);
+        followRequestButton.setVisibility(View.INVISIBLE);
+
+
+        moodiStorage.isUserFollowing(user.getUID()).addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    notificationList.clear();
-
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        //Todo: move notifications to social tab
-                        String UID = doc.getString("sender");
-                        final QueryDocumentSnapshot notificationData = doc;
-                        moodiStorage.searchByUID(UID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                    if (task.getResult().isEmpty()) {
+                        // Not currently following. Allow user to send notification.
+                        Log.d(TAG, "Empty!");
+                        statusView.setText("Not following");
+                        followRequestButton.setVisibility(View.VISIBLE);
+                        followRequestButton.setOnClickListener(new View.OnClickListener() {
                             @Override
-                            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    DocumentSnapshot document = task.getResult();
-                                    Log.d(TAG, "username -> " + document.getString("username"));
-                                    String senderName = document.getString("first_name") + " " +
-                                            document.getString("last_name") + " (" +
-                                            document.getString("username") + ")";
-                                    MoodiNotification notification = new MoodiNotification();
-                                    notification.setFromDocument(notificationData);
-                                    notification.setSenderName(senderName);
-                                    notificationList.add(notification);
-                                    notificationAdapter.notifyDataSetChanged();
-                                }
+                            public void onClick(View view) {
+                                userDialog.dismiss();
+                                HashMap<String, Object> data = new HashMap<>();
+                                data.put("sender", moodiStorage.getUID());
+                                data.put("receiver", user.getUID());
+                                data.put("type", FOLLOW_REQUEST);
+                                moodiStorage.sendFollowRequest(data);
+                                Toast.makeText(getActivity(), "Follow Request Sent!", Toast.LENGTH_SHORT).show();
                             }
                         });
+                    } else {
+                        // Currently following the user.
+                        Log.d(TAG, "Following");
+                        statusView.setText("Following");
+                        // Todo: Allow to remove user
                     }
+
+
                 } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    Log.d(TAG, "Failed to check if following user.");
                 }
-                notificationAdapter.notifyDataSetChanged();
             }
         });
+
+        usernameView.setText(user.getUsername());
+        nameView.setText(user.getFirstName() + " " + user.getLastName());
+
+        closeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userDialog.dismiss();
+            }
+        });
+
+        userDialog.show();
+        Window window = userDialog.getWindow();
+        window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+
     }
 
 
+    /*
+     * Load the notification view.
+     */
+    private void loadNotifications() {
+        moodiStorage.getNotificationReference().addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                notificationList.clear();
+
+                moodiStorage.getNotifications().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if (task.isSuccessful()) {
+                            for (QueryDocumentSnapshot doc : task.getResult()) {
+                                String UID = doc.getString("sender");
+                                final QueryDocumentSnapshot notificationData = doc;
+                                moodiStorage.searchByUID(UID).addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                                        if (task.isSuccessful()) {
+                                            DocumentSnapshot document = task.getResult();
+                                            Log.d(TAG, "username -> " + document.getString("username"));
+                                            String senderName = document.getString("first_name") + " " +
+                                                    document.getString("last_name") + " (" +
+                                                    document.getString("username") + ")";
+                                            MoodiNotification notification = new MoodiNotification();
+                                            notification.setFromDocument(notificationData);
+                                            notification.setSenderName(senderName);
+                                            notificationList.add(notification);
+                                            notificationAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                });
+                            }
+                        } else {
+                            Log.d(TAG, "Error getting documents: ", task.getException());
+                        }
+                        notificationAdapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
+    }
 }

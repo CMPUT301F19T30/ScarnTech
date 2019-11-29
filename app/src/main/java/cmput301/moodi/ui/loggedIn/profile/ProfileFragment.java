@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -51,9 +49,8 @@ public class ProfileFragment extends Fragment {
     private MoodiStorage moodiStorage;
     private static final String TAG = "ProfileActivity";
     private User userProfile;
-    private ImageButton logout;
-    EditText inputSearch;
     private TextView username, nameDisplay;
+    private TextView numFollowers, numFollowing;
 
     // Moods
     private ListView moodList;
@@ -64,7 +61,6 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
 
-
         profileViewModel = ViewModelProviders.of(this).get(cmput301.moodi.ui.loggedIn.profile.ProfileViewModel.class);
         View root = inflater.inflate(R.layout.fragment_profile, container, false);
 
@@ -74,13 +70,14 @@ public class ProfileFragment extends Fragment {
         // Views from layout
         username = root.findViewById(R.id.username);
         nameDisplay = root.findViewById(R.id.full_name);
+        numFollowers = root.findViewById(R.id.followers_number);
+        numFollowing = root.findViewById(R.id.following_number);
 
         // Load lists for moods.
         moodList = root.findViewById(R.id.mood_history);
         moodDataList = new ArrayList<>();
         moodAdapter = new MoodHistoryAdapter(container.getContext(), moodDataList);
         moodList.setAdapter(moodAdapter);
-
 
         // Load spinner resources
         Spinner spinner = (Spinner) root.findViewById(R.id.filter_by);
@@ -99,7 +96,6 @@ public class ProfileFragment extends Fragment {
                 // Another interface callback
             }
         });
-
 
         profileViewModel.getText().observe(this, new Observer<String>() {
             @Override
@@ -187,7 +183,6 @@ public class ProfileFragment extends Fragment {
                 moodAdapter.notifyDataSetChanged();
             }
         });
-
     }
 
     /*
@@ -202,9 +197,8 @@ public class ProfileFragment extends Fragment {
         db = FirebaseFirestore.getInstance();
 
         // Get a top-level reference to the collection.
-        final CollectionReference collectionReference = db.collection("posts");
-
-        collectionReference.whereEqualTo("UID", moodiStorage.getUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
+        final CollectionReference postRef = db.collection("posts");
+        postRef.whereEqualTo("UID", moodiStorage.getUID()).addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
 
@@ -234,8 +228,16 @@ public class ProfileFragment extends Fragment {
                 moodAdapter.notifyDataSetChanged(); // Notifying the adapter to render any new data fetched from the cloud.
                 }
             });
-    }
 
+        // Update following/follower count when follower collection updates
+        final CollectionReference followRef = db.collection("followers");
+        followRef.addSnapshotListener(new EventListener<QuerySnapshot>() {
+            @Override
+            public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                loadSocialInfo();
+            }
+        });
+    }
 
     /*
      * Check user click on notifications.
@@ -250,33 +252,21 @@ public class ProfileFragment extends Fragment {
      * Load following and followers list.
      */
     private void loadSocialInfo() {
+
         moodiStorage.getFollowers().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "Getting followers... ");
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        Log.d(TAG, "user -> " + doc.getString("user"));
-                        Log.d(TAG, "following -> " + doc.getString("following"));
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    numFollowers.setText(String.valueOf(task.getResult().size()));
                 }
             }
         });
-
 
         moodiStorage.getFollowing().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
             @Override
             public void onComplete(@NonNull Task<QuerySnapshot> task) {
                 if (task.isSuccessful()) {
-                    Log.d(TAG, "Getting following... ");
-                    for (QueryDocumentSnapshot doc : task.getResult()) {
-                        Log.d(TAG, "user -> " + doc.getString("user"));
-                        Log.d(TAG, "following -> " + doc.getString("following"));
-                    }
-                } else {
-                    Log.d(TAG, "Error getting documents: ", task.getException());
+                    numFollowing.setText(String.valueOf(task.getResult().size()));
                 }
             }
         });

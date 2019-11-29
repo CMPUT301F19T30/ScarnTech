@@ -4,7 +4,6 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -22,14 +21,14 @@ import cmput301.moodi.R;
  * groups of data such as users or moods
  * @since 11/04/2019
  */
-public class MoodListAdapter extends ArrayAdapter<Mood> {
+public class MoodListAdapter extends MoodHistoryAdapter {
 
     private ArrayList<Mood> moods;
     private Context context;
 
     // Bridge between the list and the displayed list
     public MoodListAdapter(Context context, ArrayList<Mood> moods){
-        super(context,0, moods);
+        super(context, moods);
         this.moods = moods;
         this.context = context;
     }

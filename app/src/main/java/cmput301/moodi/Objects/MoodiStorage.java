@@ -7,7 +7,6 @@ package cmput301.moodi.Objects;
  */
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
@@ -17,7 +16,6 @@ import com.google.firebase.firestore.GeoPoint;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.concurrent.ExecutionException;
 
 import static cmput301.moodi.util.Constants.FOLLOWERS_PATH;
 import static cmput301.moodi.util.Constants.NOTIFICATIONS_PATH;
@@ -43,8 +41,12 @@ public class MoodiStorage {
         this.followerCollection = this.db.collection(FOLLOWERS_PATH);
     }
 
+    public CollectionReference getNotificationReference() {
+        return this.notificationsCollection;
+    }
+
     /*
-     *
+     * Check if username exists in the database.
      */
     public Task isUsernameUnique(String username) {
         return this.userCollection.whereEqualTo("username", username).limit(1).get();
@@ -108,10 +110,11 @@ public class MoodiStorage {
     * @return the reference to which users are following the provided UID.
      */
     public Task isUserFollowing(String UID) {
-        return this.followerCollection.whereEqualTo("following", UID).get();
+        return this.followerCollection.whereEqualTo("following", UID).whereEqualTo("user", this.UID).limit(1).get();
     }
 
     /**
+     * Get all current pending notifications.
      * @return the notification documents for the user.
      */
     public Task getNotifications() {
@@ -126,6 +129,9 @@ public class MoodiStorage {
         this.notificationsCollection.document().set(data);
     }
 
+    /*
+     * Create a follower.
+     */
     public void createFollower(Object data) {
         this.followerCollection.document().set(data);
     }
@@ -142,7 +148,7 @@ public class MoodiStorage {
      * @return all users of the application.
      */
     public Task getApplicationUsers() {
-        return this.userCollection.get();
+        return this.userCollection.limit(500).get();
     }
 
     /**

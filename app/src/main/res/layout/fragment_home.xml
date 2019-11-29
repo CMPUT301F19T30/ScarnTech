@@ -6,7 +6,7 @@
     android:background="@color/moodiBackground">
 
     <TextView
-        android:id="@+id/textView8"
+        android:id="@+id/textView_home"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -25,7 +25,7 @@
         android:padding="@dimen/activity_vertical_margin"
         android:spinnerMode="dropdown"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView8" />
+        app:layout_constraintTop_toBottomOf="@+id/textView_home" />
 
     <ListView
         android:id="@+id/mood_list"

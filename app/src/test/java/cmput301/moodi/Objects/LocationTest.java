@@ -1,4 +1,4 @@
-package cmput301.moodi;
+package cmput301.moodi.Objects;
 
 import org.junit.jupiter.api.Test;
 

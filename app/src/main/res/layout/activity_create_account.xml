@@ -27,6 +27,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginTop="32dp"
                     android:ems="8"
+                    android:fontFamily="@font/rancho"
                     android:text="@string/moodi"
                     android:textAlignment="center"
                     android:textColor="@color/moodiDarkBlue"

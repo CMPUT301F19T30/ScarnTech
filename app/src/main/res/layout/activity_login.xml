@@ -45,7 +45,7 @@
         android:background="@drawable/edit_text_background"
         android:ems="10"
         android:hint="@string/enter_your_email_address"
-        android:inputType="textEmailAddress"
+        android:inputType="textNoSuggestions|textEmailAddress"
         android:padding="8dp"
         android:textColor="@color/moodiDarkBlue"
         app:layout_constraintEnd_toEndOf="parent"
@@ -62,13 +62,14 @@
         android:background="@drawable/edit_text_background"
         android:ems="10"
         android:hint="@string/enter_your_password"
-        android:inputType="textPassword"
+        android:inputType="textVisiblePassword|textNoSuggestions"
         android:maxLength="20"
         android:layout_margin="@dimen/activity_vertical_margin"
         android:padding="8dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/login_email" />
+        app:layout_constraintTop_toBottomOf="@+id/login_email"
+        />
 
     <Button
         android:id="@+id/login_button"

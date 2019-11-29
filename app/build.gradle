@@ -10,6 +10,7 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+//        testInstrumentationRunner "androidx.test.ext.junit.runners.AndroidJUnit4"
     }
     buildTypes {
         release {
@@ -60,5 +61,13 @@ dependencies {
     // maps services
     implementation 'com.google.android.gms:play-services-maps:17.0.0'
     implementation 'com.google.android.gms:play-services-location:17.0.0'
+
+    // Android Testint Support Library's runner & rules
+    androidTestImplementation 'androidx.test:runner:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+    androidTestImplementation 'androidx.test:rules:1.1.0'
+
+    // Espresso UI Testing dependencies
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
 }
 apply plugin: 'com.google.gms.google-services'
